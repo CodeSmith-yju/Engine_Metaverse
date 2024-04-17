@@ -359,6 +359,8 @@
 "Assets/Scripts/Manager/GameMgr.cs"
 "Assets/Scripts/Manager/RecipeManager.cs"
 "Assets/Scripts/Object/Interactive.cs"
+"Assets/Scripts/Object/ResumeInteractive.cs"
+"Assets/Scripts/Object/ResumeObj.cs"
 "Assets/Scripts/Player/Player.cs"
 "Assets/Scripts/Player/PlayerMovement.cs"
 "Assets/TextMesh Pro/Examples & Extras/Scripts/Benchmark01.cs"

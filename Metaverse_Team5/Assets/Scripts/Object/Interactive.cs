@@ -126,20 +126,6 @@ public class Interactive : MonoBehaviour
             }
             
         }
-        else if (name == "Role")
-        {
-            if (player.GetRole() == Role.Manager) // 권한이 매니저일 경우에만 사용가능하게
-            {
-                Debug.Log("권한 설정");
-                GameMgr.Instance.player_List[0].gameObject.GetComponent<Player>().SetRole(Role.Empolyee);
-                // 이 코드를 플레이어 리스트를 가져와서 UI에서 선택하는 걸로 바꿀 예정
-            }
-            else
-            {
-                Debug.Log("권한이 없습니다.");
-                return;
-            }
-        }
         else if (name == "Cup")
         {
             if (player.cup == false)

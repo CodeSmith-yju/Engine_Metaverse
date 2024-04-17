@@ -5,8 +5,10 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public List<string> cur_IngrList = new List<string>(); // 주방에서 컵에 재료 넣은 리스트
+    public string cur_Ordered_Menu = "";
     public bool cup = false; // 컵 오브젝트를 상호작용 하면 true가 되도록 정해놓은 변수
     public bool done = false; // 제작 완료 
+    public bool resume_Done = false;
     private RecipeManager recipe;
 
 
@@ -21,13 +23,13 @@ public class Player : MonoBehaviour
 
         cur_IngrList.Clear(); // 초기화
 
-
         SetRole(Role.Manager);
     }
 
 
     public void SetRole(Role newRole) // 서버에 접속할 때 이 메서드를 이용해서 플레이어들에게 권한 주기
     {
+        Debug.Log("권한 설정 : " + name + "님의 권한이 설정되었습니다. ( " + GetRole() + " -> " + newRole + " )");
         role = newRole;
     }
 
@@ -47,6 +49,7 @@ public class Player : MonoBehaviour
             if (isdone)
             {
                 done = true;
+                cur_Ordered_Menu = GameMgr.Instance.order_List[0];
             }
             else
             {
@@ -59,10 +62,11 @@ public class Player : MonoBehaviour
     // 완성된 요리를 들고 오브젝트 상호작용 시 제출
     public void Done()
     {
-        if (done)
+        if (done && cur_Ordered_Menu.Equals(GameMgr.Instance.order_List[0])) // 최근에 주문된 메뉴와 일치하면
         {
             done = false;
             cup = false;
+            cur_Ordered_Menu = "";
         }
     }
 
