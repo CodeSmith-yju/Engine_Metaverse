@@ -35,13 +35,13 @@ public class RecipeManager : MonoBehaviour
             }
             else
             {
-                Debug.Log("재료 순서가 맞지 않음");
+                Debug.Log("재료 순서가 맞지 않거나 재료가 부족합니다");
                 return false;
             }
         }
         else
         {
-            Debug.Log("해당 레시피 없음");
+            Debug.Log("해당 레시피가 없습니다");
             return false;
         }
     }

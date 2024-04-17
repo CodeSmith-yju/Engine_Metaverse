@@ -112,10 +112,19 @@ public class Interactive : MonoBehaviour
             }
 
         }
-        else if (name == "Create" && player.cup)
+        else if (name == "Create")
         {
-            Debug.Log("제작 시도");
-            player.Create();
+            if (player.cup)
+            {
+                Debug.Log("제작 시도");
+                player.Create();
+            }
+            else
+            {
+                Debug.Log("들고 있는 컵이 없으므로 제작을 실패했습니다.");
+                return;
+            }
+            
         }
         else if (name == "Role")
         {
