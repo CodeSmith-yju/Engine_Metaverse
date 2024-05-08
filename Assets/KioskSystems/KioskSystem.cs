@@ -43,7 +43,7 @@ public class KioskSystem : MonoBehaviour
     public TextMeshProUGUI textOrder;
 
     public Button btnQuiteKiosk;
-    [SerializeField] Kiosk kiosk;
+    [SerializeField] ObjectInteractive kiosk;
     public GameObject announce;
 
     private void Awake()

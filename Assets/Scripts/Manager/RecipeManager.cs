@@ -5,10 +5,11 @@ using UnityEngine;
 public class RecipeManager : MonoBehaviour
 {
     private Dictionary<string, List<string>> recipe;
+    public List<string> recipe_Name;
 
 
     // 딕셔너리를 이용해서 레시피 설정
-    public RecipeManager()
+    private void Awake()
     {
         recipe = new Dictionary<string, List<string>>();
 
@@ -20,6 +21,15 @@ public class RecipeManager : MonoBehaviour
         recipe["딸기라떼"] = new List<string> { "딸기", "우유", "믹서기", "얼음" };
         recipe["요거트 스무디"] = new List<string> { "요거트 파우더", "우유", "얼음", "믹서기" };
         recipe["딸기 요거트 스무디"] = new List<string> { "요거트 파우더", "우유", "딸기", "얼음", "믹서기" };
+    }
+
+    private void Start()
+    {
+        recipe_Name = new List<string>();
+        foreach (string key in recipe.Keys)
+        {
+            recipe_Name.Add(key);
+        }
     }
 
     // 요리를 하는 메서드 (주문한 메뉴 이름, 현재 컵에 들어있는 재료 리스트)
