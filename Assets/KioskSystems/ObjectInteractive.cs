@@ -64,6 +64,8 @@ public class ObjectInteractive : MonoBehaviour
     {
         overlapCoroutine = false;
         useKioskNow = false;
+        my.gameObject.SetActive(false);
+        my.gameObject.SetActive(true);
     }
 
     private void ObjEnterChek()

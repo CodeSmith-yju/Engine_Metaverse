@@ -112,20 +112,20 @@ public class KioskSystem : MonoBehaviour
         {
             if (ticketNum < 10)
             {
-                kioskText += "주문하신 메뉴: " + menus[ticketNum] + "\n 주문 번호: \n 00" + ticketNum.ToString();
+                kioskText += "주문하신 메뉴: \n" + menus[ticketNum] + "\n 주문 번호: \n 00" + ticketNum.ToString();
             }
             else if (ticketNum < 100)
             {
-                kioskText += "주문하신 메뉴: " + menus[ticketNum] + "\n 주문 번호: \n 0" + ticketNum.ToString();
+                kioskText += "주문하신 메뉴: \n" + menus[ticketNum] + "\n 주문 번호: \n 0" + ticketNum.ToString();
             }
             else
             {
-                kioskText += "주문하신 메뉴: " + menus[ticketNum] + "\n 주문 번호: \n" + ticketNum.ToString();
+                kioskText += "주문하신 메뉴: \n" + menus[ticketNum] + "\n 주문 번호: \n" + ticketNum.ToString();
             }
         }
         else
         {
-            kioskText += "주문하신 메뉴: " + menuName + "\n 주문 번호: \n" + ticketNum.ToString();
+            kioskText += "주문하신 메뉴: \n" + menuName + "\n 주문 번호: \n" + ticketNum.ToString();
         }
 
         textNumberKiosk.text = kioskText;
@@ -177,6 +177,7 @@ public class KioskSystem : MonoBehaviour
             Debug.Log("BuyChek OK");
             TakeTicket();
             tiketIssuance.gameObject.SetActive(buyCheck);
+            btnQuiteKiosk.gameObject .SetActive(false);
             KioskSceneChange();
             kioIndex++;
         }
