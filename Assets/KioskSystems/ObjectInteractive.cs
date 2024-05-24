@@ -82,10 +82,6 @@ public class ObjectInteractive : MonoBehaviour
             case "Cup":
                 Debug.Log("충돌한 오브젝트: " + my.transform.parent.name);
                 break;
-            case "SellerDisPlay":
-                KioskSystem.single.sellerImg.gameObject.SetActive(true);
-                Debug.Log("충돌한 오브젝트: " + my.transform.parent.name);
-                break;
             default:
                 break;
         }
@@ -104,6 +100,10 @@ public class ObjectInteractive : MonoBehaviour
                 break;
             case "Cup":
                 Debug.Log("충돌중인 오브젝트: " + my.transform.parent.name);
+                break;
+            case "Pos_Machine":
+                KioskSystem.single.sellerImg.gameObject.SetActive(true);
+                Debug.Log("충돌한 오브젝트: " + my.transform.parent.name);
                 break;
             default:
                 break;
@@ -126,7 +126,7 @@ public class ObjectInteractive : MonoBehaviour
             case "Cup":
                 Debug.Log("충돌 끝난 오브젝트: " + my.transform.parent.name);
                 break;
-            case "SellerDisPlay":
+            case "Pos_Machine":
                 Debug.Log("충돌 끝난 오브젝트: " + my.transform.parent.name);
                 KioskSystem.single.sellerImg.gameObject.SetActive(false);
                 break;
