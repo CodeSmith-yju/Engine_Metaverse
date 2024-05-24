@@ -24,7 +24,7 @@ public class KioskSystem : MonoBehaviour
 
     [Header("SellerDisplay Object")]
     public TextMeshProUGUI textNumberellerDisPlay;
-
+    public Image sellerImg;
     [SerializeField] private List<Slot> poolSlot = new List<Slot>(); // 수정된 부분
     [SerializeField] private List<SelectedMenu> listSelectedMenus = new List<SelectedMenu>(); // 수정된 부분
 
@@ -54,6 +54,7 @@ public class KioskSystem : MonoBehaviour
     private void Start()
     {
         announce.SetActive(false);
+        sellerImg.gameObject.SetActive(false);
     }
 
     public void KioskSceneChange()

@@ -82,6 +82,10 @@ public class ObjectInteractive : MonoBehaviour
             case "Cup":
                 Debug.Log("충돌한 오브젝트: " + my.transform.parent.name);
                 break;
+            case "SellerDisPlay":
+                KioskSystem.single.sellerImg.gameObject.SetActive(true);
+                Debug.Log("충돌한 오브젝트: " + my.transform.parent.name);
+                break;
             default:
                 break;
         }
@@ -107,8 +111,9 @@ public class ObjectInteractive : MonoBehaviour
     }
     private void ObjExitChek()
     {
+        string parentName = my.transform.parent.name;
         // isTrigger가 체크된(통과 가능한) 오브젝트와의 충돌 상태가 종료 되었을 때, 각 오브젝트별로 발생할 이벤트를 등록
-        switch (my.transform.parent.name)
+        switch (parentName)
         {
             case "Kiosk":
                 KioskSystem.single.OnQuiteKiosk();// 키오스크 상호작용화면 off
@@ -121,10 +126,13 @@ public class ObjectInteractive : MonoBehaviour
             case "Cup":
                 Debug.Log("충돌 끝난 오브젝트: " + my.transform.parent.name);
                 break;
+            case "SellerDisPlay":
+                Debug.Log("충돌 끝난 오브젝트: " + my.transform.parent.name);
+                KioskSystem.single.sellerImg.gameObject.SetActive(false);
+                break;
             default:
                 break;
         }
         KioskSystem.single.announce.SetActive(false);// 상호작용 키 이미지 비활성화
-        my.transform.parent.name = null;
     }
 }
