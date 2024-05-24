@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2100161939147394098}
   - component: {fileID: 3237727821849634900}
   m_Layer: 0
-  m_Name: Mesh99
+  m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 2750490605298115519}
   - component: {fileID: 455976160427616548}
   m_Layer: 0
-  m_Name: Mesh98
+  m_Name: Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

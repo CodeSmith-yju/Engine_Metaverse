@@ -93,7 +93,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1886283992705793399}
   m_Layer: 0
-  m_Name: Pos_Machine
+  m_Name: POS_Machine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
