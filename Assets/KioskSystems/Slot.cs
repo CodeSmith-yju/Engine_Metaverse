@@ -22,11 +22,12 @@ public class Slot : MonoBehaviour
         textIndex.text = selectedMenu.GetIndex().ToString();
     }
 
+    //        KioskSystem.single.RemoveSlot(selectedMenu);//이새끼가 지금까지 출력된 번호를 지우는 핵심기능임 얘를다른대로 빼내야함
     public void OnClick()
     {
         //판매자가 메뉴완성하고 슬롯 클릭하면 출력될 메서드 사용자 호출하시겠습니까? || Destroyer
         //SellerMenus.single.
-        KioskSystem.single.RemoveSlot(selectedMenu);
+        KioskSystem.single.RemoveSlot(selectedMenu);//그래서 어디로 빼냄? 
         Debug.Log("OnClick Slot Index: "+selectedMenu.GetIndex() );
 
         gameObject.SetActive(false);

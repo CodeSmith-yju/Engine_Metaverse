@@ -23,7 +23,8 @@ public class Player : MonoBehaviour
 
         cur_IngrList.Clear(); // √ ±‚»≠
 
-        SetRole(Role.Manager);
+        //SetRole(Role.Manager);
+        SetRole(Role.Customer);
     }
 
 
