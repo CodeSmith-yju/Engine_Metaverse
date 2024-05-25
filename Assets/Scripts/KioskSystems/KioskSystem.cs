@@ -54,7 +54,7 @@ public class KioskSystem : MonoBehaviour
     private void Start()
     {
         announce.SetActive(false);
-        sellerImg.gameObject.SetActive(false);
+        //sellerImg.gameObject.SetActive(false);
     }
 
     public void KioskSceneChange()
