@@ -6979,6 +6979,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   recipe_Name: []
+  food_Obj_List:
+  - {fileID: 4653872966379224835, guid: 648f3fcb6db59814583e7c25e37137ac, type: 3}
+  - {fileID: 2151818803517850160, guid: 228d295f1773b5f4bb70470cfdacf03e, type: 3}
+  - {fileID: 4883553794372688664, guid: 7e1b5dc8966785642b7601def6763574, type: 3}
+  - {fileID: 7852576327949372421, guid: e1a8faf18aceeb7428b23c0f5b44c576, type: 3}
+  - {fileID: 1043135730191007658, guid: e38a5e56ab8a89746b42b1b188653bf2, type: 3}
+  - {fileID: 1005894755482723183, guid: 9341e338ce74d3c48bb074855c01adf9, type: 3}
 --- !u!4 &1763927619
 Transform:
   m_ObjectHideFlags: 0
@@ -11517,10 +11524,10 @@ RectTransform:
   - {fileID: 6668533936524001433}
   m_Father: {fileID: 1095621400}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 340, y: -160}
-  m_SizeDelta: {x: 400, y: 240}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!4 &2179348595128049002
 Transform:
