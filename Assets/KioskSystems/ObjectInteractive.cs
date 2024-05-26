@@ -63,7 +63,7 @@ public class ObjectInteractive : MonoBehaviour
                     break;
                 case "POS_Machine":
                     //충돌중인 사용자의 권한을 확인하여 매니저가 아니면 되돌림
-                    KioskSystem.single.sellerImg.gameObject.SetActive(true);
+                    OnSeller();
                     Debug.Log("충돌한 오브젝트: " + my.transform.parent.name);
                     break;
                 default:
@@ -122,6 +122,13 @@ public class ObjectInteractive : MonoBehaviour
                 }
             }
             yield return null; // 다음 프레임까지 대기
+        }
+    }
+    private void OnSeller()
+    {
+        if (Input.GetKeyDown(KeyCode.F) || Input.GetKeyDown(KeyCode.Space))
+        {
+            KioskSystem.single.sellerImg.gameObject.SetActive(true);
         }
     }
 
