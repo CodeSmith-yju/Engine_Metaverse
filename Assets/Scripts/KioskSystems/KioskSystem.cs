@@ -44,6 +44,7 @@ public class KioskSystem : MonoBehaviour
 
     public Button btnQuiteKiosk;
     public GameObject announce;
+    public TextMeshProUGUI textannounce;
 
     private void Awake()
     {
@@ -53,7 +54,9 @@ public class KioskSystem : MonoBehaviour
     private void Start()
     {
         announce.SetActive(false);
-        //sellerImg.gameObject.SetActive(false);
+        textannounce.gameObject.SetActive(false);
+
+        sellerImg.gameObject.SetActive(false);
     }
 
     public void KioskSceneChange()
