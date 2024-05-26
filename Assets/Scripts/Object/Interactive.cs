@@ -28,7 +28,6 @@ public class Interactive : MonoBehaviour
     {
         if (isCheck && isEnter) 
         {
-            ActiveObjectName(parent_Tag);
             if (Input.GetKeyDown(KeyCode.F))
             {
                 InteractWithPlayer(player, parent_Tag);
@@ -110,32 +109,11 @@ public class Interactive : MonoBehaviour
             case "Kiosk":
                 KioskSystem.single.OnQuiteKiosk();// 키오스크 상호작용화면 off
                 break;
-            case "POS":
-                KioskSystem.single.sellerImg.gameObject.SetActive(false);
-                break;
             default:
                 Debug.Log("상호작용 트리거에서 벗어남");
                 break;
         }
 
         KioskSystem.single.announce.SetActive(false);
-        KioskSystem.single.textannounce.gameObject.SetActive(false);
-    }
-
-    private void ActiveObjectName(string _str)
-    {
-        switch (_str)
-        {
-            case "Kiosk":
-                KioskSystem.single.textannounce.text = "키오스크";
-                break;
-            case "POS":
-                KioskSystem.single.textannounce.text = "포스기";
-                break;
-            default:
-                KioskSystem.single.textannounce.text = _str;
-                break;
-        }
-        KioskSystem.single.textannounce.gameObject.SetActive(true);
     }
 }
