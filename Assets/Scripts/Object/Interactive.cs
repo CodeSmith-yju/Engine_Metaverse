@@ -95,6 +95,12 @@ public class Interactive : MonoBehaviour
                 KioskSystem.single.sellerImg.gameObject.SetActive(true);
                 Debug.Log("충돌한 오브젝트: " + parent_Tag);
                 break;
+            case "Espresso":
+                Debug.Log("커피머쉰");//상호작용했으니까
+                CoffeMachine coffemachine = my.GetComponent<CoffeMachine>();
+                coffemachine.StartTimer(30f);
+
+                break;
             default:
                 return;
         }
@@ -138,4 +144,5 @@ public class Interactive : MonoBehaviour
         }
         KioskSystem.single.textannounce.gameObject.SetActive(true);
     }
+    
 }
