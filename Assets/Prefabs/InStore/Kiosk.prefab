@@ -176,8 +176,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8198265640398286205}
-  - component: {fileID: 1979542239866019140}
   - component: {fileID: 1740190532065698157}
+  - component: {fileID: 950451862391357546}
   m_Layer: 0
   m_Name: Kiosk_Run
   m_TagString: Untagged
@@ -200,19 +200,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 9212976628047124790}
   m_LocalEulerAnglesHint: {x: 0, y: -2.48, z: 0}
---- !u!114 &1979542239866019140
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6608119197123242821}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bdb1dd7ee164c0d40bda9cc29de174d9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  my: {fileID: 0}
 --- !u!65 &1740190532065698157
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -234,6 +221,18 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2, y: 1, z: 2}
   m_Center: {x: 0, y: 0, z: -1}
+--- !u!114 &950451862391357546
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6608119197123242821}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4163728e09afb1e4fbff824b4e4e519c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7521171043713995510
 GameObject:
   m_ObjectHideFlags: 0
@@ -402,6 +401,7 @@ MonoBehaviour:
   tiketIssuance: {fileID: 0}
   textNumberKiosk: {fileID: 0}
   textNumberellerDisPlay: {fileID: 0}
+  sellerImg: {fileID: 0}
   poolSlot: []
   slotPrefab: {fileID: 0}
   textNumberConsumerDisPlay: {fileID: 0}

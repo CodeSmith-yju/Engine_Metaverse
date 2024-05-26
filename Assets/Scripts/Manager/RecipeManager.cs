@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,6 +7,8 @@ public class RecipeManager : MonoBehaviour
 {
     private Dictionary<string, List<string>> recipe;
     public List<string> recipe_Name;
+    public Dictionary<string, GameObject> recipe_Food;
+    public List<GameObject> food_Obj_List;
 
 
     // 딕셔너리를 이용해서 레시피 설정
@@ -17,18 +20,28 @@ public class RecipeManager : MonoBehaviour
         recipe["아메리카노"] = new List<string> { "에스프레소", "온수" };
         recipe["아이스 카페라떼"] = new List<string> { "얼음", "우유", "에스프레소" };
         recipe["아이스 카페모카"] = new List<string> { "초콜릿", "우유", "에스프레소", "믹서기", "얼음" };
-        recipe["초코라떼"] = new List<string> { "초콜릿", "우유", "믹서기", "얼음" };
+        //recipe["초코라떼"] = new List<string> { "초콜릿", "우유", "믹서기", "얼음" };
         recipe["딸기라떼"] = new List<string> { "딸기", "우유", "믹서기", "얼음" };
-        recipe["요거트 스무디"] = new List<string> { "요거트 파우더", "우유", "얼음", "믹서기" };
+        //recipe["요거트 스무디"] = new List<string> { "요거트 파우더", "우유", "얼음", "믹서기" };
         recipe["딸기 요거트 스무디"] = new List<string> { "요거트 파우더", "우유", "딸기", "얼음", "믹서기" };
+
+        recipe_Food = new Dictionary<string, GameObject>();
     }
 
     private void Start()
     {
         recipe_Name = new List<string>();
+        int index = 0;
+
         foreach (string key in recipe.Keys)
         {
             recipe_Name.Add(key);
+
+            if (index < food_Obj_List.Count)
+            {
+                recipe_Food[key] = food_Obj_List[index];
+                index++;
+            }
         }
     }
 
@@ -41,6 +54,14 @@ public class RecipeManager : MonoBehaviour
             if (CheckIngredients(recipeingredient, ingredient))
             {
                 Debug.Log("요리 성공" + dish);
+                /*GameObject food = Instantiate(recipe_Food[dish]);
+                Player player = FindObjectOfType<Player>();
+
+                if (player.GetRole() == Role.Manager || player.GetRole() == Role.Empolyee)
+                {
+                    food.transform.position = player.transform.position; 
+                }*/
+                
                 return true;
             }
             else

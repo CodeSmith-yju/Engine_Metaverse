@@ -93,7 +93,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1855912829009162951}
   - component: {fileID: 21311424545372035}
-  - component: {fileID: 8282147981896323296}
+  - component: {fileID: 5475872606940325330}
   m_Layer: 0
   m_Name: R_PosMachine
   m_TagString: Untagged
@@ -137,7 +137,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 6, y: 10, z: 10}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &8282147981896323296
+--- !u!114 &5475872606940325330
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -146,10 +146,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1221447164508910702}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bdb1dd7ee164c0d40bda9cc29de174d9, type: 3}
+  m_Script: {fileID: 11500000, guid: 4163728e09afb1e4fbff824b4e4e519c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  my: {fileID: 0}
 --- !u!1 &1941020658325110950
 GameObject:
   m_ObjectHideFlags: 0
@@ -160,7 +159,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1886283992705793399}
   m_Layer: 0
-  m_Name: POS_Machine
+  m_Name: Pos_Machine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

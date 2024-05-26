@@ -5,152 +5,115 @@ using UnityEngine;
 
 public class Interactive : MonoBehaviour
 {
+    GameObject my;
+    string parent_Tag;
     bool isEnter = false;
     bool isCheck = false;
-    string ingredient = null;
-    bool isHot = false;
     Player player;
+    bool isCoffee = false;
+
+    private void Awake()
+    {
+        my = this.gameObject;
+    }
 
     // 지금은 오브젝트 이름으로 관리 더 좋은 방법이 있으면 그걸로 바꿀 예정
     private void Start()
     {
-        if (name == "Water" && tag == "Hot")
-        {
-            isHot = true;
-        }
-
-        switch(name)
-        {
-            case "Espresso":
-                ingredient = "에스프레소";
-                break;
-            case "Strawberry":
-                ingredient = "딸기";
-                break;
-            case "Chocolate":
-                ingredient = "초콜릿";
-                break;
-            case "Milk":
-                ingredient = "우유";
-                break;
-            case "Mixer":
-                ingredient = "믹서기";
-                break;
-            case "Water":
-                if (isHot)
-                {
-                    ingredient = "온수";
-                }
-                else
-                {
-                    ingredient = "냉수";
-                }
-                break;
-            case "Ice":
-                ingredient = "얼음";
-                break;
-        }
+        parent_Tag = my.transform.parent.tag;
+        my.GetComponent<Interactive>().enabled = false;
     }
 
     private void Update()
     {
         if (isCheck && isEnter) 
         {
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (Input.GetKeyDown(KeyCode.F))
             {
-                InteractWithPlayer(player);
+                InteractWithPlayer(player, parent_Tag);
             }
         }
-        else if (!isCheck && isEnter)
+        else
         {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                Debug.Log("점장이거나 직원만 상호작용 가능한 오브젝트입니다.");
-                return;
-            }
+            return;
         }
     }
 
-    // 플레이어 태그를 가진 오브젝트와 부딪치면 오브젝트와 충돌 체크 테스트용 ( 나중에는 레이캐스트를 이용해서 사물을 바라보고 있을 때 쓸 할 예정 )
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        if (collision.collider.CompareTag("Player"))
+        my.GetComponent<Interactive>().enabled = true;
+        KioskSystem.single.announce.SetActive(true);
+        if (other.CompareTag("Player"))
         {
+            player = other.gameObject.GetComponent<Player>();
             isEnter = true;
         }
     }
 
-    private void OnCollisionStay(Collision collision)
+    private void OnTriggerStay(Collider other)
     {
-        player = collision.gameObject.GetComponent<Player>();
-
-        if (isEnter && collision.collider.CompareTag("Player") && player.GetRole() == Role.Manager || player.GetRole() == Role.Empolyee)
+        if (other.CompareTag("Player"))
         {
             isCheck = true;
         }
     }
 
-    private void OnCollisionExit(Collision collision)
+    private void OnTriggerExit(Collider other)
     {
-        isCheck = false;
-        isEnter = false;
+        InteractExitPlayer(parent_Tag); // player 매개변수가 필요하면 추가 예정
+        player = null;
+        my.GetComponent<Interactive>().enabled = false;
     }
 
-    private void InteractWithPlayer(Player player)
+    private void InteractWithPlayer(Player player, string obj_Tag)
     {
-        if (name == "Done")
+        switch (obj_Tag)
         {
-            if (player.cup && player.done)
-            {
-                Debug.Log("제작 완료 손님 전달");
-                player.Done();
-            }
-            else
-            {
-                Debug.Log("완성된 음료를 가지고 있지 않거나, 만들지 않았습니다.");
+            case "Kiosk":
+                Debug.Log("키오스크 실행");
+                KioskSystem.single.KioskUsing();
+                break;
+            case "Cup":
+                if (player.GetRole() == Role.Manager || player.GetRole() == Role.Empolyee)
+                {
+                    if (player.cup)
+                    {
+                        Debug.Log("이미 컵을 들고 있습니다.");
+                        return;
+                    }
+                    player.cup = true;
+                    Debug.Log("컵을 듦");
+                }
+                else
+                {
+                    Debug.Log("권한이 없습니다.");
+                    return;
+                }
+                break;
+            case "POS":
+                KioskSystem.single.sellerImg.gameObject.SetActive(true);
+                Debug.Log("충돌한 오브젝트: " + parent_Tag);
+                break;
+            default:
                 return;
-            }
+        }
+    }
 
-        }
-        else if (name == "Create")
+    private void InteractExitPlayer(string obj_Tag)
+    {
+        isEnter = false;
+        isCheck = false;
+
+        switch (obj_Tag) 
         {
-            if (player.cup)
-            {
-                Debug.Log("제작 시도");
-                player.Create();
-            }
-            else
-            {
-                Debug.Log("들고 있는 컵이 없으므로 제작을 실패했습니다.");
-                return;
-            }
-            
+            case "Kiosk":
+                KioskSystem.single.OnQuiteKiosk();// 키오스크 상호작용화면 off
+                break;
+            default:
+                Debug.Log("상호작용 트리거에서 벗어남");
+                break;
         }
-        else if (name == "Cup")
-        {
-            if (player.cup == false)
-            {
-                Debug.Log("손에 컵 듦");
-                player.cup = true;
-            }
-            else
-            {
-                Debug.Log("이미 컵을 들고 있음");
-                return;
-            }
-        }
-        else
-        {
-            if (player.done == false && player.cup == true && name != "Done" && name != "Role")
-            {
-                player.cur_IngrList.Add(ingredient);
-                Debug.Log(ingredient + " 재료 추가");
-            }
-            else
-            {
-                Debug.Log("컵을 들고 있지 않습니다.");
-                return;
-            }
-        }
+
+        KioskSystem.single.announce.SetActive(false);
     }
 }
