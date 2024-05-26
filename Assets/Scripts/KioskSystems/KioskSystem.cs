@@ -12,7 +12,7 @@ public class KioskSystem : MonoBehaviour
     [Header("Kiosk Object")]
     public List<GameObject> kioskScene;
 
-    public Dictionary<int, string> menus = new Dictionary<int, string>();
+    public Dictionary<int, string> order_List = new Dictionary<int, string>();
     [SerializeField] private List<int> ticketNumbers = new List<int>();
     [SerializeField] private int ticketNum = 0;
     public string menuName = "";
@@ -43,7 +43,6 @@ public class KioskSystem : MonoBehaviour
     public TextMeshProUGUI textOrder;
 
     public Button btnQuiteKiosk;
-    [SerializeField] ObjectInteractive kiosk;
     public GameObject announce;
 
     private void Awake()
@@ -91,7 +90,7 @@ public class KioskSystem : MonoBehaviour
         }
 
         ticketNumbers.Add(++ticketNum);
-        menus.Add(ticketNum, menuName);
+        order_List.Add(ticketNum, menuName);
         SelectedMenu newMenu = new SelectedMenu(menuName, ticketNum);
         listSelectedMenus.Add(newMenu);
         newMenu.intSlotIndex = ticketNum;
@@ -109,19 +108,19 @@ public class KioskSystem : MonoBehaviour
     private void KioskUpdate()
     {
         string kioskText = "";
-        if (menus.ContainsKey(ticketNum))
+        if (order_List.ContainsKey(ticketNum))
         {
             if (ticketNum < 10)
             {
-                kioskText += "주문하신 메뉴: \n" + menus[ticketNum] + "\n 주문 번호: \n 00" + ticketNum.ToString();
+                kioskText += "주문하신 메뉴: \n" + order_List[ticketNum] + "\n 주문 번호: \n 00" + ticketNum.ToString();
             }
             else if (ticketNum < 100)
             {
-                kioskText += "주문하신 메뉴: \n" + menus[ticketNum] + "\n 주문 번호: \n 0" + ticketNum.ToString();
+                kioskText += "주문하신 메뉴: \n" + order_List[ticketNum] + "\n 주문 번호: \n 0" + ticketNum.ToString();
             }
             else
             {
-                kioskText += "주문하신 메뉴: \n" + menus[ticketNum] + "\n 주문 번호: \n" + ticketNum.ToString();
+                kioskText += "주문하신 메뉴: \n" + order_List[ticketNum] + "\n 주문 번호: \n" + ticketNum.ToString();
             }
         }
         else
@@ -140,9 +139,9 @@ public class KioskSystem : MonoBehaviour
 
         for (int i = 0; i < sortedTicketNumbers.Count; i++)
         {
-            if (menus.ContainsKey(sortedTicketNumbers[i])) // 딕셔너리에 해당 키가 있는지 확인
+            if (order_List.ContainsKey(sortedTicketNumbers[i])) // 딕셔너리에 해당 키가 있는지 확인
             {
-                displayText += menus[sortedTicketNumbers[i]] + sortedTicketNumbers[i];
+                displayText += order_List[sortedTicketNumbers[i]] + sortedTicketNumbers[i];
                 if (sortedTicketNumbers.Count > 1 && i < sortedTicketNumbers.Count - 1)
                 {
                     displayText += ", ";
@@ -202,8 +201,6 @@ public class KioskSystem : MonoBehaviour
 
         btnQuiteKiosk.gameObject.SetActive(false);
         kioIndex = 0;
-
-        kiosk.PreOverlapKiosk();
     }
 
     public void KioskUsing()
@@ -268,7 +265,7 @@ public class KioskSystem : MonoBehaviour
         // 메뉴와 티켓 정보를 제거합니다.
         listSelectedMenus.Remove(_nowMenu);
         ticketNumbers.Remove(_nowMenu.GetIndex());
-        menus.Remove(_nowMenu.GetIndex());
+        order_List.Remove(_nowMenu.GetIndex());
 
         // 정렬합니다.
         SortSlots();

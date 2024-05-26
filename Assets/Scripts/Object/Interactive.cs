@@ -10,6 +10,7 @@ public class Interactive : MonoBehaviour
     bool isEnter = false;
     bool isCheck = false;
     Player player;
+    bool isCoffee = false;
 
     private void Awake()
     {
@@ -70,6 +71,7 @@ public class Interactive : MonoBehaviour
         {
             case "Kiosk":
                 Debug.Log("키오스크 실행");
+                KioskSystem.single.KioskUsing();
                 break;
             case "Cup":
                 if (player.GetRole() == Role.Manager || player.GetRole() == Role.Empolyee)

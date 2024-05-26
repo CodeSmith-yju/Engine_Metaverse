@@ -11,6 +11,7 @@ public class Player : MonoBehaviour
     public bool resume_Done = false;
     private RecipeManager recipe;
 
+    private int order_Index;
 
     [SerializeField] private Role role;
 
@@ -24,6 +25,12 @@ public class Player : MonoBehaviour
         cur_IngrList.Clear(); // 초기화
 
         SetRole(Role.Manager);
+
+        if (role == Role.Manager || role == Role.Empolyee)
+        {
+            order_Index = 0;
+        }
+
     }
 
 
@@ -43,31 +50,34 @@ public class Player : MonoBehaviour
     {
         if (cup)
         {
-            bool isdone = recipe.Cook(GameMgr.Instance.order_List[0], cur_IngrList);
+            bool isdone = recipe.Cook(KioskSystem.single.order_List[order_Index], cur_IngrList);
             cur_IngrList.Clear();
 
             if (isdone)
             {
                 done = true;
-                cur_Ordered_Menu = GameMgr.Instance.order_List[0];
+                cur_Ordered_Menu = KioskSystem.single.order_List[order_Index];
             }
             else
             {
                 done = false;
             }
-
         }
     }
 
     // 완성된 요리를 들고 오브젝트 상호작용 시 제출
     public void Done()
     {
-        if (done && cur_Ordered_Menu.Equals(GameMgr.Instance.order_List[0])) // 최근에 주문된 메뉴와 일치하면
+        if (done) // 최근에 주문된 메뉴와 일치하면
         {
             done = false;
             cup = false;
             cur_Ordered_Menu = "";
+
+            if (KioskSystem.single.order_List.Count > 0)
+            {
+                ++order_Index;
+            }
         }
     }
-
 }

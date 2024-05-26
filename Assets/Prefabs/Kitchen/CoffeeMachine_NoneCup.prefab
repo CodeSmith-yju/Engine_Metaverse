@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1327348621015235065}
   - component: {fileID: 8336905791306469493}
   - component: {fileID: 4005960749508007784}
+  - component: {fileID: 8357594937580182865}
   m_Layer: 0
   m_Name: CoffeeMachine_NoneCup
   m_TagString: Untagged
@@ -18,21 +19,25 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1327348621015235065
-Transform:
+--- !u!224 &1327348621015235065
+RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1663382386221874314}
-  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 246.44, y: 11.380005, z: 5.680008}
+  m_LocalPosition: {x: 0, y: 0, z: 5.680008}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 246.44, y: 11.380005}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!33 &8336905791306469493
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -93,3 +98,11 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!222 &8357594937580182865
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1663382386221874314}
+  m_CullTransparentMesh: 1
