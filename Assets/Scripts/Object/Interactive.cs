@@ -9,8 +9,10 @@ public class Interactive : MonoBehaviour
     string parent_Tag;
     bool isEnter = false;
     bool isCheck = false;
+    bool coffee_Check = false;
+    bool coffee_Done = false;
     Player player;
-    bool isCoffee = false;
+    List<string> temp_List = new List<string>();
 
     private void Awake()
     {
@@ -94,6 +96,118 @@ public class Interactive : MonoBehaviour
                 KioskSystem.single.sellerImg.gameObject.SetActive(true);
                 Debug.Log("충돌한 오브젝트: " + parent_Tag);
                 break;
+            case "Grinder":
+                if (player.GetRole() == Role.Manager || player.GetRole() == Role.Empolyee)
+                {
+                    if (player.coffee)
+                    {
+                        Debug.Log("이미 커피 가루를 가지고 있습니다.");
+                        return;
+                    }
+                    player.coffee = true;
+                    Debug.Log("커피 가루 얻기");
+                }
+                else
+                {
+                    Debug.Log("권한이 없습니다.");
+                    return;
+                }
+                break;
+            case "Espresso":
+                if (player.GetRole() == Role.Manager || player.GetRole() == Role.Empolyee)
+                {
+                    if (coffee_Check && player.cup)
+                    {
+                        Debug.Log("커피를 내립니다. (30초)");
+                        coffee_Check = false;
+
+                        foreach (string ingr in player.cur_IngrList)
+                        {
+                            temp_List.Add(ingr);
+                        }
+
+                        player.cur_IngrList.Clear();
+                        player.cup = false;
+
+                        StartCoroutine(CoffeeRoutine());
+                        return;
+                    }
+
+                    if (coffee_Done && !player.cup) 
+                    {
+                        player.cup = true;
+                        Debug.Log("에스프레소가 담긴 컵 가져가기");
+                        foreach (string ingr in temp_List)
+                        {
+                            player.cur_IngrList.Add(ingr);
+                        }
+                        player.cur_IngrList.Add("에스프레소");
+                        return;
+                    }
+
+                    if (player.coffee && !coffee_Check)
+                    {
+                        Debug.Log("커피 가루를 커피 머신에 넣었습니다.");
+                        coffee_Check = true;
+                        player.coffee = false;
+                    }
+                    else if (player.coffee && coffee_Check)
+                    {
+                        Debug.Log("커피 머신에 이미 커피 가루가 들어 가 있습니다.");
+                        return;
+                    }
+                    else
+                    {
+                        Debug.Log("커피를 내리고 있거나 커피 가루를 가지고 있지 않습니다.");
+                        return;
+                    }
+                }
+                else
+                {
+                    Debug.Log("권한이 없습니다.");
+                    return;
+                }
+                break;
+            case "Ice":
+                if (player.GetRole() == Role.Manager || player.GetRole() == Role.Empolyee)
+                {
+                    if (player.cup)
+                    {
+                        player.cur_IngrList.Add("얼음");
+                        Debug.Log("컵에 얼음 넣기");
+                    }
+                    else
+                    {
+                        Debug.Log("컵을 들고 있지 않습니다.");
+                        return;
+                    }
+                }
+                else
+                {
+                    Debug.Log("권한이 없습니다.");
+                    return;
+                }
+                break;
+            case "Done":
+                if (player.GetRole() == Role.Manager || player.GetRole() == Role.Empolyee)
+                {
+                    if (player.done)
+                    {
+                        Debug.Log("음료 제작 완료" + player.cur_Ordered_Menu);
+                        player.Done();
+                    }
+                    else
+                    {
+                        Debug.Log("음료 제작이 완료 되지 않았습니다.");
+                        return;
+                    }
+                }
+                else
+                {
+                    Debug.Log("권한이 없습니다");
+                    return;
+                }
+                break;
             default:
                 return;
         }
@@ -115,5 +229,19 @@ public class Interactive : MonoBehaviour
         }
 
         KioskSystem.single.announce.SetActive(false);
+    }
+
+    private IEnumerator CoffeeRoutine()
+    {
+        yield return StartCoroutine(Espresso());
+
+        Debug.Log("커피 내리기 완료");
+        coffee_Done = true;
+    }
+
+
+    private IEnumerator Espresso()
+    {
+        yield return new WaitForSeconds(30);
     }
 }

@@ -9,6 +9,7 @@ public class Player : MonoBehaviour
     public bool cup = false; // 컵 오브젝트를 상호작용 하면 true가 되도록 정해놓은 변수
     public bool done = false; // 제작 완료 
     public bool resume_Done = false;
+    public bool coffee = false;
     private RecipeManager recipe;
 
     private int order_Index;
