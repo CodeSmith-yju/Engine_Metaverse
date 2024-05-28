@@ -46,6 +46,9 @@ public class KioskSystem : MonoBehaviour
     public GameObject announce;
     public TextMeshProUGUI textannounce;
 
+    //player move
+    public bool kiosck;
+
     private void Awake()
     {
         single = this;
@@ -187,6 +190,7 @@ public class KioskSystem : MonoBehaviour
     }
     public void IssuanceOK()
     {
+        kiosck = false;
         buyCheck = false;
         tiketIssuance.gameObject.SetActive(buyCheck);
         kioIndex = 0;
@@ -194,6 +198,7 @@ public class KioskSystem : MonoBehaviour
     }
     public void OnQuiteKiosk()
     {
+        kiosck = false;
         for (int i = 0; i < kioskScene.Count; i++)
         {
             kioskScene[i].SetActive(false);
@@ -208,6 +213,7 @@ public class KioskSystem : MonoBehaviour
 
     public void KioskUsing()
     {
+        kiosck = true;
         btnQuiteKiosk.gameObject.SetActive(true);
         if (buyCheck == false)
         {
