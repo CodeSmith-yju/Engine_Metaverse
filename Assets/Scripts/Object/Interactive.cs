@@ -18,8 +18,6 @@ public class Interactive : MonoBehaviour
     {
         my = this.gameObject;
     }
-
-    // ������ ������Ʈ �̸����� ���� �� ���� ����� ������ �װɷ� �ٲ� ����
     private void Start()
     {
         parent_Tag = my.transform.parent.tag;
@@ -73,7 +71,7 @@ public class Interactive : MonoBehaviour
         switch (obj_Tag)
         {
             case "Kiosk":
-                Debug.Log("Ű����ũ ����");
+                Debug.Log("키오스크 실행");
                 KioskSystem.single.KioskUsing();
                 break;
             case "Cup":
@@ -81,36 +79,36 @@ public class Interactive : MonoBehaviour
                 {
                     if (player.cup)
                     {
-                        Debug.Log("�̹� ���� ��� �ֽ��ϴ�.");
+                        Debug.Log("이미 컵을 들고 있습니다.");
                         return;
                     }
                     player.cup = true;
-                    Debug.Log("���� ��");
+                    Debug.Log("컵을 듦");
                 }
                 else
                 {
-                    Debug.Log("������ �����ϴ�.");
+                    Debug.Log("권한이 없습니다.");
                     return;
                 }
                 break;
             case "POS":
                 KioskSystem.single.sellerImg.gameObject.SetActive(true);
-                Debug.Log("�浹�� ������Ʈ: " + parent_Tag);
+                Debug.Log("접촉한 오브젝트 : " + parent_Tag);
                 break;
             case "Grinder":
                 if (player.GetRole() == Role.Manager || player.GetRole() == Role.Empolyee)
                 {
                     if (player.coffee)
                     {
-                        Debug.Log("�̹� Ŀ�� ���縦 ������ �ֽ��ϴ�.");
+                        Debug.Log("이미 커피 가루를 들고 있습니다.");
                         return;
                     }
                     player.coffee = true;
-                    Debug.Log("Ŀ�� ���� ���");
+                    Debug.Log("커피가루를 듦");
                 }
                 else
                 {
-                    Debug.Log("������ �����ϴ�.");
+                    Debug.Log("권한이 없습니다.");
                     return;
                 }
                 break;
@@ -119,7 +117,7 @@ public class Interactive : MonoBehaviour
                 {
                     if (coffee_Check && player.cup)
                     {
-                        Debug.Log("Ŀ�Ǹ� �����ϴ�. (30��)");
+                        Debug.Log("커피를 내립니다. (30초)");
                         coffee_Check = false;
 
                         foreach (string ingr in player.cur_IngrList)
@@ -137,35 +135,35 @@ public class Interactive : MonoBehaviour
                     if (coffee_Done && !player.cup) 
                     {
                         player.cup = true;
-                        Debug.Log("���������Ұ� ��� �� ��������");
+                        Debug.Log("에스프레소 내린 커피 컵 들기");
                         foreach (string ingr in temp_List)
                         {
                             player.cur_IngrList.Add(ingr);
                         }
-                        player.cur_IngrList.Add("����������");
+                        player.cur_IngrList.Add("에스프레소");
                         return;
                     }
 
                     if (player.coffee && !coffee_Check)
                     {
-                        Debug.Log("Ŀ�� ���縦 Ŀ�� �ӽſ� �־����ϴ�.");
+                        Debug.Log("커피 가루를 넣었습니다.");
                         coffee_Check = true;
                         player.coffee = false;
                     }
                     else if (player.coffee && coffee_Check)
                     {
-                        Debug.Log("Ŀ�� �ӽſ� �̹� Ŀ�� ���簡 ��� �� �ֽ��ϴ�.");
+                        Debug.Log("이미 해당 커피머신에 커피 가루가 들어 있습니다.");
                         return;
                     }
                     else
                     {
-                        Debug.Log("Ŀ�Ǹ� ������ �ְų� Ŀ�� ���縦 ������ ���� �ʽ��ϴ�.");
+                        Debug.Log("커피를 내리고 있거나 커피 가루를 가지고 있지 않습니다.");
                         return;
                     }
                 }
                 else
                 {
-                    Debug.Log("������ �����ϴ�.");
+                    Debug.Log("권한이 없습니다.");
                     return;
                 }
                 break;
@@ -174,18 +172,18 @@ public class Interactive : MonoBehaviour
                 {
                     if (player.cup)
                     {
-                        player.cur_IngrList.Add("����");
-                        Debug.Log("�ſ� ���� �ֱ�");
+                        player.cur_IngrList.Add("얼음");
+                        Debug.Log("컵에 얼음 넣기");
                     }
                     else
                     {
-                        Debug.Log("���� ��� ���� �ʽ��ϴ�.");
+                        Debug.Log("컵을 들고 있지 않습니다.");
                         return;
                     }
                 }
                 else
                 {
-                    Debug.Log("������ �����ϴ�.");
+                    Debug.Log("권한이 없습니다.");
                     return;
                 }
                 break;
@@ -194,18 +192,38 @@ public class Interactive : MonoBehaviour
                 {
                     if (player.done)
                     {
-                        Debug.Log("���� ���� �Ϸ�" + player.cur_Ordered_Menu);
+                        Debug.Log("음료 제작 완료 : " + player.cur_Ordered_Menu);
                         player.Done();
                     }
                     else
                     {
-                        Debug.Log("���� ������ �Ϸ� ���� �ʾҽ��ϴ�.");
+                        Debug.Log("완성된 음료를 만들지 않았습니다.");
                         return;
                     }
                 }
                 else
                 {
-                    Debug.Log("������ �����ϴ�");
+                    Debug.Log("권한이 없습니다.");
+                    return;
+                }
+                break;
+            case "Dish":
+                if (player.GetRole() == Role.Manager || player.GetRole() == Role.Empolyee)
+                {
+                    if (player.cup)
+                    {
+                        Debug.Log("컵 씻기");
+                        player.cur_IngrList.Clear();
+                    }
+                    else
+                    {
+                        Debug.Log("컵을 들고 있어야 합니다.");
+                        return;
+                    }
+                }
+                else
+                {
+                    Debug.Log("권한이 없습니다.");
                     return;
                 }
                 break;
@@ -222,13 +240,13 @@ public class Interactive : MonoBehaviour
         switch (obj_Tag) 
         {
             case "Kiosk":
-                KioskSystem.single.OnQuiteKiosk();// Ű����ũ ��ȣ�ۿ�ȭ�� off
+                KioskSystem.single.OnQuiteKiosk();// 키오스크 off
                 break;
             case "POS":
                 KioskSystem.single.sellerImg.gameObject.SetActive(false);
                 break;
             default:
-                Debug.Log("��ȣ�ۿ� Ʈ���ſ��� ���");
+                Debug.Log("상호작용 범위에서 나감");
                 break;
         }
 
@@ -241,10 +259,10 @@ public class Interactive : MonoBehaviour
         switch (_str)
         {
             case "Kiosk":
-                KioskSystem.single.textannounce.text = "Ű����ũ";
+                KioskSystem.single.textannounce.text = "키오스크";
                 break;
             case "POS":
-                KioskSystem.single.textannounce.text = "������";
+                KioskSystem.single.textannounce.text = "포스기";
                 break;
             default:
                 KioskSystem.single.textannounce.text = _str;
@@ -257,7 +275,7 @@ public class Interactive : MonoBehaviour
     {
         yield return StartCoroutine(Espresso());
 
-        Debug.Log("Ŀ�� ������ �Ϸ�");
+        Debug.Log("커피가 다 내려졌습니다");
         coffee_Done = true;
     }
 

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CoffeMachine : MonoBehaviour
 {
@@ -9,9 +10,11 @@ public class CoffeMachine : MonoBehaviour
 
     public GameObject timer_Screen;
     public TextMeshProUGUI textTimer;
+    public Image time_Img;
 
     public float currentTime = 0f;
     public bool isTimerRunning = false;
+    public float maxTime = 0f;
 
     private void Awake()
     {
@@ -35,13 +38,14 @@ public class CoffeMachine : MonoBehaviour
 
     public void UpdateTimerDisplay()
     {
-        if (currentTime < 10)
+        /*if (currentTime < 10)
         {
             textTimer.text = "0:0" + $"{currentTime:F0}"; // 소수점 0자리까지 표시
         }
         else
-        textTimer.text = "0:" + $"{currentTime:F0}"; // 소수점 0자리까지 표시
-
+        textTimer.text = "0:" + $"{currentTime:F0}"; // 소수점 0자리까지 표시*/
+        textTimer.text = $"{currentTime:F0}"; // 소수점 0자리까지 표시
+        time_Img.fillAmount = currentTime / maxTime;
     }
 
     public void TimerFinished()
@@ -54,6 +58,7 @@ public class CoffeMachine : MonoBehaviour
     public void StartTimer(float _time)
     {
         currentTime = _time;
+        maxTime = _time;
         isTimerRunning = true;
         timer_Screen.SetActive(true);
         UpdateTimerDisplay();
