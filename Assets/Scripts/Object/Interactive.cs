@@ -11,7 +11,7 @@ public class Interactive : MonoBehaviour
     bool isCheck = false;
     bool coffee_Check = false;
     bool coffee_Done = false;
-    Player player;
+    Players player;
     List<string> temp_List = new List<string>();
 
     private void Awake()
@@ -46,7 +46,7 @@ public class Interactive : MonoBehaviour
         KioskSystem.single.announce.SetActive(true);
         if (other.CompareTag("Player"))
         {
-            player = other.gameObject.GetComponent<Player>();
+            player = other.gameObject.GetComponent<Players>();
             isEnter = true;
         }
     }
@@ -66,7 +66,7 @@ public class Interactive : MonoBehaviour
         my.GetComponent<Interactive>().enabled = false;
     }
 
-    private void InteractWithPlayer(Player player, string obj_Tag)
+    private void InteractWithPlayer(Players player, string obj_Tag)
     {
         switch (obj_Tag)
         {

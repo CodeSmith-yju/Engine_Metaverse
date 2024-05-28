@@ -19,6 +19,7 @@ public class GameMgr : MonoBehaviour
     //public Dictionary<int, string> order_List = new Dictionary<int, string>(); // 주문번호와 주문 메뉴를 저장하는 딕셔너리
     public List<GameObject> player_List = new List<GameObject>(); // 접속한 플레이어 리스트
     public RecipeManager recipe;
+    public GameObject spawnPoint;
 
     public static GameMgr Instance 
     {

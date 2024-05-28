@@ -6,7 +6,7 @@ using UnityEngine;
 public class ResumeInteractive : MonoBehaviour
 {
     bool isCheck = false;
-    Player player;
+    Players player;
     public List<string> resume_Name = new List<string>();
     public List<GameObject> resume_Obj = new List<GameObject>();
     [SerializeField] private GameObject resume_Popup;
@@ -53,7 +53,7 @@ public class ResumeInteractive : MonoBehaviour
 
     private void OnCollisionStay(Collision collision)
     {
-        player = collision.gameObject.GetComponent<Player>();
+        player = collision.gameObject.GetComponent<Players>();
     }
 
     private void OnCollisionExit(Collision collision)
