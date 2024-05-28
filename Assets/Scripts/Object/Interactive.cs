@@ -9,15 +9,17 @@ public class Interactive : MonoBehaviour
     string parent_Tag;
     bool isEnter = false;
     bool isCheck = false;
+    bool coffee_Check = false;
+    bool coffee_Done = false;
     Player player;
-    bool isCoffee = false;
+    List<string> temp_List = new List<string>();
 
     private void Awake()
     {
         my = this.gameObject;
     }
 
-    // Áö±ÝÀº ¿ÀºêÁ§Æ® ÀÌ¸§À¸·Î °ü¸® ´õ ÁÁÀº ¹æ¹ýÀÌ ÀÖÀ¸¸é ±×°É·Î ¹Ù²Ü ¿¹Á¤
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½Ì¸ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½×°É·ï¿½ ï¿½Ù²ï¿½ ï¿½ï¿½ï¿½ï¿½
     private void Start()
     {
         parent_Tag = my.transform.parent.tag;
@@ -61,7 +63,7 @@ public class Interactive : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        InteractExitPlayer(parent_Tag); // player ¸Å°³º¯¼ö°¡ ÇÊ¿äÇÏ¸é Ãß°¡ ¿¹Á¤
+        InteractExitPlayer(parent_Tag); // player ï¿½Å°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¿ï¿½ï¿½Ï¸ï¿½ ï¿½ß°ï¿½ ï¿½ï¿½ï¿½ï¿½
         player = null;
         my.GetComponent<Interactive>().enabled = false;
     }
@@ -71,7 +73,7 @@ public class Interactive : MonoBehaviour
         switch (obj_Tag)
         {
             case "Kiosk":
-                Debug.Log("Å°¿À½ºÅ© ½ÇÇà");
+                Debug.Log("Å°ï¿½ï¿½ï¿½ï¿½Å© ï¿½ï¿½ï¿½ï¿½");
                 KioskSystem.single.KioskUsing();
                 break;
             case "Cup":
@@ -79,27 +81,133 @@ public class Interactive : MonoBehaviour
                 {
                     if (player.cup)
                     {
-                        Debug.Log("ÀÌ¹Ì ÄÅÀ» µé°í ÀÖ½À´Ï´Ù.");
+                        Debug.Log("ï¿½Ì¹ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Ö½ï¿½ï¿½Ï´ï¿½.");
                         return;
                     }
                     player.cup = true;
-                    Debug.Log("ÄÅÀ» µê");
+                    Debug.Log("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½");
                 }
                 else
                 {
-                    Debug.Log("±ÇÇÑÀÌ ¾ø½À´Ï´Ù.");
+                    Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");
                     return;
                 }
                 break;
             case "POS":
                 KioskSystem.single.sellerImg.gameObject.SetActive(true);
-                Debug.Log("Ãæµ¹ÇÑ ¿ÀºêÁ§Æ®: " + parent_Tag);
+                Debug.Log("ï¿½æµ¹ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®: " + parent_Tag);
+                break;
+            case "Grinder":
+                if (player.GetRole() == Role.Manager || player.GetRole() == Role.Empolyee)
+                {
+                    if (player.coffee)
+                    {
+                        Debug.Log("ï¿½Ì¹ï¿½ Ä¿ï¿½ï¿½ ï¿½ï¿½ï¿½ç¸¦ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö½ï¿½ï¿½Ï´ï¿½.");
+                        return;
+                    }
+                    player.coffee = true;
+                    Debug.Log("Ä¿ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½");
+                }
+                else
+                {
+                    Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");
+                    return;
+                }
                 break;
             case "Espresso":
-                Debug.Log("Ä¿ÇÇ¸Ó½®");//»óÈ£ÀÛ¿ëÇßÀ¸´Ï±î
-                CoffeMachine coffemachine = my.GetComponent<CoffeMachine>();
-                coffemachine.StartTimer(30f);
+                if (player.GetRole() == Role.Manager || player.GetRole() == Role.Empolyee)
+                {
+                    if (coffee_Check && player.cup)
+                    {
+                        Debug.Log("Ä¿ï¿½Ç¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½. (30ï¿½ï¿½)");
+                        coffee_Check = false;
 
+                        foreach (string ingr in player.cur_IngrList)
+                        {
+                            temp_List.Add(ingr);
+                        }
+
+                        player.cur_IngrList.Clear();
+                        player.cup = false;
+
+                        StartCoroutine(CoffeeRoutine());
+                        return;
+                    }
+
+                    if (coffee_Done && !player.cup) 
+                    {
+                        player.cup = true;
+                        Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò°ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
+                        foreach (string ingr in temp_List)
+                        {
+                            player.cur_IngrList.Add(ingr);
+                        }
+                        player.cur_IngrList.Add("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
+                        return;
+                    }
+
+                    if (player.coffee && !coffee_Check)
+                    {
+                        Debug.Log("Ä¿ï¿½ï¿½ ï¿½ï¿½ï¿½ç¸¦ Ä¿ï¿½ï¿½ ï¿½Ó½Å¿ï¿½ ï¿½Ö¾ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");
+                        coffee_Check = true;
+                        player.coffee = false;
+                    }
+                    else if (player.coffee && coffee_Check)
+                    {
+                        Debug.Log("Ä¿ï¿½ï¿½ ï¿½Ó½Å¿ï¿½ ï¿½Ì¹ï¿½ Ä¿ï¿½ï¿½ ï¿½ï¿½ï¿½ç°¡ ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ö½ï¿½ï¿½Ï´ï¿½.");
+                        return;
+                    }
+                    else
+                    {
+                        Debug.Log("Ä¿ï¿½Ç¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö°Å³ï¿½ Ä¿ï¿½ï¿½ ï¿½ï¿½ï¿½ç¸¦ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ê½ï¿½ï¿½Ï´ï¿½.");
+                        return;
+                    }
+                }
+                else
+                {
+                    Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");
+                    return;
+                }
+                break;
+            case "Ice":
+                if (player.GetRole() == Role.Manager || player.GetRole() == Role.Empolyee)
+                {
+                    if (player.cup)
+                    {
+                        player.cur_IngrList.Add("ï¿½ï¿½ï¿½ï¿½");
+                        Debug.Log("ï¿½Å¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ö±ï¿½");
+                    }
+                    else
+                    {
+                        Debug.Log("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ê½ï¿½ï¿½Ï´ï¿½.");
+                        return;
+                    }
+                }
+                else
+                {
+                    Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");
+                    return;
+                }
+                break;
+            case "Done":
+                if (player.GetRole() == Role.Manager || player.GetRole() == Role.Empolyee)
+                {
+                    if (player.done)
+                    {
+                        Debug.Log("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ï·ï¿½" + player.cur_Ordered_Menu);
+                        player.Done();
+                    }
+                    else
+                    {
+                        Debug.Log("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ï·ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¾Ò½ï¿½ï¿½Ï´ï¿½.");
+                        return;
+                    }
+                }
+                else
+                {
+                    Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½");
+                    return;
+                }
                 break;
             default:
                 return;
@@ -114,13 +222,13 @@ public class Interactive : MonoBehaviour
         switch (obj_Tag) 
         {
             case "Kiosk":
-                KioskSystem.single.OnQuiteKiosk();// Å°¿À½ºÅ© »óÈ£ÀÛ¿ëÈ­¸é off
+                KioskSystem.single.OnQuiteKiosk();// Å°ï¿½ï¿½ï¿½ï¿½Å© ï¿½ï¿½È£ï¿½Û¿ï¿½È­ï¿½ï¿½ off
                 break;
             case "POS":
                 KioskSystem.single.sellerImg.gameObject.SetActive(false);
                 break;
             default:
-                Debug.Log("»óÈ£ÀÛ¿ë Æ®¸®°Å¿¡¼­ ¹þ¾î³²");
+                Debug.Log("ï¿½ï¿½È£ï¿½Û¿ï¿½ Æ®ï¿½ï¿½ï¿½Å¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½î³²");
                 break;
         }
 
@@ -133,10 +241,10 @@ public class Interactive : MonoBehaviour
         switch (_str)
         {
             case "Kiosk":
-                KioskSystem.single.textannounce.text = "Å°¿À½ºÅ©";
+                KioskSystem.single.textannounce.text = "Å°ï¿½ï¿½ï¿½ï¿½Å©";
                 break;
             case "POS":
-                KioskSystem.single.textannounce.text = "Æ÷½º±â";
+                KioskSystem.single.textannounce.text = "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½";
                 break;
             default:
                 KioskSystem.single.textannounce.text = _str;
@@ -145,4 +253,19 @@ public class Interactive : MonoBehaviour
         KioskSystem.single.textannounce.gameObject.SetActive(true);
     }
     
+    private IEnumerator CoffeeRoutine()
+    {
+        yield return StartCoroutine(Espresso());
+
+        Debug.Log("Ä¿ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ï·ï¿½");
+        coffee_Done = true;
+    }
+
+
+    private IEnumerator Espresso()
+    {
+        CoffeMachine coffemachine = my.GetComponent<CoffeMachine>();
+        coffemachine.StartTimer(30f);
+        yield return new WaitForSeconds(30);
+    }
 }
