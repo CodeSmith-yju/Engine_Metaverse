@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 
 
@@ -21,10 +20,6 @@ public class GameMgr : MonoBehaviour
     public List<GameObject> player_List = new List<GameObject>(); // 접속한 플레이어 리스트
     public RecipeManager recipe;
 
-    [Header("Receipt")]
-    public GameObject player_Receipt;
-    public TextMeshPro text_Receipt;
-
     public static GameMgr Instance 
     {
         get
@@ -39,7 +34,6 @@ public class GameMgr : MonoBehaviour
 
     private void Awake()
     {
-        player_Receipt.SetActive(false);
         if (null == instance)
         {
             instance = this;
@@ -57,21 +51,6 @@ public class GameMgr : MonoBehaviour
             if (player != null) 
             {
                 player_List.Add(players);
-            }
-        }
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            if (player_Receipt.activeSelf)
-            {
-                player_Receipt.SetActive(false);
-            }
-            else
-            {
-                player_Receipt.SetActive(true);
             }
         }
     }
