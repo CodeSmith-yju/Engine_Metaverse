@@ -61,7 +61,7 @@ public class Interactive : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        InteractExitPlayer(parent_Tag); // player �Ű������� �ʿ��ϸ� �߰� ����
+        InteractExitPlayer(parent_Tag); // 트리거에서 나올때
         player = null;
         my.GetComponent<Interactive>().enabled = false;
     }
@@ -115,12 +115,12 @@ public class Interactive : MonoBehaviour
             case "Espresso":
                 if (player.GetRole() == Role.Manager || player.GetRole() == Role.Empolyee)
                 {
-                    CoffeeMachine coffemachine = my.GetComponent<CoffeeMachine>();
+                    CoffeeMachine coffeemachine = my.GetComponent<CoffeeMachine>();
                     if (coffee_Check && player.cup)
                     {
                         Debug.Log("커피를 내립니다. (30초)");
                         coffee_Check = false;
-                        coffemachine.coffee_Icon.gameObject.SetActive(false);
+                        coffeemachine.coffee_Icon.gameObject.SetActive(false);
 
                         foreach (string ingr in player.cur_IngrList)
                         {
@@ -130,7 +130,7 @@ public class Interactive : MonoBehaviour
                         player.cur_IngrList.Clear();
                         player.cup = false;
 
-                        StartCoroutine(CoffeeRoutine());
+                        StartCoroutine(CoffeeRoutine(coffeemachine));
                         return;
                     }
                     else if (coffee_Check && !player.cup)
@@ -142,8 +142,8 @@ public class Interactive : MonoBehaviour
                     if (coffee_Done && !player.cup) 
                     {
                         player.cup = true;
-                        coffemachine.machines[0].SetActive(false); // 임시
-                        coffemachine.timer_Screen.SetActive(false);
+                        //coffeemachine.machines[0].SetActive(false); // 임시
+                        coffeemachine.timer_Screen.SetActive(false);
                         Debug.Log("에스프레소 내린 커피 컵 들기");
 
                         foreach (string ingr in temp_List)
@@ -159,7 +159,7 @@ public class Interactive : MonoBehaviour
                         Debug.Log("커피 가루를 넣었습니다.");
                         coffee_Check = true;
                         player.coffee = false;
-                        coffemachine.coffee_Icon.gameObject.SetActive(true);
+                        coffeemachine.coffee_Icon.gameObject.SetActive(true);
                     }
                     else if (player.coffee && coffee_Check)
                     {
@@ -282,13 +282,11 @@ public class Interactive : MonoBehaviour
         KioskSystem.single.textannounce.gameObject.SetActive(true);
     }
     
-    private IEnumerator CoffeeRoutine()
+    private IEnumerator CoffeeRoutine(CoffeeMachine coffee)
     {
-        CoffeeMachine coffemachine = my.GetComponent<CoffeeMachine>();
-        coffemachine.machines[0].gameObject.SetActive(true); // 임시
         float time = 15f;
 
-        yield return StartCoroutine(Espresso(coffemachine ,time));
+        yield return StartCoroutine(Espresso(coffee ,time));
 
         Debug.Log("커피가 다 내려졌습니다");
         coffee_Done = true;

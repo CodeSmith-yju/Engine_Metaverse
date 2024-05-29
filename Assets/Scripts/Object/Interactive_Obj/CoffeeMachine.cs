@@ -13,6 +13,7 @@ public class CoffeeMachine : MonoBehaviour
     public GameObject bg;
     public Image time_Img;
     public Image coffee_Icon;
+    public Transform cup_Pos;
 
     public float currentTime = 0f;
     public bool isTimerRunning = false;
@@ -66,7 +67,6 @@ public class CoffeeMachine : MonoBehaviour
         maxTime = _time;
         isTimerRunning = true;
         bg.SetActive(true);
-        machines[0].SetActive(true);
         UpdateTimerDisplay();
     }
 
