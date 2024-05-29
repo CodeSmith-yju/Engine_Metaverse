@@ -103,7 +103,6 @@ public class KioskSystem : MonoBehaviour
         CreateOrReuseSlot(newMenu);
 
         // 슬롯을 추가한 후에 정렬합니다.
-        GameMgr.Instance.text_Receipt.text = "주문번호 \n" + ticketNum + "\n" + menuName;
         SortSlots();
 
         KioskUpdate();
@@ -196,7 +195,6 @@ public class KioskSystem : MonoBehaviour
         tiketIssuance.gameObject.SetActive(buyCheck);
         kioIndex = 0;
         btnQuiteKiosk.gameObject.SetActive(false);
-        GameMgr.Instance.player_Receipt.SetActive(true);
     }
     public void OnQuiteKiosk()
     {
