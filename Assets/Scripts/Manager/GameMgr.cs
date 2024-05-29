@@ -40,11 +40,10 @@ public class GameMgr : MonoBehaviour
 
     private void Awake()
     {
-        player_Receipt.SetActive(false);
+        //player_Receipt.SetActive(false);
         if (null == instance)
         {
             instance = this;
-            DontDestroyOnLoad(this.gameObject);
         }
         else
         {

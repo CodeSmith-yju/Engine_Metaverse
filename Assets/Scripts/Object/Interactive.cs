@@ -115,10 +115,12 @@ public class Interactive : MonoBehaviour
             case "Espresso":
                 if (player.GetRole() == Role.Manager || player.GetRole() == Role.Empolyee)
                 {
+                    CoffeeMachine coffemachine = my.GetComponent<CoffeeMachine>();
                     if (coffee_Check && player.cup)
                     {
                         Debug.Log("커피를 내립니다. (30초)");
                         coffee_Check = false;
+                        coffemachine.coffee_Icon.gameObject.SetActive(false);
 
                         foreach (string ingr in player.cur_IngrList)
                         {
@@ -131,11 +133,19 @@ public class Interactive : MonoBehaviour
                         StartCoroutine(CoffeeRoutine());
                         return;
                     }
+                    else if (coffee_Check && !player.cup)
+                    {
+                        Debug.Log("커피를 내릴 컵을 들고 있지 않습니다.");
+                        return;
+                    }
 
                     if (coffee_Done && !player.cup) 
                     {
                         player.cup = true;
+                        coffemachine.machines[0].SetActive(false); // 임시
+                        coffemachine.timer_Screen.SetActive(false);
                         Debug.Log("에스프레소 내린 커피 컵 들기");
+
                         foreach (string ingr in temp_List)
                         {
                             player.cur_IngrList.Add(ingr);
@@ -149,6 +159,7 @@ public class Interactive : MonoBehaviour
                         Debug.Log("커피 가루를 넣었습니다.");
                         coffee_Check = true;
                         player.coffee = false;
+                        coffemachine.coffee_Icon.gameObject.SetActive(true);
                     }
                     else if (player.coffee && coffee_Check)
                     {
@@ -273,17 +284,20 @@ public class Interactive : MonoBehaviour
     
     private IEnumerator CoffeeRoutine()
     {
-        yield return StartCoroutine(Espresso());
+        CoffeeMachine coffemachine = my.GetComponent<CoffeeMachine>();
+        coffemachine.machines[0].gameObject.SetActive(true); // 임시
+        float time = 15f;
+
+        yield return StartCoroutine(Espresso(coffemachine ,time));
 
         Debug.Log("커피가 다 내려졌습니다");
         coffee_Done = true;
     }
 
 
-    private IEnumerator Espresso()
+    private IEnumerator Espresso(CoffeeMachine coffee, float time)
     {
-        CoffeMachine coffemachine = my.GetComponent<CoffeMachine>();
-        coffemachine.StartTimer(30f);
-        yield return new WaitForSeconds(30);
+        coffee.StartTimer(time);
+        yield return new WaitForSeconds(time);
     }
 }

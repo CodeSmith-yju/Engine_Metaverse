@@ -21,6 +21,10 @@ public class Character_Controller : MonoBehaviour
     public GameObject obj_Body;
     public GameObject obj_Cam_First, obj_Cam_Quarter;
 
+    float yRotation;
+    float xRotation;
+
+
     // Start is called before the first frame update
     private void Start()
     {
@@ -55,6 +59,21 @@ public class Character_Controller : MonoBehaviour
             {
                 m_Animator.SetBool("Run", false);
             }*/
+
+            if (Input.GetKeyDown(KeyCode.F5))
+            {
+                if (obj_Cam_First.activeSelf)
+                {
+                    obj_Cam_First.SetActive(false);
+                    obj_Cam_Quarter.SetActive(true);
+                }
+                else
+                {
+                    obj_Cam_First.SetActive(true);
+                    obj_Cam_Quarter.SetActive(false);
+                }
+                
+            }
 
             //걷기 ON&OFF 및 캐릭터 이동
             if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
@@ -128,10 +147,34 @@ public class Character_Controller : MonoBehaviour
 
             if (Input.GetMouseButton(1))
             {
-                float rot_x = Input.GetAxis("Mouse Y");
+                /*float rot_x = Input.GetAxis("Mouse Y");
                 float rot_y = Input.GetAxis("Mouse X");
-                //obj_Rotate_Horizontal.transform.eulerAngles += new Vector3(0, rot_y, 0) * f_RotateSpeed;
+
+                if (obj_Cam_First.activeSelf)
+                {
+                    obj_Cam_First.transform.rotation = Quaternion.Euler(rot_x, rot_y, 0f);
+                }
+
                 transform.eulerAngles += new Vector3(0, rot_y, 0) * f_RotateSpeed;
+                //obj_Rotate_Horizontal.transform.eulerAngles += new Vector3(0, rot_y, 0) * f_RotateSpeed;*/
+
+
+                float mouseX = Input.GetAxisRaw("Mouse X") * f_RotateSpeed;
+                float mouseY = Input.GetAxisRaw("Mouse Y") * f_RotateSpeed;
+
+                yRotation += mouseX;    // 마우스 X축 입력에 따라 수평 회전 값을 조정
+                xRotation -= mouseY;    // 마우스 Y축 입력에 따라 수직 회전 값을 조정
+
+                xRotation = Mathf.Clamp(xRotation, -70f, 70f);  // 수직 회전 값을 -90도에서 90도 사이로 제한
+
+                if (obj_Cam_First.activeSelf)
+                {
+                    obj_Cam_First.transform.rotation = Quaternion.Euler(xRotation, yRotation, 0f);
+                }
+
+                transform.rotation = Quaternion.Euler(0, yRotation, 0);             // 플레이어 캐릭터의 회전을 조절
+
+
             }
         }
     }
