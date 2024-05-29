@@ -11,6 +11,7 @@ public class Slot : MonoBehaviour
     //[SerializeField] private Image imgIcon;// 일단 구상만 하고있음 주문받은메뉴아이콘도 표시해줘야하나?
     [SerializeField] private TextMeshProUGUI textName;
     [SerializeField] private TextMeshProUGUI textIndex;
+    public Image imgIcon;
 
     public SelectedMenu selectedMenu;
     public void Init(SelectedMenu _selectMenu)
@@ -20,6 +21,7 @@ public class Slot : MonoBehaviour
         gameObject.SetActive(true);//생성자를 통해 생성되면 활성화되어 사용자에게 노출됨
         textName.text = selectedMenu.GetName();
         textIndex.text = selectedMenu.GetIndex().ToString();
+        //imgIcon = _selectMenu.img;
     }
 
     //        KioskSystem.single.RemoveSlot(selectedMenu);//이새끼가 지금까지 출력된 번호를 지우는 핵심기능임 얘를다른대로 빼내야함
@@ -31,5 +33,12 @@ public class Slot : MonoBehaviour
         Debug.Log("OnClick Slot Index: "+selectedMenu.GetIndex() );
 
         gameObject.SetActive(false);
+
+        // Pass MenuData(tihs);
+    }
+
+    public void Delete()
+    {
+
     }
 }
