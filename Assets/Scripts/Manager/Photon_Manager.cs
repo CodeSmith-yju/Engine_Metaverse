@@ -62,8 +62,6 @@ public class Photon_Manager : MonoBehaviourPunCallbacks
                 Debug.Log("서버장이 아니므로 고객 역할을 부여합니다.");
                 obj_LocalPlayer.GetComponent<Players>().SetRole(Role.Customer);
             }
-
-            
         }
         else if (m_data.gender == 1)
         {
@@ -86,6 +84,15 @@ public class Photon_Manager : MonoBehaviourPunCallbacks
             return;
         }
     }
+
+    public void Respawn()
+    {
+        if (obj_LocalPlayer.GetComponent<PhotonView>().IsMine)
+        {
+            obj_LocalPlayer.transform.position = tf_Respawn_Point.position;
+        }
+    }
+
 
     ///////////////////포톤마스터서버 관련 콜백 시작
     public override void OnConnectedToMaster()

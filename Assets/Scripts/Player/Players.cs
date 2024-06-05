@@ -24,6 +24,48 @@ public class Players : MonoBehaviour
         cur_IngrList.Clear(); // 초기화
     }
 
+    private void Update()
+    {
+        // UI 관련
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            // 다른 UI 창이 안열려 있을 때 설정창 열도록 함.
+            if (!GameMgr.Instance.ui.setting_Ui.activeSelf && !GameMgr.Instance.ui.job_Opening_Ui.activeSelf)
+            {
+                GameMgr.Instance.ui.setting_Ui.SetActive(true);
+            } 
+            else if (GameMgr.Instance.ui.setting_Ui.activeSelf)
+            {
+                // ESC를 누르면 셋팅 창의 자식으로 있는 컨텐츠 팝업이나 키셋팅 안내 팝업이 열려있으면 이거 부터 먼저 닫도록 함.
+                if (GameMgr.Instance.ui.content_Info_Ui.activeSelf)
+                {
+                    GameMgr.Instance.ui.content_Info_Ui.SetActive(false);
+                }
+                else if (GameMgr.Instance.ui.keyset_Info_Ui.activeSelf)
+                {
+                    GameMgr.Instance.ui.keyset_Info_Ui.SetActive(false);
+                }
+                else
+                {
+                    GameMgr.Instance.ui.setting_Ui.SetActive(false);
+                }
+            }
+
+            // 이력서 관련 UI가 열려 있을 때 ESC키를 누르면 닫도록 함.
+            if (GameMgr.Instance.ui.job_Opening_Ui.activeSelf)
+            {
+                if (GameMgr.Instance.ui.resume_Ui.activeSelf) 
+                {
+                    GameMgr.Instance.ui.resume_Ui.SetActive(false);
+                }
+                else
+                {
+                    GameMgr.Instance.ui.job_Opening_Ui.SetActive(false);
+                }
+            }
+        }
+    }
+
 
     public void SetRole(Role newRole) // 서버에 접속할 때 이 메서드를 이용해서 플레이어들에게 권한 주기
     {
