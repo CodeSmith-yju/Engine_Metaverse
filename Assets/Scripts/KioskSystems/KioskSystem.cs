@@ -46,6 +46,14 @@ public class KioskSystem : MonoBehaviour
     public GameObject announce;
     public TextMeshProUGUI textannounce;
 
+    [Header("Desc")]
+    public GameObject Desc;
+    public Image descOrder;
+    public TextMeshProUGUI textdescName;
+    public TextMeshProUGUI textdescIndex;
+
+    public Slot selectedSlot = null;
+
     //player move
     public bool kiosck;
 
@@ -308,5 +316,13 @@ public class KioskSystem : MonoBehaviour
         }
     }
 
+    public void PassMenuData(Slot _slot)
+    {
+        selectedSlot = _slot;//선택중인 슬롯..얘를통해 상호작용해서 고객호출, 주문완료, 주문취소 가 실행될 것.
 
+        Desc.SetActive(true);
+        descOrder = _slot.imgIcon;
+        textdescName = _slot.textName;
+        textdescIndex = _slot.textIndex;
+    }
 }

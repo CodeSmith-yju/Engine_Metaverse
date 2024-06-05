@@ -93,6 +93,7 @@ public class Interactive : MonoBehaviour
                 break;
             case "POS":
                 KioskSystem.single.sellerImg.gameObject.SetActive(true);
+                KioskSystem.single.kiosck = true;
                 Debug.Log("충돌한 오브젝트: " + parent_Tag);
                 break;
             case "Espresso":
@@ -118,6 +119,7 @@ public class Interactive : MonoBehaviour
                 break;
             case "POS":
                 KioskSystem.single.sellerImg.gameObject.SetActive(false);
+                KioskSystem.single.kiosck = false;
                 break;
             default:
                 Debug.Log("상호작용 트리거에서 벗어남");
