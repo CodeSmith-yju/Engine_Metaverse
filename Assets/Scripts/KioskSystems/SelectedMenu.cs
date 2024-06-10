@@ -8,29 +8,17 @@ public class SelectedMenu
     // 주문받은 실제 데이터가 얘를 통해 Slot으로 넘어갈듯
     protected string strMenuName;
     protected int intMenuIndex;
-    protected Image imgMenuIcon;
+    protected Sprite spMenuIcon;
 
     public int intSlotIndex = 1000;
-    public SelectedMenu(string _menuName, int _menuIndex)
+    public SelectedMenu(string _menuName, int _menuIndex, Sprite _menuSp)
     {
         this.strMenuName = _menuName;
         this.intMenuIndex = _menuIndex;
-
+        this.spMenuIcon = _menuSp;
     }
 
     public string GetName() { return strMenuName; }
     public int GetIndex() { return intMenuIndex; }
-
-    public Image GetIcon(string _str)
-    {
-        switch(_str)
-        {
-            case "":
-                break;
-            default:
-                break;
-        }
-
-        return imgMenuIcon;
-    }
+    public Sprite GetIcon() { return spMenuIcon; }
 }

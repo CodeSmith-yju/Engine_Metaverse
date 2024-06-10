@@ -16,6 +16,7 @@ public class KioskSystem : MonoBehaviour
     [SerializeField] private List<int> ticketNumbers = new List<int>();
     [SerializeField] private int ticketNum = 0;
     public string menuName = "";
+    public Sprite menuSp = null;
 
     public Image kioskBuyPanel;
 
@@ -48,11 +49,11 @@ public class KioskSystem : MonoBehaviour
 
     [Header("Desc")]
     public GameObject Desc;
-    public Image descOrder;
+    public Image descImg;
     public TextMeshProUGUI textdescName;
     public TextMeshProUGUI textdescIndex;
 
-    public Slot selectedSlot = null;
+    public Slot selectedSlot = null;// 얘를 통해서 이제 상단의 목록을통해 클릭해서 상세(Desc)를 보는중인 오브젝트의 상호작용여부가 어떻게될지 결정, 해당버튼컴포넌트들은 slot.desc로 가야할 것.
 
     //player move
     public bool kiosck;
@@ -105,7 +106,7 @@ public class KioskSystem : MonoBehaviour
 
         ticketNumbers.Add(++ticketNum);
         order_List.Add(ticketNum, menuName);
-        SelectedMenu newMenu = new SelectedMenu(menuName, ticketNum);
+        SelectedMenu newMenu = new SelectedMenu(menuName, ticketNum, menuSp);
         listSelectedMenus.Add(newMenu);
         newMenu.intSlotIndex = ticketNum;
         CreateOrReuseSlot(newMenu);
@@ -116,6 +117,9 @@ public class KioskSystem : MonoBehaviour
         KioskUpdate();
         SellerDisplayUpdate();
         ConsumerDisplayUpdate();
+
+        menuName = null;
+        menuSp = null;
     }
 
 
@@ -318,11 +322,21 @@ public class KioskSystem : MonoBehaviour
 
     public void PassMenuData(Slot _slot)
     {
-        selectedSlot = _slot;//선택중인 슬롯..얘를통해 상호작용해서 고객호출, 주문완료, 주문취소 가 실행될 것.
+        Debug.Log("Run PassData MenuName: "+_slot.textName);
+        selectedSlot = _slot;//선택중인 슬롯..얘를통해 상호작용해서 고객호출, 주문완료, 주문취소 가 실행될 것. 
 
         Desc.SetActive(true);
-        descOrder = _slot.imgIcon;
-        textdescName = _slot.textName;
-        textdescIndex = _slot.textIndex;
+        descImg.sprite = _slot.imgIcon.sprite;
+        textdescName.text = _slot.textName.text;
+        textdescIndex.text = _slot.textIndex.text;
+    }
+
+    public void OnClickCommitOrder()//시발이게왜 돼냐? -> 이게 왜 되냐면 _slot으로 받아오는게 새로운 slot을 만드는게아니라 slot넘겨준 오브젝트의 주소값을 참조하고있는 상황이라 지울때도 접근이 가능한거.
+    {
+        //주문취소랑 주문 완료는 동일하게줘도될듯? 그냥 여기 if문넣어서 주문취소이면  false하고 돈 돌려주고 return, 주문완료이면 오브젝트 생성~ 같은식으로 
+        RemoveSlot(selectedSlot.selectedMenu);//그래서 어디로 빼냄? 
+        Debug.Log("OnClick Slot Index: " + selectedSlot.selectedMenu.GetIndex());
+        selectedSlot.gameObject.SetActive(false);
+        Desc.SetActive(false);
     }
 }

@@ -21,7 +21,7 @@ public class Slot : MonoBehaviour
         gameObject.SetActive(true);//생성자를 통해 생성되면 활성화되어 사용자에게 노출됨
         textName.text = selectedMenu.GetName();
         textIndex.text = selectedMenu.GetIndex().ToString();
-        //imgIcon = _selectMenu.img;
+        imgIcon.sprite = selectedMenu.GetIcon();
     }
 
     //        KioskSystem.single.RemoveSlot(selectedMenu);//이새끼가 지금까지 출력된 번호를 지우는 핵심기능임 얘를다른대로 빼내야함
@@ -33,12 +33,13 @@ public class Slot : MonoBehaviour
         KioskSystem.single.PassMenuData(this);
     }
 
-    public void Delete()
+    /*public void Delete()
     {
+    //원래 여기서 쓰던거였는데 추후 설명할때 안 잊어버리기위해서 주석처리하고 여기 놔둠. KioskSystem으로 옮김
         KioskSystem.single.RemoveSlot(selectedMenu);//그래서 어디로 빼냄? 
         Debug.Log("OnClick Slot Index: " + selectedMenu.GetIndex());
         gameObject.SetActive(false);
-    }
+    }*/
 
 
 }
