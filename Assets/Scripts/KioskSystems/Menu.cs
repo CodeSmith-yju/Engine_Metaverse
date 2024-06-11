@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 using UnityEngine.UI;
 
 public class Menu : MonoBehaviour
@@ -40,6 +41,9 @@ public class Menu : MonoBehaviour
         MenuSettings();
         KioskSystem.single.menuName = GameMgr.Instance.recipe.recipe_Name[index];
         KioskSystem.single.menuSp = ResourceManager.single.menuResource[GameMgr.Instance.recipe.recipe_Name[index].ToString()];
+
+        KioskSystem.single.textBuyDesc.text = GameMgr.Instance.recipe.recipe_Name[index] + " 1개 \n 가격: 1코인 \n주문 하시겠습니까?";
+
         Debug.Log(KioskSystem.single.menuName);
         //KioskSystem.single.menuName = gameObject.name;
         KioskSystem.single.kioskBuyPanel.gameObject.SetActive(true);// 얘가지금 구매확정할지 물어보는패널띄우고있는데 얘도 뜯어고쳐야되네 시발

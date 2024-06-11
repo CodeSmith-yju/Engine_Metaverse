@@ -39,6 +39,8 @@ public class KioskSystem : MonoBehaviour
 
     public Button btnBuyOK;
 
+    public TextMeshProUGUI textBuyDesc;
+
     [Header("Order")]
     public Image imgOrder;
     public TextMeshProUGUI textOrder;
@@ -67,7 +69,8 @@ public class KioskSystem : MonoBehaviour
     {
         announce.SetActive(false);
         textannounce.gameObject.SetActive(false);
-
+        kioskBuyPanel.gameObject.SetActive(false);
+        tiketIssuance.gameObject.SetActive(false);
         sellerImg.gameObject.SetActive(false);
     }
 
@@ -125,8 +128,8 @@ public class KioskSystem : MonoBehaviour
 
     private void KioskUpdate()
     {
-        string kioskText = "";
-        if (order_List.ContainsKey(ticketNum))
+        string kioskText = "영수증 수령";
+        /*if (order_List.ContainsKey(ticketNum))
         {
             if (ticketNum < 10)
             {
@@ -144,7 +147,7 @@ public class KioskSystem : MonoBehaviour
         else
         {
             kioskText += "주문하신 메뉴: \n" + menuName + "\n 주문 번호: \n" + ticketNum.ToString();
-        }
+        }*/
 
         textNumberKiosk.text = kioskText;
     }
@@ -192,8 +195,18 @@ public class KioskSystem : MonoBehaviour
         buyCheck = true;
         if (buyCheck == true)
         {
+
             Debug.Log("BuyChek OK");
             TakeTicket();
+            
+            /*foreach (GameObject players in GameMgr.Instance.player_List)
+            {
+                if (players.GetComponent<PhotonView>().IsMine)
+                {
+                    players.GetComponent<Players>().coin--;
+                } 
+            }*/
+
             tiketIssuance.gameObject.SetActive(buyCheck);
             //btnQuiteKiosk.gameObject .SetActive(false);
             KioskSceneChange();
@@ -206,6 +219,7 @@ public class KioskSystem : MonoBehaviour
         buyCheck = false;
         tiketIssuance.gameObject.SetActive(buyCheck);
         kioIndex = 0;
+        textBuyDesc.text = "";
         //btnQuiteKiosk.gameObject.SetActive(false);
     }
     public void OnQuiteKiosk()
@@ -322,6 +336,16 @@ public class KioskSystem : MonoBehaviour
 
     public void PassMenuData(Slot _slot)
     {
+        /*if ( 환불 == true)
+        {
+            foreach (GameObject players in GameMgr.Instance.player_List)
+            {
+                if (_slot.selectedMenu.intSlotIndex == players.GetComponent<Player>().nowMenuIndex)
+                {
+                    players.GetComponent<Players>().coin++;
+                } 
+            }
+        }*/
         Debug.Log("Run PassData MenuName: "+_slot.textName);
         selectedSlot = _slot;//선택중인 슬롯..얘를통해 상호작용해서 고객호출, 주문완료, 주문취소 가 실행될 것. 
 
