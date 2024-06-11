@@ -43,7 +43,7 @@ public class KioskSystem : MonoBehaviour
     public Image imgOrder;
     public TextMeshProUGUI textOrder;
 
-    public Button btnQuiteKiosk;
+    //public Button btnQuiteKiosk;
     public GameObject announce;
     public TextMeshProUGUI textannounce;
 
@@ -181,7 +181,7 @@ public class KioskSystem : MonoBehaviour
         for (int i = 0; i < kioskScene.Count; i++)
         {
             kioskScene[i].SetActive(false);
-            btnQuiteKiosk.gameObject.SetActive(false);
+            //btnQuiteKiosk.gameObject.SetActive(false);
         }
 
         RefreshSlotList();
@@ -195,7 +195,7 @@ public class KioskSystem : MonoBehaviour
             Debug.Log("BuyChek OK");
             TakeTicket();
             tiketIssuance.gameObject.SetActive(buyCheck);
-            btnQuiteKiosk.gameObject .SetActive(false);
+            //btnQuiteKiosk.gameObject .SetActive(false);
             KioskSceneChange();
             kioIndex++;
         }
@@ -206,7 +206,7 @@ public class KioskSystem : MonoBehaviour
         buyCheck = false;
         tiketIssuance.gameObject.SetActive(buyCheck);
         kioIndex = 0;
-        btnQuiteKiosk.gameObject.SetActive(false);
+        //btnQuiteKiosk.gameObject.SetActive(false);
     }
     public void OnQuiteKiosk()
     {
@@ -219,14 +219,14 @@ public class KioskSystem : MonoBehaviour
         kioskBuyPanel.gameObject.SetActive(false);
         tiketIssuance.gameObject.SetActive(false);
 
-        btnQuiteKiosk.gameObject.SetActive(false);
+        //btnQuiteKiosk.gameObject.SetActive(false);
         kioIndex = 0;
     }
 
     public void KioskUsing()
     {
         kiosck = true;
-        btnQuiteKiosk.gameObject.SetActive(true);
+        //btnQuiteKiosk.gameObject.SetActive(true);
         if (buyCheck == false)
         {
             KioskSceneChange();
