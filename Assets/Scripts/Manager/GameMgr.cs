@@ -49,16 +49,6 @@ public class GameMgr : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
-
-        GameObject[] player = GameObject.FindGameObjectsWithTag("Player");
-
-        foreach (GameObject players in player) 
-        {
-            if (player != null) 
-            {
-                player_List.Add(players);
-            }
-        }
     }
 
     private void Update()

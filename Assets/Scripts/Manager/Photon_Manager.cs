@@ -27,6 +27,21 @@ public class Photon_Manager : MonoBehaviourPunCallbacks
         InitPhotonServer();
     }
 
+    public void StartBnt()
+    {
+        DefaultPool pool = PhotonNetwork.PrefabPool as DefaultPool;
+        pool.ResourceCache.Clear();
+        if (pool != null && list_Photon_Prefabs != null)
+        {
+            foreach (GameObject prefab in list_Photon_Prefabs)
+            {
+                pool.ResourceCache.Add(prefab.name, prefab);
+            }
+        }
+        InitPhotonServer();
+    }
+
+
     //포톤 마스터 서버 접속 및 로비 입장
     private void InitPhotonServer()
     {
@@ -51,7 +66,8 @@ public class Photon_Manager : MonoBehaviourPunCallbacks
         {
             Debug.Log("남자 캐릭터 생성");
             obj_LocalPlayer = PhotonNetwork.Instantiate(list_Photon_Prefabs[0].name, tf_Respawn_Point.position, Quaternion.identity);
-
+            obj_LocalPlayer.GetComponent< Character_Controller>().player_Name.text = m_data.name;
+            GameMgr.Instance.player_List.Add(obj_LocalPlayer);
             if (PhotonNetwork.IsMasterClient)
             {
                 Debug.Log("서버장이므로 점장 역할을 부여합니다.");
@@ -66,7 +82,9 @@ public class Photon_Manager : MonoBehaviourPunCallbacks
         else if (m_data.gender == 1)
         {
             obj_LocalPlayer = PhotonNetwork.Instantiate(list_Photon_Prefabs[1].name, tf_Respawn_Point.position, Quaternion.identity);
-            if(PhotonNetwork.IsMasterClient)
+            obj_LocalPlayer.GetComponent<Character_Controller>().player_Name.text = m_data.name;
+            GameMgr.Instance.player_List.Add(obj_LocalPlayer);
+            if (PhotonNetwork.IsMasterClient)
             {
                 Debug.Log("서버장이므로 점장 역할을 부여합니다.");
                 obj_LocalPlayer.GetComponent<Players>().SetRole(Role.Manager);
@@ -132,6 +150,7 @@ public class Photon_Manager : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         Debug.Log("Photon : OnJoinedRoom");
+        GameMgr.Instance.ui.coin_UI.SetActive(true);
         CreateCharacter(m_LocalPlayer_Data);
     }
 

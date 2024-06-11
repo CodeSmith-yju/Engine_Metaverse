@@ -11,10 +11,19 @@ public class Players : MonoBehaviour
     public bool resume_Done = false;
     public bool coffee = false;
     private RecipeManager recipe;
+    public bool ui_Opened = false;
+    public int coin;
 
     private int order_Index;
 
     [SerializeField] private Role role;
+
+
+    private void Awake()
+    {
+        coin = 3;
+        GameMgr.Instance.ui.coin_UI.GetComponent<Coin_Init>().Init(coin);
+    }
 
     // 테스트를 위해 start 메서드를 이용해서 관리자 권한 주기
     private void Start()
@@ -26,43 +35,18 @@ public class Players : MonoBehaviour
 
     private void Update()
     {
-        // UI 관련
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (GameMgr.Instance.ui.setting_UI.activeSelf || GameMgr.Instance.ui.job_Opening_UI.activeSelf || GameMgr.Instance.ui.pos_Menu_UI.activeSelf)
         {
-            // 다른 UI 창이 안열려 있을 때 설정창 열도록 함.
-            if (!GameMgr.Instance.ui.setting_Ui.activeSelf && !GameMgr.Instance.ui.job_Opening_Ui.activeSelf)
-            {
-                GameMgr.Instance.ui.setting_Ui.SetActive(true);
-            } 
-            else if (GameMgr.Instance.ui.setting_Ui.activeSelf)
-            {
-                // ESC를 누르면 셋팅 창의 자식으로 있는 컨텐츠 팝업이나 키셋팅 안내 팝업이 열려있으면 이거 부터 먼저 닫도록 함.
-                if (GameMgr.Instance.ui.content_Info_Ui.activeSelf)
-                {
-                    GameMgr.Instance.ui.content_Info_Ui.SetActive(false);
-                }
-                else if (GameMgr.Instance.ui.keyset_Info_Ui.activeSelf)
-                {
-                    GameMgr.Instance.ui.keyset_Info_Ui.SetActive(false);
-                }
-                else
-                {
-                    GameMgr.Instance.ui.setting_Ui.SetActive(false);
-                }
-            }
+            ui_Opened = true;
+        }
+        else
+        {
+            ui_Opened = false;
+        }
 
-            // 이력서 관련 UI가 열려 있을 때 ESC키를 누르면 닫도록 함.
-            if (GameMgr.Instance.ui.job_Opening_Ui.activeSelf)
-            {
-                if (GameMgr.Instance.ui.resume_Ui.activeSelf) 
-                {
-                    GameMgr.Instance.ui.resume_Ui.SetActive(false);
-                }
-                else
-                {
-                    GameMgr.Instance.ui.job_Opening_Ui.SetActive(false);
-                }
-            }
+        if (cup && !GameMgr.Instance.ui.cup_List_BG.activeSelf)
+        {
+            GameMgr.Instance.ui.cup_List_BG.SetActive(cup);
         }
     }
 
@@ -98,6 +82,27 @@ public class Players : MonoBehaviour
         }
     }
 
+    /*public void Add(string ingredient)
+    {
+        cur_IngrList.Add(ingredient);
+
+        switch (ingredient) 
+        {
+            case "얼음":
+                Instantiate(GameMgr.Instance.ui.cup_Icon_List[0], GameMgr.Instance.ui.cup_List.transform);
+                break;
+            case "에스프레소":
+                break;
+            case "냉수":
+                break;
+            case "온수":
+                break;
+            case "우유":
+                break;
+        }
+
+    }*/
+
     // 완성된 요리를 들고 오브젝트 상호작용 시 제출
     public void Done()
     {
@@ -106,6 +111,11 @@ public class Players : MonoBehaviour
             done = false;
             cup = false;
             cur_Ordered_Menu = "";
+            
+            if (GameMgr.Instance.ui.cup_List_BG.activeSelf)
+            {
+                GameMgr.Instance.ui.cup_List_BG.SetActive(cup);
+            }
 
             if (KioskSystem.single.order_List.Count > 0)
             {

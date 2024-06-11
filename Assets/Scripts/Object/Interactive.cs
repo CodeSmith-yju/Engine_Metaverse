@@ -92,7 +92,7 @@ public class Interactive : MonoBehaviour
                 }
                 break;
             case "POS":
-                KioskSystem.single.sellerImg.gameObject.SetActive(true);
+                GameMgr.Instance.ui.pos_Menu_UI.SetActive(true);
                 Debug.Log("접촉한 오브젝트 : " + parent_Tag);
                 break;
             case "Grinder":
@@ -254,7 +254,7 @@ public class Interactive : MonoBehaviour
                 KioskSystem.single.OnQuiteKiosk();// 키오스크 off
                 break;
             case "POS":
-                KioskSystem.single.sellerImg.gameObject.SetActive(false);
+                GameMgr.Instance.ui.pos_Menu_UI.SetActive(false);  
                 break;
             default:
                 Debug.Log("상호작용 범위에서 나감");

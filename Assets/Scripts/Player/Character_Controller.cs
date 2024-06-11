@@ -20,6 +20,7 @@ public class Character_Controller : MonoBehaviour
     public GameObject obj_Rotate_Vertical;
     public GameObject obj_Body;
     public GameObject obj_Cam_First, obj_Cam_Quarter;
+    public TextMesh player_Name;
 
     float yRotation;
     float xRotation;
@@ -32,20 +33,20 @@ public class Character_Controller : MonoBehaviour
         {
             obj_Cam_First.SetActive(false);
             obj_Cam_Quarter.SetActive(true);
-            this.gameObject.name += "(LocalPlayer)";
+            this.gameObject.name = player_Name.text + " (LocalPlayer)";
         }
         else
         {
             obj_Cam_First.SetActive(false);
             obj_Cam_Quarter.SetActive(false);
-            this.gameObject.name += "(OtherPlayer)";
+            this.gameObject.name += player_Name.text + " (OtherPlayer)";
         }
     }
 
     // Update is called once per frame
     private void LateUpdate()
     {
-        if (GetComponent<PhotonView>().IsMine)
+        if (GetComponent<PhotonView>().IsMine && !GetComponent<Players>().ui_Opened)
         {
             float pos_x = Input.GetAxis("Horizontal");
             float pos_z = Input.GetAxis("Vertical");
@@ -173,9 +174,13 @@ public class Character_Controller : MonoBehaviour
                 }
 
                 transform.rotation = Quaternion.Euler(0, yRotation, 0);             // 플레이어 캐릭터의 회전을 조절
-
-
             }
+        }
+
+        if (GetComponent<PhotonView>().IsMine && GetComponent<Players>().ui_Opened)
+        {
+            m_Animator.SetBool("Walk", false);
+            m_Animator.SetBool("Run", false);
         }
     }
 }

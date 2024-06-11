@@ -953,7 +953,7 @@ GameObject:
   - component: {fileID: 3984100541678748364}
   m_Layer: 0
   m_Name: woman
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1018,6 +1018,7 @@ MonoBehaviour:
   obj_Body: {fileID: 118589891863991437}
   obj_Cam_First: {fileID: 493073314}
   obj_Cam_Quarter: {fileID: 674177946}
+  player_Name: {fileID: 869927179518241079}
 --- !u!114 &1542356141746554044
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1100,13 +1101,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c8da54fde73df04e9e01f75902cc4a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cur_IngrList: []
+  cur_IngrList:
+  - "\uBB3C"
   cur_Ordered_Menu: 
   cup: 0
   done: 0
   resume_Done: 0
   coffee: 0
-  role: 0
+  ui_Opened: 0
+  coin: 0
+  role: 2
 --- !u!54 &8091726204228693487
 Rigidbody:
   m_ObjectHideFlags: 0
