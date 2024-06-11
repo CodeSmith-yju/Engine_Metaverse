@@ -92,7 +92,8 @@ public class Interactive : MonoBehaviour
                 }
                 break;
             case "POS":
-                KioskSystem.single.sellerImg.gameObject.SetActive(true);
+                //KioskSystem.single.posmachin.gameObject.SetActive(true);
+                //KioskSystem.single.sellerImg.gameObject.SetActive(true);
                 KioskSystem.single.kiosck = true;
                 Debug.Log("충돌한 오브젝트: " + parent_Tag);
                 break;
@@ -118,7 +119,7 @@ public class Interactive : MonoBehaviour
                 KioskSystem.single.OnQuiteKiosk();// 키오스크 상호작용화면 off
                 break;
             case "POS":
-                KioskSystem.single.sellerImg.gameObject.SetActive(false);
+                //KioskSystem.single.sellerImg.gameObject.SetActive(false);
                 KioskSystem.single.kiosck = false;
                 break;
             default:

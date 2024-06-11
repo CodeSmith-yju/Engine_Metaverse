@@ -31,6 +31,10 @@ public class KioskSystem : MonoBehaviour
 
     public GameObject slotPrefab; // 새로운 슬롯을 생성할 때 사용할 프리팹
 
+    //06-11 PosMachin Img Add
+    [Header("Pos Machine")]
+    public GameObject objPosMachin;
+
     [Header("ConsumerDisplay Object")]
     public TextMeshProUGUI textNumberConsumerDisPlay;
 
@@ -72,6 +76,8 @@ public class KioskSystem : MonoBehaviour
         kioskBuyPanel.gameObject.SetActive(false);
         tiketIssuance.gameObject.SetActive(false);
         sellerImg.gameObject.SetActive(false);
+
+        objPosMachin.SetActive(false);
     }
 
     public void KioskSceneChange()
