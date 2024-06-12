@@ -77,7 +77,6 @@ public class KioskSystem : MonoBehaviour
         tiketIssuance.gameObject.SetActive(false);
         sellerImg.gameObject.SetActive(false);
 
-        objPosMachin.SetActive(false);
     }
 
     public void KioskSceneChange()
