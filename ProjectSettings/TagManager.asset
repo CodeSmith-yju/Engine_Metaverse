@@ -17,6 +17,12 @@ TagManager:
   - Bullet
   - Water
   - Return
+  - Chocolate
+  - Milk
+  - Strawberry
+  - Yogurt
+  - Water_Ice
+  - Water_Hot
   layers:
   - Default
   - TransparentFX
