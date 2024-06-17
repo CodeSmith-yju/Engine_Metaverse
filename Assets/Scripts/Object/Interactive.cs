@@ -94,6 +94,7 @@ public class Interactive : MonoBehaviour
             case "POS":
                 //KioskSystem.single.posmachin.gameObject.SetActive(true);
                 //KioskSystem.single.sellerImg.gameObject.SetActive(true);
+                KioskSystem.single.management_Display.gameObject.SetActive(true);
                 KioskSystem.single.kiosck = true;
                 Debug.Log("충돌한 오브젝트: " + parent_Tag);
                 break;
@@ -120,6 +121,7 @@ public class Interactive : MonoBehaviour
                 break;
             case "POS":
                 //KioskSystem.single.sellerImg.gameObject.SetActive(false);
+                KioskSystem.single.management_Display.gameObject.SetActive(false);
                 KioskSystem.single.kiosck = false;
                 break;
             default:

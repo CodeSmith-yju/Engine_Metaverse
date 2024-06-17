@@ -24,6 +24,12 @@ public class Slot : MonoBehaviour
         imgIcon.sprite = selectedMenu.GetIcon();
     }
 
+    public void ConsumerInit(SelectedMenu _selectMenu)
+    {
+        this.selectedMenu = _selectMenu;
+        textIndex.text = selectedMenu.GetIndex().ToString();
+    }
+
     //        KioskSystem.single.RemoveSlot(selectedMenu);//이새끼가 지금까지 출력된 번호를 지우는 핵심기능임 얘를다른대로 빼내야함
     public void OnClick()
     {

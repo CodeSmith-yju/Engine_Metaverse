@@ -31,9 +31,14 @@ public class KioskSystem : MonoBehaviour
 
     public GameObject slotPrefab; // 새로운 슬롯을 생성할 때 사용할 프리팹
 
+    //06-17 Add
+    public List<Slot> poolCounsumerSlot = new();// 메뉴데이터는 listSelectedMenus 그대로 쓸거라서 풀오브젝트 리스트만 있으면 됨.
+    public GameObject consumerSlotFrefab;
+    //public bool cancelOrder = false;
+
     //06-11 PosMachin Img Add
     [Header("Pos Machine")]
-    public GameObject objPosMachin;
+    public Image management_Display;
 
     [Header("ConsumerDisplay Object")]
     public TextMeshProUGUI textNumberConsumerDisPlay;
@@ -64,6 +69,9 @@ public class KioskSystem : MonoBehaviour
     //player move
     public bool kiosck;
 
+    public List<Button> managementBtnList;
+
+
     private void Awake()
     {
         single = this;
@@ -77,6 +85,7 @@ public class KioskSystem : MonoBehaviour
         tiketIssuance.gameObject.SetActive(false);
         sellerImg.gameObject.SetActive(false);
 
+        management_Display.gameObject.SetActive(false);
     }
 
     public void KioskSceneChange()
@@ -118,9 +127,11 @@ public class KioskSystem : MonoBehaviour
         listSelectedMenus.Add(newMenu);
         newMenu.intSlotIndex = ticketNum;
         CreateOrReuseSlot(newMenu);
+        //SelectedMenu 재사용할것
 
         // 슬롯을 추가한 후에 정렬합니다.
         SortSlots();
+        //재사용된 후 정렬 필요
 
         KioskUpdate();
         SellerDisplayUpdate();
@@ -180,6 +191,7 @@ public class KioskSystem : MonoBehaviour
 
     private void ConsumerDisplayUpdate()
     {
+        //Add ConsumerSlot(ticketNumbers);
         string displayText = string.Join(", ", ticketNumbers);
         textNumberConsumerDisPlay.text = displayText;
     }
@@ -259,11 +271,17 @@ public class KioskSystem : MonoBehaviour
         {
             slot.gameObject.SetActive(false);
         }
+        //06-17 Add
+        foreach (var slot in poolCounsumerSlot)
+        {
+            slot.gameObject.SetActive(false);
+        }
 
         // listSelectedMenus의 각 요소에 대해 슬롯을 생성 또는 재사용
         foreach (var selectedMenu in listSelectedMenus)
         {
             CreateOrReuseSlot(selectedMenu);
+            //재사용코드 필요//06-17 Add
         }
     }
 
@@ -290,12 +308,35 @@ public class KioskSystem : MonoBehaviour
         slot.Init(_newMenu); // 슬롯 초기화
         slot.gameObject.SetActive(true); // 슬롯 활성화
     }
+    private void CreateCounsumerSlot(SelectedMenu _sMenu)
+    {
+        Slot conSlot = poolCounsumerSlot.Find(s => !s.gameObject.activeSelf);// 06-17 Add
+        if (conSlot == null)
+        {
+            // 비활성화된 슬롯이 없으면 새로 생성
+            GameObject go = Instantiate(slotPrefab, poolSlot[0].transform.parent);
+            conSlot = go.GetComponent<Slot>();
+            poolSlot.Add(conSlot); // 오브젝트 풀에 슬롯 추가
+        }
+        // 슬롯의 인덱스를 찾아서 그 앞에 슬롯을 삽입
+        int newIndex = listSelectedMenus.IndexOf(_sMenu);
+        if (newIndex < 0)
+        {
+            Debug.LogError("Failed to find index of the new menu.");
+            return;
+        }
+        poolSlot.Insert(newIndex, conSlot);
+
+        conSlot.ConsumerInit(_sMenu); // 슬롯 초기화
+        conSlot.gameObject.SetActive(true); // 슬롯 활성화
+    }
 
 
     public void RemoveSlot(SelectedMenu _nowMenu)
     {
         // 해당하는 메뉴의 슬롯을 찾습니다.
         Slot slotToRemove = poolSlot.Find(slot => slot.selectedMenu == _nowMenu);
+        //비활성화 찾아서 제거하는코드 필요 
         if (slotToRemove != null)
         {
             // 슬롯을 비활성화하여 풀에 반환합니다.
@@ -309,6 +350,7 @@ public class KioskSystem : MonoBehaviour
 
         // 정렬합니다.
         SortSlots();
+        //지운 후 정렬 필요
 
         KioskUpdate();
         SellerDisplayUpdate();
@@ -321,6 +363,29 @@ public class KioskSystem : MonoBehaviour
         // 모든 슬롯을 포함한 리스트를 만듭니다.
         List<Slot> allSlots = new List<Slot>(poolSlot);
         foreach (var slot in poolSlot)
+        {
+            // 활성화된 슬롯이라면 해당 슬롯을 추가합니다.
+            if (slot.gameObject.activeSelf)
+            {
+                allSlots.Add(slot);
+            }
+        }
+
+        // 모든 슬롯을 정렬합니다.
+        allSlots.Sort((a, b) => a.selectedMenu.intSlotIndex.CompareTo(b.selectedMenu.intSlotIndex));
+
+        // 정렬된 순서대로 슬롯의 순서를 갱신합니다.
+        for (int i = 0; i < allSlots.Count; i++)
+        {
+            allSlots[i].transform.SetSiblingIndex(i);
+        }
+    }
+
+    public void SortConSlots()
+    {
+        // 모든 슬롯을 포함한 리스트를 만듭니다.
+        List<Slot> allSlots = new List<Slot>(poolCounsumerSlot);
+        foreach (var slot in poolCounsumerSlot)
         {
             // 활성화된 슬롯이라면 해당 슬롯을 추가합니다.
             if (slot.gameObject.activeSelf)
@@ -362,10 +427,30 @@ public class KioskSystem : MonoBehaviour
 
     public void OnClickCommitOrder()//시발이게왜 돼냐? -> 이게 왜 되냐면 _slot으로 받아오는게 새로운 slot을 만드는게아니라 slot넘겨준 오브젝트의 주소값을 참조하고있는 상황이라 지울때도 접근이 가능한거.
     {
-        //주문취소랑 주문 완료는 동일하게줘도될듯? 그냥 여기 if문넣어서 주문취소이면  false하고 돈 돌려주고 return, 주문완료이면 오브젝트 생성~ 같은식으로 
+        //주문취소랑 주문 완료는 동일하게줘도될듯? 그냥 여기 if문넣어서 주문취소이면  false하고 돈 돌려주고 return, || 주문완료이면 판매 목록에 오브젝트 생성~ 같은식으로 
+        if (false)//cancelOrder
+        {
+        }
+        
         RemoveSlot(selectedSlot.selectedMenu);//그래서 어디로 빼냄? 
         Debug.Log("OnClick Slot Index: " + selectedSlot.selectedMenu.GetIndex());
         selectedSlot.gameObject.SetActive(false);
         Desc.SetActive(false);
+    }
+    public void OnClickCallConsumer()
+    {
+        //imgOrder활성 TextOrder에 내 index 표시됨, 활성이미지는 코루틴으로 넣어주면될거같은데 사운드 활성화하고
+    }
+
+    public void OpenReceiptMenu()
+    {
+        //management_Display.gameObject.SetActive(false);
+        sellerImg.gameObject.SetActive(true);
+    }
+
+    public void OffManagemetMenu()
+    {
+        management_Display.gameObject.SetActive(false);
+        kiosck = false;
     }
 }
