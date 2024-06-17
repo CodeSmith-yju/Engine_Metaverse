@@ -13,6 +13,17 @@ TagManager:
   - PickUp
   - Dish
   - POS
+  - Done
+  - Bullet
+  - Water
+  - Return
+  - Chocolate
+  - Milk
+  - Strawberry
+  - Yogurt
+  - Water_Ice
+  - Water_Hot
+  - Mixer
   layers:
   - Default
   - TransparentFX

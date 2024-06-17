@@ -1,0 +1,71 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6447196858049862605
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 246833982114857746}
+  - component: {fileID: 9169513169950377587}
+  m_Layer: 0
+  m_Name: UIManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &246833982114857746
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6447196858049862605}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9169513169950377587
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6447196858049862605}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36f68d78dd3d28248ae67a67c6e21d51, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  setting_UI: {fileID: 0}
+  content_Info_UI: {fileID: 0}
+  keyset_Info_UI: {fileID: 0}
+  job_Opening_UI: {fileID: 0}
+  resume_UI: {fileID: 0}
+  pos_Menu_UI: {fileID: 0}
+  pos_Menu_Order_UI: {fileID: 0}
+  pos_Menu_Resume_UI: {fileID: 0}
+  pos_Menu_Sales_UI: {fileID: 0}
+  pos_Menu_Crew_UI: {fileID: 0}
+  pos_Menu_Access_Popup: {fileID: 0}
+  cup_List_BG: {fileID: 0}
+  cup_List: {fileID: 0}
+  cup_Icon_List:
+  - {fileID: 3292559128372017801, guid: 6a5fb9845c591ab4c9520b12830f4c4e, type: 3}
+  - {fileID: 4371831509915477283, guid: 872cbff8a998b9c4cb4974043d52388e, type: 3}
+  - {fileID: 975434687890719824, guid: ad38a3797de4d9340815cbf66e19ad63, type: 3}
+  - {fileID: 5139649902472853972, guid: 6c130d8e1a67206418b963476b1638f9, type: 3}
+  - {fileID: 7558317839667896011, guid: 94a36428ae81b7b47b64bb16604d0533, type: 3}
+  - {fileID: 3135588161863154578, guid: 848df02f7172f6c439b8b113c85612a3, type: 3}
+  - {fileID: 229103666278327393, guid: 7d1cf9084d70e314eab70117b1a422ff, type: 3}
+  - {fileID: 2995691365601331765, guid: 7eca676162919e343bcf769331c22c7a, type: 3}
+  - {fileID: 2422258568961721415, guid: b855deaff327e8547bde89715d133f32, type: 3}
+  coin_UI: {fileID: 0}
+  water_dispenser_UI: {fileID: 0}
