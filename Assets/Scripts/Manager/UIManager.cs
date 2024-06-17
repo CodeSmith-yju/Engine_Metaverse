@@ -30,6 +30,9 @@ public class UIManager : MonoBehaviour
     public List<GameObject> cup_Icon_List;
     public GameObject coin_UI;
 
+    [Header("KitchenUI")]
+    public GameObject water_dispenser_UI;
+
     private void Update()
     {
         // UI ฐüทร

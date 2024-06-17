@@ -12,7 +12,6 @@ public class Interactive : MonoBehaviour
     bool coffee_Check = false;
     bool coffee_Done = false;
     Players player;
-    List<string> temp_List = new List<string>();
 
     private void Awake()
     {
@@ -83,6 +82,8 @@ public class Interactive : MonoBehaviour
                         return;
                     }
                     player.cup = true;
+                    if (!GameMgr.Instance.ui.cup_List_BG.activeSelf)
+                        GameMgr.Instance.ui.cup_List_BG.SetActive(player.cup);
                     Debug.Log("컵을 듦");
                 }
                 else
@@ -122,12 +123,6 @@ public class Interactive : MonoBehaviour
                         coffee_Check = false;
                         coffeemachine.coffee_Icon.gameObject.SetActive(false);
 
-                        foreach (string ingr in player.cur_IngrList)
-                        {
-                            temp_List.Add(ingr);
-                        }
-
-                        player.cur_IngrList.Clear();
                         player.cup = false;
 
                         StartCoroutine(CoffeeRoutine(coffeemachine));
@@ -143,14 +138,12 @@ public class Interactive : MonoBehaviour
                     {
                         player.cup = true;
                         //coffeemachine.machines[0].SetActive(false); // 임시
-                        coffeemachine.timer_Screen.SetActive(false);
+                        coffeemachine.bg.SetActive(false);
                         Debug.Log("에스프레소 내린 커피 컵 들기");
 
-                        foreach (string ingr in temp_List)
-                        {
-                            player.cur_IngrList.Add(ingr);
-                        }
                         player.cur_IngrList.Add("에스프레소");
+
+                        Cup_Icon("Espresso");
                         return;
                     }
 
@@ -184,6 +177,7 @@ public class Interactive : MonoBehaviour
                     if (player.cup)
                     {
                         player.cur_IngrList.Add("얼음");
+                        Cup_Icon("Ice");
                         Debug.Log("컵에 얼음 넣기");
                     }
                     else
@@ -231,6 +225,45 @@ public class Interactive : MonoBehaviour
                         Debug.Log("컵을 들고 있어야 합니다.");
                         return;
                     }
+                }
+                else
+                {
+                    Debug.Log("권한이 없습니다.");
+                    return;
+                }
+                break;
+            case "Water":
+                if (player.GetRole() == Role.Manager || player.GetRole() == Role.Empolyee)
+                {
+                    WaterDispenser water = my.GetComponent<WaterDispenser>();
+                    water.Init(my.GetComponent<Interactive>(), player);
+                    if (player.cup)
+                    {
+                        GameMgr.Instance.ui.water_dispenser_UI.SetActive(true);
+                        Debug.Log("정수기 UI 열기");
+                    }
+                    else
+                    {
+                        Debug.Log("컵을 들고 있어야 합니다.");
+                        return;
+                    }
+                }
+                else
+                {
+                    Debug.Log("권한이 없습니다.");
+                    return;
+                }
+                break;
+            case "Mixer":
+                if (player.GetRole() == Role.Manager || player.GetRole() == Role.Empolyee)
+                {
+                    Debug.Log("믹서기 진입 테스트");
+                    if (player.cur_IngrList.Count != 0 && player.cup)
+                    {
+                        Debug.Log("믹서기 진입 완료");
+                        player.cur_IngrList.Add("믹서기");
+                        Cup_Icon("Mixer");
+                    } 
                 }
                 else
                 {
@@ -297,5 +330,22 @@ public class Interactive : MonoBehaviour
     {
         coffee.StartTimer(time);
         yield return new WaitForSeconds(time);
+    }
+
+
+    public void Cup_Icon(string tag)
+    {
+        foreach (GameObject icon_List in GameMgr.Instance.ui.cup_Icon_List)
+        {
+            if (icon_List.tag == tag)
+            {
+                GameObject icon = Instantiate(icon_List, GameMgr.Instance.ui.cup_List.transform);
+
+                if (tag == "Mixer")
+                {
+                    icon.GetComponent<Mixer_Icon>().PrefabsMove();
+                }
+            }
+        }
     }
 }

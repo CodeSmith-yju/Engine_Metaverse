@@ -23,6 +23,7 @@ TagManager:
   - Yogurt
   - Water_Ice
   - Water_Hot
+  - Mixer
   layers:
   - Default
   - TransparentFX
