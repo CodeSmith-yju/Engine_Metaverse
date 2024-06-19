@@ -1,0 +1,13 @@
+fileFormatVersion: 2
+guid: 4842097b4c1e73a4a8d7f615bcb8cd64
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - animator: {fileID: 5866666021909216657, guid: 575bf1738311f6647915ebf1ff536e55, type: 3}
+  - chairTransform: {fileID: -8679921383154817045, guid: 540181d611b0c7b41857f8528ff44401, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

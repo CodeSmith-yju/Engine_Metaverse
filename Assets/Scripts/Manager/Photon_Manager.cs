@@ -221,7 +221,7 @@ public class Photon_Manager : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         Debug.Log("Photon : OnJoinedRoom");
-        if (!GameMgr.Instance.ui.coin_UI.activeSelf)
+        //if (!GameMgr.Instance.ui.coin_UI.activeSelf)
             GameMgr.Instance.ui.coin_UI.SetActive(true);
         CreateCharacter(m_LocalPlayer_Data);
     }

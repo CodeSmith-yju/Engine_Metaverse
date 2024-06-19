@@ -949,6 +949,8 @@ GameObject:
   - component: {fileID: 9051695123267112027}
   - component: {fileID: 2544245718933454327}
   - component: {fileID: 7103998518759693171}
+  - component: {fileID: -7436793349512616873}
+  - component: {fileID: 6795400219276001305}
   - component: {fileID: 8091726204228693487}
   - component: {fileID: 3984100541678748364}
   m_Layer: 0
@@ -1035,7 +1037,7 @@ MonoBehaviour:
   Group: 0
   prefixField: -1
   Synchronization: 3
-  OwnershipTransfer: 1
+  OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
   - {fileID: 9051695123267112027}
@@ -1086,6 +1088,9 @@ MonoBehaviour:
   - Type: 4
     SynchronizeType: 1
     Name: Sit
+  - Type: 4
+    SynchronizeType: 1
+    Name: Working
   m_SynchronizeLayers:
   - SynchronizeType: 1
     LayerIndex: 0
@@ -1111,6 +1116,33 @@ MonoBehaviour:
   ui_Opened: 0
   coin: 0
   role: 2
+--- !u!114 &-7436793349512616873
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2577325101096883597}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4842097b4c1e73a4a8d7f615bcb8cd64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6795400219276001305
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2577325101096883597}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7553cee2edaf6594ba18c7d8a46f064c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterController: {fileID: 1771385290943370854}
+  playerAnimator: {fileID: 1771385290943370853}
+  player: {fileID: 7103998518759693171}
 --- !u!54 &8091726204228693487
 Rigidbody:
   m_ObjectHideFlags: 0
