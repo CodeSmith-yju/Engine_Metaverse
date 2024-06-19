@@ -125,6 +125,7 @@ public class Photon_Manager : MonoBehaviourPunCallbacks
         }
     }
 
+
     /*// 이름 설정하는거, 동기화 할때마다 일일히 다른 메서드로 만들어야되는지 모르겠음.
     public void SetPlayerName(string name)
     {
@@ -245,10 +246,29 @@ public class Photon_Manager : MonoBehaviourPunCallbacks
 
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
-        /*if (otherPlayer.IsMasterClient)
+        PhotonView[] views = FindObjectsOfType<PhotonView>();
+
+        foreach (PhotonView view in views)
         {
-            ChangeRole();
-        }*/
+            if (view.OwnerActorNr == otherPlayer.ActorNumber)
+            {
+                photonView.RPC("DestroyPlayer", RpcTarget.AllBuffered, view.ViewID);
+            }
+        }
+    }
+
+    [PunRPC]
+    private void DestroyPlayer(int viewID)
+    {
+        PhotonView view = PhotonView.Find(viewID);
+        if (view != null)
+        {
+            GameObject player = view.gameObject;
+            if (GameMgr.Instance.player_List.Contains(player))
+            {
+                GameMgr.Instance.player_List.Remove(player);
+            }
+        }
     }
     ///////////////////플레이어 관련 콜백 끝
     ///
