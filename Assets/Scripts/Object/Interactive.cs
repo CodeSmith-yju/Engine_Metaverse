@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -41,18 +42,18 @@ public class Interactive : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        my.GetComponent<Interactive>().enabled = true;
-        KioskSystem.single.announce.SetActive(true);
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && other.GetComponent<PhotonView>().IsMine)
         {
+            my.GetComponent<Interactive>().enabled = true;
             player = other.gameObject.GetComponent<Players>();
+            KioskSystem.single.announce.SetActive(true);
             isEnter = true;
         }
     }
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && other.GetComponent<PhotonView>().IsMine)
         {
             isCheck = true;
         }
@@ -60,9 +61,12 @@ public class Interactive : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        InteractExitPlayer(parent_Tag); // 트리거에서 나올때
-        player = null;
-        my.GetComponent<Interactive>().enabled = false;
+        if (other.CompareTag("Player") && other.GetComponent<PhotonView>().IsMine)
+        {
+            InteractExitPlayer(parent_Tag); // 트리거에서 나올때
+            player = null;
+            my.GetComponent<Interactive>().enabled = false;
+        }
     }
 
     private void InteractWithPlayer(Players player, string obj_Tag)

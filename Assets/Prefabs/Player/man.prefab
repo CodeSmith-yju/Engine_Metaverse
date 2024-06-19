@@ -135,7 +135,7 @@ MonoBehaviour:
   Group: 0
   prefixField: -1
   Synchronization: 3
-  OwnershipTransfer: 0
+  OwnershipTransfer: 1
   observableSearch: 2
   ObservedComponents:
   - {fileID: 2226510343825760283}
@@ -207,6 +207,8 @@ MonoBehaviour:
   done: 0
   resume_Done: 0
   coffee: 0
+  ui_Opened: 0
+  coin: 0
   role: 2
 --- !u!54 &5762758356396794511
 Rigidbody:

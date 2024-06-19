@@ -4,6 +4,7 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
+using System;
 
 public class Photon_Manager : MonoBehaviourPunCallbacks
 {
@@ -81,7 +82,8 @@ public class Photon_Manager : MonoBehaviourPunCallbacks
             Debug.Log("여자 캐릭터 생성");
         }
 
-        SetPlayerName(m_data.name);
+        
+
 
         if (PhotonNetwork.IsMasterClient)
         {
@@ -93,15 +95,37 @@ public class Photon_Manager : MonoBehaviourPunCallbacks
             Debug.Log("서버장이 아니므로 고객 역할을 부여합니다.");
             obj_LocalPlayer.GetComponent<Players>().SetRole(Role.Customer);
         }
-
-        foreach (Player player in PhotonNetwork.PlayerList)
-        {
-            UpdatePlayerNameUI(player);
-        }
-
+        photonView.RPC("SetPlayerSetting", RpcTarget.AllBuffered, m_data.name, obj_LocalPlayer.GetComponent<PhotonView>().ViewID);
     }
 
-    // 이름 설정하는거, 동기화 할때마다 일일히 다른 메서드로 만들어야되는지 모르겠음.
+
+    [PunRPC]
+    public void SetPlayerSetting(string name, int player_Id)
+    {
+        // 모든 PhotonView를 찾아서
+        PhotonView[] views = FindObjectsOfType<PhotonView>();
+        foreach (PhotonView view in views)
+        {
+            // view의 Owner의 ActorNumber가 player_Id와 일치하면
+            if (view.Owner != null && view.ViewID == player_Id)
+            {
+                // 해당 오브젝트의 이름을 설정
+                SetPlayer(name, view.gameObject);
+                break; // 찾았으니 더 이상 반복할 필요 없음
+            }
+        }
+    }
+
+    private void SetPlayer(string name, GameObject player)
+    {
+        player.GetComponent<Character_Controller>().player_Name.text = name;
+        if (!GameMgr.Instance.player_List.Contains(player))
+        {
+            GameMgr.Instance.player_List.Add(player);
+        }
+    }
+
+    /*// 이름 설정하는거, 동기화 할때마다 일일히 다른 메서드로 만들어야되는지 모르겠음.
     public void SetPlayerName(string name)
     {
         Hashtable customs = new Hashtable
@@ -120,7 +144,7 @@ public class Photon_Manager : MonoBehaviourPunCallbacks
             UpdatePlayerNameUI(targetPlayer);
         }
     }
-
+      
     void UpdatePlayerNameUI(Player targetPlayer) // 빌드 파일에서는 적용되는데 에디터에선 안됨
     {
         object playerName;
@@ -146,7 +170,7 @@ public class Photon_Manager : MonoBehaviourPunCallbacks
             }
         }
         return null;
-    }
+    }*/
 
 
     public void Respawn()
