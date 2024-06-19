@@ -31,9 +31,11 @@ public class KioskSystem : MonoBehaviour
 
     public GameObject slotPrefab; // 새로운 슬롯을 생성할 때 사용할 프리팹
 
-    //06-17 Add
-    public List<Slot> poolCounsumerSlot = new();// 메뉴데이터는 listSelectedMenus 그대로 쓸거라서 풀오브젝트 리스트만 있으면 됨.
-    public GameObject consumerSlotFrefab;
+    //06-19 Add
+    public List<TextMeshProUGUI> commitOrder = new();
+    public List<TextMeshProUGUI> waitOrder = new();
+    public TextMeshProUGUI nowCommitOrder = null;
+
     //public bool cancelOrder = false;
 
     //06-11 PosMachin Img Add
@@ -271,12 +273,7 @@ public class KioskSystem : MonoBehaviour
         {
             slot.gameObject.SetActive(false);
         }
-        //06-17 Add
-        foreach (var slot in poolCounsumerSlot)
-        {
-            slot.gameObject.SetActive(false);
-        }
-
+        // 리스트2개랑 commitText 비워줌.
         // listSelectedMenus의 각 요소에 대해 슬롯을 생성 또는 재사용
         foreach (var selectedMenu in listSelectedMenus)
         {
@@ -308,29 +305,6 @@ public class KioskSystem : MonoBehaviour
         slot.Init(_newMenu); // 슬롯 초기화
         slot.gameObject.SetActive(true); // 슬롯 활성화
     }
-    private void CreateCounsumerSlot(SelectedMenu _sMenu)
-    {
-        Slot conSlot = poolCounsumerSlot.Find(s => !s.gameObject.activeSelf);// 06-17 Add
-        if (conSlot == null)
-        {
-            // 비활성화된 슬롯이 없으면 새로 생성
-            GameObject go = Instantiate(slotPrefab, poolSlot[0].transform.parent);
-            conSlot = go.GetComponent<Slot>();
-            poolSlot.Add(conSlot); // 오브젝트 풀에 슬롯 추가
-        }
-        // 슬롯의 인덱스를 찾아서 그 앞에 슬롯을 삽입
-        int newIndex = listSelectedMenus.IndexOf(_sMenu);
-        if (newIndex < 0)
-        {
-            Debug.LogError("Failed to find index of the new menu.");
-            return;
-        }
-        poolSlot.Insert(newIndex, conSlot);
-
-        conSlot.ConsumerInit(_sMenu); // 슬롯 초기화
-        conSlot.gameObject.SetActive(true); // 슬롯 활성화
-    }
-
 
     public void RemoveSlot(SelectedMenu _nowMenu)
     {
@@ -363,29 +337,6 @@ public class KioskSystem : MonoBehaviour
         // 모든 슬롯을 포함한 리스트를 만듭니다.
         List<Slot> allSlots = new List<Slot>(poolSlot);
         foreach (var slot in poolSlot)
-        {
-            // 활성화된 슬롯이라면 해당 슬롯을 추가합니다.
-            if (slot.gameObject.activeSelf)
-            {
-                allSlots.Add(slot);
-            }
-        }
-
-        // 모든 슬롯을 정렬합니다.
-        allSlots.Sort((a, b) => a.selectedMenu.intSlotIndex.CompareTo(b.selectedMenu.intSlotIndex));
-
-        // 정렬된 순서대로 슬롯의 순서를 갱신합니다.
-        for (int i = 0; i < allSlots.Count; i++)
-        {
-            allSlots[i].transform.SetSiblingIndex(i);
-        }
-    }
-
-    public void SortConSlots()
-    {
-        // 모든 슬롯을 포함한 리스트를 만듭니다.
-        List<Slot> allSlots = new List<Slot>(poolCounsumerSlot);
-        foreach (var slot in poolCounsumerSlot)
         {
             // 활성화된 슬롯이라면 해당 슬롯을 추가합니다.
             if (slot.gameObject.activeSelf)
