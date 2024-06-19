@@ -150,7 +150,7 @@ public class Photon_Manager : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         Debug.Log("Photon : OnJoinedRoom");
-        GameMgr.Instance.ui.coin_UI.SetActive(true);
+        //GameMgr.Instance.ui.coin_UI.SetActive(true);
         CreateCharacter(m_LocalPlayer_Data);
     }
 
