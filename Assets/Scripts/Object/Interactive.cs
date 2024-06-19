@@ -248,7 +248,7 @@ public class Interactive : MonoBehaviour
                     water.Init(my.GetComponent<Interactive>(), player);
                     if (player.cup)
                     {
-                        GameMgr.Instance.ui.water_dispenser_UI.SetActive(true);
+                        //GameMgr.Instance.ui.water_dispenser_UI.SetActive(true);
                         Debug.Log("정수기 UI 열기");
                     }
                     else
