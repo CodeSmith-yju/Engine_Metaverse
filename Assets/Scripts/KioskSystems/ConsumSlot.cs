@@ -1,4 +1,5 @@
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class ConsumSlot : MonoBehaviour
@@ -8,8 +9,17 @@ public class ConsumSlot : MonoBehaviour
     public void Init(SelectedMenu _selectMenu)
     {
         this.selectedMenu = _selectMenu;
+        selectedText.text = selectedMenu.GetIndex().ToString();
 
         gameObject.SetActive(true);//생성자를 통해 생성되면 활성화되어 사용자에게 노출됨
-        selectedText.text = selectedMenu.GetIndex().ToString();
+    }
+
+    public void GetOutWaitSlot()
+    {
+        this.selectedMenu = null;
+        this.selectedText = null;
+
+        gameObject.SetActive(false);
+        Destroy(gameObject);
     }
 }

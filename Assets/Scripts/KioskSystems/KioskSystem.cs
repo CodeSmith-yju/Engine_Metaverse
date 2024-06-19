@@ -32,10 +32,18 @@ public class KioskSystem : MonoBehaviour
     public GameObject slotPrefab; // 새로운 슬롯을 생성할 때 사용할 프리팹
 
     //06-19 Add
-    public List<TextMeshProUGUI> commitOrder = new();
-    public List<TextMeshProUGUI> waitOrder = new();
-    public TextMeshProUGUI nowCommitOrder = null;
+    public List<ConsumSlot> commitOrderList = new();
+    public List<ConsumSlot> waitOrderList = new();
+/*
+    [SerializeField] private List<SelectedMenu> listOrderMenu = new();
+    [SerializeField] private List<SelectedMenu> watiOrderMenu = new();
+*/
+    //public TextMeshProUGUI txtNowCommitOrder;
+    public ConsumSlot objNowActiveConsumerOrder;
+    public GameObject conSumePrefab;
 
+    [SerializeField] private Transform tr_commitTxt;
+    [SerializeField] private Transform tr_waitTxt;
     //public bool cancelOrder = false;
 
     //06-11 PosMachin Img Add
@@ -78,6 +86,9 @@ public class KioskSystem : MonoBehaviour
     {
         single = this;
         KioskStart();
+
+        commitOrderList.Clear();
+        waitOrderList.Clear();
     }
     private void Start()
     {
@@ -129,15 +140,19 @@ public class KioskSystem : MonoBehaviour
         listSelectedMenus.Add(newMenu);
         newMenu.intSlotIndex = ticketNum;
         CreateOrReuseSlot(newMenu);
-        //SelectedMenu 재사용할것
+
+        //06-19 ConsumDisplay
+        AddWaitOrder(newMenu);
 
         // 슬롯을 추가한 후에 정렬합니다.
         SortSlots();
         //재사용된 후 정렬 필요
 
+
+
         KioskUpdate();
         SellerDisplayUpdate();
-        ConsumerDisplayUpdate();
+        //ConsumerDisplayUpdate();이제 안 씀
 
         menuName = null;
         menuSp = null;
@@ -328,7 +343,7 @@ public class KioskSystem : MonoBehaviour
 
         KioskUpdate();
         SellerDisplayUpdate();
-        ConsumerDisplayUpdate();
+        //ConsumerDisplayUpdate();이제 안 씀
     }
 
 
@@ -390,7 +405,53 @@ public class KioskSystem : MonoBehaviour
     }
     public void OnClickCallConsumer()
     {
+        Debug.Log("Call Consumer");
+/*
+        foreach (ConsumSlot c_Slot in commitOrderList)
+        {
+            if (c_Slot.selectedMenu.GetIndex() == selectedSlot.selectedMenu.GetIndex())
+            {
+                if (string.IsNullOrEmpty(txtNowCommitOrder.text))
+                {
+                    AddCommitOrder(txtNowCommitOrder);
+                }
+            }
+        }
+*/
+        for (int i = 0; i < waitOrderList.Count; i++)
+        {
+
+        }
         //imgOrder활성 TextOrder에 내 index 표시됨, 활성이미지는 코루틴으로 넣어주면될거같은데 사운드 활성화하고
+        if (commitOrderList.Count == 0 )//&& string.IsNullOrEmpty(txtNowCommitOrder.text))
+        {
+            Debug.Log("Call Consumer is true");
+            //txtNowCommitOrder.text = selectedSlot.textIndex.text;
+
+            for (int i = 0; i < waitOrderList.Count; i++)
+            {
+                if (waitOrderList[i].selectedMenu == selectedSlot.selectedMenu)
+                {
+                    waitOrderList[i].GetOutWaitSlot();
+                    return;
+                }
+            }
+        }
+        else
+        {
+            Debug.Log("Call Consumer is false");
+        }
+    }
+    public void MoreClickCallConsumer()
+    {
+        for (int i = 0; i < waitOrderList.Count; i++)
+        {
+            if (waitOrderList[i].selectedMenu == selectedSlot.selectedMenu)
+            {
+                waitOrderList[i].GetOutWaitSlot();
+                return;
+            }
+        }
     }
 
     public void OpenReceiptMenu()
@@ -404,4 +465,36 @@ public class KioskSystem : MonoBehaviour
         management_Display.gameObject.SetActive(false);
         kiosck = false;
     }
+    //06-19
+    public void AddWaitOrder(SelectedMenu _selectedMenu)
+    {
+        //ConsumSlot consumSlot = new();
+        GameObject go = Instantiate(conSumePrefab, tr_waitTxt);//실제 생성된 오브젝트를 지정된 위치에 대입
+
+        ConsumSlot consumSlot = go.GetComponent<ConsumSlot>();
+        waitOrderList.Add(consumSlot);
+        consumSlot.Init(_selectedMenu);
+    }
+
+    public void RemoveWatiOrder()
+    {
+
+    }
+
+    public void AddCommitOrder(SelectedMenu _selectedMenu)
+    {
+        ConsumSlot consumSlot = new();
+        GameObject go = Instantiate(conSumePrefab, tr_commitTxt);//실제 생성된 오브젝트를 지정된 위치에 대입
+
+        consumSlot = go.GetComponent<ConsumSlot>();
+        commitOrderList.Add(consumSlot);
+        consumSlot.Init(_selectedMenu);
+    }
+
+
+    public void CallOrderMenu()
+    { 
+        
+    }
+
 }
