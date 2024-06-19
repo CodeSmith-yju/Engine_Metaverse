@@ -22,18 +22,19 @@ public class Players : MonoBehaviour
     private void Awake()
     {
         coin = 3;
-        //GameMgr.Instance.ui.coin_UI.GetComponent<Coin_Init>().Init(coin);
+        
     }
 
     // 테스트를 위해 start 메서드를 이용해서 관리자 권한 주기
     private void Start()
     {
+        GameMgr.Instance.ui.coin_UI.GetComponent<Coin_Init>().Init(coin);
         gameObject.GetComponent<Players>();
         recipe = FindObjectOfType<RecipeManager>();
         cur_IngrList.Clear(); // 초기화
     }
 
-    /*private void Update()
+    private void Update()
     {
         if (GameMgr.Instance.ui.setting_UI.activeSelf || GameMgr.Instance.ui.job_Opening_UI.activeSelf || GameMgr.Instance.ui.pos_Menu_UI.activeSelf)
         {
@@ -48,7 +49,7 @@ public class Players : MonoBehaviour
         {
             GameMgr.Instance.ui.cup_List_BG.SetActive(cup);
         }
-    }*/
+    }
 
 
     public void SetRole(Role newRole) // 서버에 접속할 때 이 메서드를 이용해서 플레이어들에게 권한 주기
@@ -81,27 +82,6 @@ public class Players : MonoBehaviour
             }
         }
     }
-
-    /*public void Add(string ingredient)
-    {
-        cur_IngrList.Add(ingredient);
-
-        switch (ingredient) 
-        {
-            case "얼음":
-                Instantiate(GameMgr.Instance.ui.cup_Icon_List[0], GameMgr.Instance.ui.cup_List.transform);
-                break;
-            case "에스프레소":
-                break;
-            case "냉수":
-                break;
-            case "온수":
-                break;
-            case "우유":
-                break;
-        }
-
-    }*/
 
     // 완성된 요리를 들고 오브젝트 상호작용 시 제출
     public void Done()

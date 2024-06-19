@@ -66,7 +66,7 @@ public class Photon_Manager : MonoBehaviourPunCallbacks
         {
             Debug.Log("남자 캐릭터 생성");
             obj_LocalPlayer = PhotonNetwork.Instantiate(list_Photon_Prefabs[0].name, tf_Respawn_Point.position, Quaternion.identity);
-            obj_LocalPlayer.GetComponent< Character_Controller>().player_Name.text = m_data.name;
+            obj_LocalPlayer.GetComponent<Character_Controller>().player_Name.text = m_data.name;
             GameMgr.Instance.player_List.Add(obj_LocalPlayer);
             if (PhotonNetwork.IsMasterClient)
             {
@@ -150,7 +150,8 @@ public class Photon_Manager : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         Debug.Log("Photon : OnJoinedRoom");
-        //GameMgr.Instance.ui.coin_UI.SetActive(true);
+        if (!GameMgr.Instance.ui.coin_UI.activeSelf)
+            GameMgr.Instance.ui.coin_UI.SetActive(true);
         CreateCharacter(m_LocalPlayer_Data);
     }
 
@@ -174,11 +175,116 @@ public class Photon_Manager : MonoBehaviourPunCallbacks
 
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
+        int id = otherPlayer.ActorNumber;
+
+        // 플레이어 리스트에서 삭제
+        foreach (GameObject player in GameMgr.Instance.player_List)
+        {
+            PhotonView player_Temp = player.GetComponent<PhotonView>();
+
+            if (player_Temp != null && player_Temp.OwnerActorNr == id)
+            {
+                GameMgr.Instance.player_List.Remove(player);
+                break;
+            }
+        }
+
+        if (PhotonNetwork.IsMasterClient)
+        {
+            ChangeRole(); // 직원 중에 가장 먼저 들어온 사람에게 마스터 클라이언트 권한 부여, 직원이 없으면 가장 먼저 들어온 손님에게 마스터 클라이언트 권한 부여
+        }
+
         Debug.Log("Photon : OnPlayerLeftRoom otherPlayer : " + otherPlayer.UserId);
     }
-
     ///////////////////플레이어 관련 콜백 끝
+    ///
+
+    public void ChangeRole()
+    {
+        Player newMaster = null;
+        bool hasEmployee = false;
+
+        // 1. 직원이 있는지 확인
+        foreach (GameObject obj in GameMgr.Instance.player_List)
+        {
+            Players player_Obj_Role = obj.GetComponent<Players>();
+            if (player_Obj_Role.GetRole() == Role.Employee)
+            {
+                hasEmployee = true;
+                break;
+            }
+        }
+
+        // 2. 직원이 없으면 가장 먼저 들어온 플레이어에게 권한 부여
+        if (!hasEmployee)
+        {
+            foreach (Player player in PhotonNetwork.PlayerList)
+            {
+                int id = player.ActorNumber;
+                foreach (GameObject obj in GameMgr.Instance.player_List)
+                {
+                    PhotonView player_Obj = obj.GetComponent<PhotonView>();
+                    Players player_Obj_Role = obj.GetComponent<Players>();
+                    if (obj != null && player_Obj.OwnerActorNr == id)
+                    {
+                        if (newMaster == null || player.ActorNumber < newMaster.ActorNumber)
+                        {
+                            PhotonNetwork.SetMasterClient(player);
+                            player_Obj_Role.SetRole(Role.Manager);
+                            ShowClientPopup();
+                        }
+                    }
+                }
+            }
+        }
+        else
+        {
+            foreach (Player player in PhotonNetwork.PlayerList)
+            {
+                int id = player.ActorNumber;
+
+                foreach (GameObject obj in GameMgr.Instance.player_List)
+                {
+                    PhotonView player_Obj = obj.GetComponent<PhotonView>();
+                    Players player_Obj_Role = obj.GetComponent<Players>();
+                    if (obj != null && player_Obj.OwnerActorNr == id && player_Obj_Role.GetRole() == Role.Employee)
+                    {
+                        if (newMaster == null || player.ActorNumber < newMaster.ActorNumber)
+                        {
+                            PhotonNetwork.SetMasterClient(player);
+                            player_Obj_Role.SetRole(Role.Manager);
+                            ShowClientPopup();
+
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+    public void ShowClientPopup()
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            if (!GameMgr.Instance.ui.alert_Popup.activeSelf)
+            {
+                GameMgr.Instance.ui.OnPopup(GameMgr.Instance.ui.alert_Popup);
+                GameMgr.Instance.ui.alert_Popup.GetComponent<AlertInit>().TextInit("기존 점장이 접속을 종료하여 \n점장 권한을 얻었습니다.");
+            }
+            else if (GameMgr.Instance.ui.alert_Popup.activeSelf)
+            {
+                GameObject temp_Obj = Instantiate(GameMgr.Instance.ui.alert_Popup, GameMgr.Instance.ui.ui_Main.transform);
+                temp_Obj.GetComponent<AlertInit>().TextInit("기존 점장이 접속을 종료하여 \n점장 권한을 얻었습니다.");
+            }
+                
+        }
+    }
+
 }
+
+
+
 
 [System.Serializable]
 public class UserData

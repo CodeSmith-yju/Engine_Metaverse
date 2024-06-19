@@ -8,7 +8,7 @@ using UnityEngine;
 public enum Role
 {
     Manager,
-    Empolyee,
+    Employee,
     Customer
 }
 
@@ -21,10 +21,6 @@ public class GameMgr : MonoBehaviour
     //public Dictionary<int, string> order_List = new Dictionary<int, string>(); // 주문번호와 주문 메뉴를 저장하는 딕셔너리
     public List<GameObject> player_List = new List<GameObject>(); // 접속한 플레이어 리스트
     public RecipeManager recipe;
-
-    [Header("Receipt")]
-    public GameObject player_Receipt;
-    public TextMeshPro text_Receipt;
 
     public static GameMgr Instance 
     {
@@ -48,21 +44,6 @@ public class GameMgr : MonoBehaviour
         else
         {
             Destroy(this.gameObject);
-        }
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            if (player_Receipt.activeSelf)
-            {
-                player_Receipt.SetActive(false);
-            }
-            else
-            {
-                player_Receipt.SetActive(true);
-            }
         }
     }
 }

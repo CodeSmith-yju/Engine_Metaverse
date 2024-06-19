@@ -5,7 +5,12 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
+    public GameObject ui_Main;
+
+
     // 전체적인 UI 관리를 여기서 하면 좋을듯? 이미지나 텍스트 등 키오스크 UI도 여기로 옮기면 좋을듯 (GameMgr에서 끌어다 쓰면 됨, 버튼에 온클릭 이벤트 추가할 땐 UIManager 오브젝트 사용)
+    [Header("Popup")]
+    public GameObject alert_Popup;
 
     [Header("Setting")]
     public GameObject setting_UI;

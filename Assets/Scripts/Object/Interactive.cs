@@ -74,7 +74,7 @@ public class Interactive : MonoBehaviour
                 KioskSystem.single.KioskUsing();
                 break;
             case "Cup":
-                if (player.GetRole() == Role.Manager || player.GetRole() == Role.Empolyee)
+                if (player.GetRole() == Role.Manager || player.GetRole() == Role.Employee)
                 {
                     if (player.cup)
                     {
@@ -97,7 +97,7 @@ public class Interactive : MonoBehaviour
                 Debug.Log("접촉한 오브젝트 : " + parent_Tag);
                 break;
             case "Grinder":
-                if (player.GetRole() == Role.Manager || player.GetRole() == Role.Empolyee)
+                if (player.GetRole() == Role.Manager || player.GetRole() == Role.Employee)
                 {
                     if (player.coffee)
                     {
@@ -114,7 +114,7 @@ public class Interactive : MonoBehaviour
                 }
                 break;
             case "Espresso":
-                if (player.GetRole() == Role.Manager || player.GetRole() == Role.Empolyee)
+                if (player.GetRole() == Role.Manager || player.GetRole() == Role.Employee)
                 {
                     CoffeeMachine coffeemachine = my.GetComponent<CoffeeMachine>();
                     if (coffee_Check && player.cup)
@@ -144,6 +144,12 @@ public class Interactive : MonoBehaviour
                         player.cur_IngrList.Add("에스프레소");
 
                         Cup_Icon("Espresso");
+
+                        return;
+                    }
+                    else if (!coffee_Done && !player.cup)
+                    {
+                        Debug.Log("커피를 다 내리지 않았습니다.");
                         return;
                     }
 
@@ -172,7 +178,7 @@ public class Interactive : MonoBehaviour
                 }
                 break;
             case "Ice":
-                if (player.GetRole() == Role.Manager || player.GetRole() == Role.Empolyee)
+                if (player.GetRole() == Role.Manager || player.GetRole() == Role.Employee)
                 {
                     if (player.cup)
                     {
@@ -193,12 +199,15 @@ public class Interactive : MonoBehaviour
                 }
                 break;
             case "Done":
-                if (player.GetRole() == Role.Manager || player.GetRole() == Role.Empolyee)
+                if (player.GetRole() == Role.Manager || player.GetRole() == Role.Employee)
                 {
+                    player.Create(); // 메뉴 제작 체크
+
                     if (player.done)
                     {
                         Debug.Log("음료 제작 완료 : " + player.cur_Ordered_Menu);
                         player.Done();
+                        DeleteCupIcon();
                     }
                     else
                     {
@@ -213,7 +222,7 @@ public class Interactive : MonoBehaviour
                 }
                 break;
             case "Dish":
-                if (player.GetRole() == Role.Manager || player.GetRole() == Role.Empolyee)
+                if (player.GetRole() == Role.Manager || player.GetRole() == Role.Employee)
                 {
                     if (player.cup)
                     {
@@ -233,7 +242,7 @@ public class Interactive : MonoBehaviour
                 }
                 break;
             case "Water":
-                if (player.GetRole() == Role.Manager || player.GetRole() == Role.Empolyee)
+                if (player.GetRole() == Role.Manager || player.GetRole() == Role.Employee)
                 {
                     WaterDispenser water = my.GetComponent<WaterDispenser>();
                     water.Init(my.GetComponent<Interactive>(), player);
@@ -255,7 +264,7 @@ public class Interactive : MonoBehaviour
                 }
                 break;
             case "Mixer":
-                if (player.GetRole() == Role.Manager || player.GetRole() == Role.Empolyee)
+                if (player.GetRole() == Role.Manager || player.GetRole() == Role.Employee)
                 {
                     Debug.Log("믹서기 진입 테스트");
                     if (player.cur_IngrList.Count != 0 && player.cup)
@@ -348,4 +357,14 @@ public class Interactive : MonoBehaviour
             }
         }
     }
+
+    public void DeleteCupIcon()
+    {
+        foreach (Transform icon_List in GameMgr.Instance.ui.cup_List.transform)
+        {
+            if (icon_List != null)
+                Destroy(icon_List.gameObject);
+        }
+    }
+
 }
