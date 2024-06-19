@@ -454,5 +454,10 @@ namespace Photon.Realtime
 
             return false;
         }
+
+        public void SetCustomProperties(System.Collections.Hashtable custom)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
