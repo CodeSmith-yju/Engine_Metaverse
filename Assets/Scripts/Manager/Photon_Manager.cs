@@ -347,8 +347,7 @@ public class Photon_Manager : MonoBehaviourPunCallbacks
         {
             if (!GameMgr.Instance.ui.alert_Popup.activeSelf)
             {
-                GameMgr.Instance.ui.OnPopup(GameMgr.Instance.ui.alert_Popup);
-                GameMgr.Instance.ui.alert_Popup.GetComponent<AlertInit>().TextInit("기존 점장이 접속을 종료하여 \n점장 권한을 얻었습니다.");
+                GameMgr.Instance.ui.OnAlertPopup("기존 점장이 접속을 종료하여 \n점장 권한을 얻었습니다.");
             }
             else if (GameMgr.Instance.ui.alert_Popup.activeSelf)
             {

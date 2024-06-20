@@ -6,8 +6,6 @@ using UnityEngine.UI;
 
 public class CoffeeMachine : MonoBehaviour
 {
-    public List<GameObject> machines = new();
-
     public GameObject timer_Screen;
     public TextMeshProUGUI textTimer;
     public GameObject bg;
@@ -18,12 +16,14 @@ public class CoffeeMachine : MonoBehaviour
     public float currentTime = 0f;
     public bool isTimerRunning = false;
     public float maxTime = 0f;
+    public bool coffee_Done = false;
+    public bool coffee_Check = false;
+    public bool coffee_Ing = false;
 
     private void Awake()
     {
         timer_Screen.SetActive(true);
         bg.SetActive(false);
-        machines[0].SetActive(false);
     }
     private void Update()
     {
@@ -69,5 +69,25 @@ public class CoffeeMachine : MonoBehaviour
         bg.SetActive(true);
         UpdateTimerDisplay();
     }
+
+
+    public IEnumerator CoffeeRoutine(CoffeeMachine coffee)
+    {
+        float time = 15f;
+
+        yield return StartCoroutine(Espresso(coffee, time));
+        coffee_Ing = false;
+        Debug.Log("커피가 다 내려졌습니다");
+        coffee_Done = true;
+    }
+
+
+    public IEnumerator Espresso(CoffeeMachine coffee, float time)
+    {
+        coffee.StartTimer(time);
+        coffee_Ing = true;
+        yield return new WaitForSeconds(time);
+    }
+
 
 }

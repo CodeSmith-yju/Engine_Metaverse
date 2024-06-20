@@ -96,11 +96,6 @@ public class Players : MonoBehaviour
             {
                 GameMgr.Instance.ui.cup_List_BG.SetActive(cup);
             }
-
-            if (KioskSystem.single.order_List.Count > 0)
-            {
-                ++order_Index;
-            }
         }
     }
 }

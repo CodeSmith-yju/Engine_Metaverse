@@ -12,7 +12,7 @@ public class Refrigerator : MonoBehaviour
         this.player = player;
     }
 
-    public void InCupIngr(string name)
+    /*public void InCupIngr(string name)
     {
         switch (name)
         {
@@ -33,5 +33,5 @@ public class Refrigerator : MonoBehaviour
                 interactive.Cup_Icon(tag);
                 break;
         }
-    }
+    }*/
 }
