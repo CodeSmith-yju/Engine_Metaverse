@@ -11,6 +11,7 @@ public class UIManager : MonoBehaviour
     // 전체적인 UI 관리를 여기서 하면 좋을듯? 이미지나 텍스트 등 키오스크 UI도 여기로 옮기면 좋을듯 (GameMgr에서 끌어다 쓰면 됨, 버튼에 온클릭 이벤트 추가할 땐 UIManager 오브젝트 사용)
     [Header("Popup")]
     public GameObject alert_Popup;
+    public GameObject check_Popup;
 
     [Header("Setting")]
     public GameObject setting_UI;
@@ -117,6 +118,12 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    public void OnAlertPopup(string alert)
+    {
+        alert_Popup.SetActive(true);
+        alert_Popup.GetComponent<AlertInit>().TextInit(alert);
+    }
+
     public void CancelPopup(GameObject popup)
     {
         if (popup.activeSelf) 
@@ -125,6 +132,63 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    
+    // 컵에 들어 있는 재료 아이콘 생성
+    public void CupIcon(string tag)
+    {
+        foreach (GameObject icon_List in GameMgr.Instance.ui.cup_Icon_List)
+        {
+            if (icon_List.tag == tag)
+            {
+                GameObject icon = Instantiate(icon_List, GameMgr.Instance.ui.cup_List.transform);
+
+                if (tag == "Mixer")
+                {
+                    icon.GetComponent<Mixer_Icon>().PrefabsMove();
+                }
+            }
+        }
+    }
+
+    // 컵에 들어있는 재료 전체 아이콘 삭제
+    public void DeleteCupIcon()
+    {
+        foreach (Transform icon_List in GameMgr.Instance.ui.cup_List.transform)
+        {
+            if (icon_List != null)
+                Destroy(icon_List.gameObject);
+        }
+    }
+
+    // 요리 상호작용 팝업
+    public void CheckPopup(string tag, Players player)
+    {
+        check_Popup.SetActive(true);
+        string alert = "";
+
+        switch (tag)
+        {
+            case "Ice":
+                alert = "컵에 얼음을 넣으시겠습니까?";
+                break;
+            case "Cup":
+                alert = "컵을 손에 들겠습니까?";
+                break;
+            case "Espresso":
+                alert = "컵에 에스프레소를 넣으시겠습니까?";
+                break;
+            case "Mixer":
+                alert = "현재까지 컵에 있는 재료들을 \n믹서기에 갈겠습니까?";
+                break;
+            case "Grinder":
+                alert = "커피가루를 손에 드시겠습니까?";
+                break;
+            case "Dish":
+                alert = "컵을 씻으시겠습니까?";
+                break;
+        }
+
+        check_Popup.GetComponent<CheckPopupInit>().Init(alert, tag, player);
+    }
+
 
 }
