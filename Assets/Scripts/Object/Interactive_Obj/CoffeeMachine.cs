@@ -11,11 +11,10 @@ public class CoffeeMachine : MonoBehaviour
     public GameObject bg;
     public Image time_Img;
     public Image coffee_Icon;
-    public Transform cup_Pos;
 
-    public float currentTime = 0f;
-    public bool isTimerRunning = false;
-    public float maxTime = 0f;
+    float currentTime = 0f;
+    bool isTimerRunning = false;
+    float maxTime = 0f;
     public bool coffee_Done = false;
     public bool coffee_Check = false;
     public bool coffee_Ing = false;
@@ -76,9 +75,6 @@ public class CoffeeMachine : MonoBehaviour
         float time = 15f;
 
         yield return StartCoroutine(Espresso(coffee, time));
-        coffee_Ing = false;
-        Debug.Log("커피가 다 내려졌습니다");
-        coffee_Done = true;
     }
 
 
@@ -87,6 +83,10 @@ public class CoffeeMachine : MonoBehaviour
         coffee.StartTimer(time);
         coffee_Ing = true;
         yield return new WaitForSeconds(time);
+        coffee_Ing = false;
+        coffee_Done = true;
+
+        Debug.Log("커피가 다 내려졌습니다");
     }
 
 

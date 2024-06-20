@@ -21,6 +21,7 @@ public class UIManager : MonoBehaviour
     [Header("Resume")]
     public GameObject job_Opening_UI;
     public GameObject resume_UI;
+    public GameObject resume_Info;
 
     [Header("POS")]
     public GameObject pos_Menu_UI;
@@ -28,7 +29,6 @@ public class UIManager : MonoBehaviour
     public GameObject pos_Menu_Resume_UI;
     public GameObject pos_Menu_Sales_UI;
     public GameObject pos_Menu_Crew_UI;
-    public GameObject pos_Menu_Access_Popup;
 
     [Header("ScreenUI")]
     public GameObject cup_List_BG;
@@ -38,14 +38,14 @@ public class UIManager : MonoBehaviour
 
     [Header("KitchenUI")]
     public GameObject water_dispenser_UI;
-
+    public GameObject refrigerator_UI;
     private void Update()
     {
         // UI 관련
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             // 다른 UI 창이 안열려 있을 때 설정창 열도록 함.
-            if (!setting_UI.activeSelf && !job_Opening_UI.activeSelf && !pos_Menu_UI.activeSelf)
+            if (!setting_UI.activeSelf && !job_Opening_UI.activeSelf && !pos_Menu_UI.activeSelf && !alert_Popup.activeSelf && !check_Popup.activeSelf && !water_dispenser_UI.activeSelf && !refrigerator_UI.activeSelf)
             {
                 setting_UI.SetActive(true);
             }
@@ -104,6 +104,28 @@ public class UIManager : MonoBehaviour
                 }*/
                 pos_Menu_UI.SetActive(false);
             }
+
+            // 알림창 팝업이 켜져있을때 닫도록함.
+            if (alert_Popup.activeSelf)
+            {
+                alert_Popup.SetActive(false);
+            } 
+
+            if (check_Popup.activeSelf)
+            {
+                check_Popup.SetActive(false);
+            }
+
+            if (water_dispenser_UI.activeSelf)
+            {
+                water_dispenser_UI.SetActive(false);
+            }
+
+            if (refrigerator_UI.activeSelf)
+            {
+                refrigerator_UI.SetActive(false);
+            }
+
         }
     }
 
@@ -184,6 +206,24 @@ public class UIManager : MonoBehaviour
                 break;
             case "Dish":
                 alert = "컵을 씻으시겠습니까?";
+                break;
+            case "Water_Ice":
+                alert = "컵에 냉수를 넣으시겠습니까?";
+                break;
+            case "Water_Hot":
+                alert = "컵에 온수를 넣으시겠습니까?";
+                break;
+            case "Strawberry":
+                alert = "컵에 딸기를 넣으시겠습니까?";
+                break;
+            case "Milk":
+                alert = "컵에 우유를 넣으시겠습니까?";
+                break;
+            case "Chocolate":
+                alert = "컵에 초콜릿를 넣으시겠습니까?";
+                break;
+            case "Yogurt":
+                alert = "컵에 요거트를 넣으시겠습니까?";
                 break;
         }
 

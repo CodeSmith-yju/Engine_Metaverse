@@ -5,6 +5,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 using System;
+using System.Linq;
 
 public class Photon_Manager : MonoBehaviourPunCallbacks
 {
@@ -233,7 +234,10 @@ public class Photon_Manager : MonoBehaviourPunCallbacks
 
     public override void OnLeftRoom()
     {
-        Debug.Log("Photon : OnLeftRoom");
+        if (PhotonNetwork.IsMasterClient)
+        {
+            RPCChangeRole();
+        }
     }
 
     ///////////////////룸 관련 콜백 끝
@@ -246,12 +250,14 @@ public class Photon_Manager : MonoBehaviourPunCallbacks
 
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
+        Debug.Log("Player left room: " + otherPlayer.NickName);
         PhotonView[] views = FindObjectsOfType<PhotonView>();
 
         foreach (PhotonView view in views)
         {
             if (view.OwnerActorNr == otherPlayer.ActorNumber)
             {
+                Debug.Log("Destroying player object with ViewID: " + view.ViewID);
                 photonView.RPC("DestroyPlayer", RpcTarget.AllBuffered, view.ViewID);
             }
         }
@@ -261,84 +267,72 @@ public class Photon_Manager : MonoBehaviourPunCallbacks
     private void DestroyPlayer(int viewID)
     {
         PhotonView view = PhotonView.Find(viewID);
+        
         if (view != null)
         {
             GameObject player = view.gameObject;
             if (GameMgr.Instance.player_List.Contains(player))
             {
                 GameMgr.Instance.player_List.Remove(player);
+                Destroy(player);
             }
         }
     }
     ///////////////////플레이어 관련 콜백 끝
     ///
-/*
-    public void ChangeRole()
+
+    public void RPCChangeRole()
     {
-        List<Player> players = PhotonNetwork.PlayerList.ToList();
-        bool hasEmployee = false;
+        photonView.RPC("ChangeRole", RpcTarget.AllBuffered);
+    }
 
-        foreach (Player player in players) 
-        {
-            int id = player.ActorNumber;
 
-            foreach (GameObject obj in  GameMgr.Instance.player_List)
-            {
-                Players player_Obj = obj.GetComponent<Players>();
+    [PunRPC]
+    public void ChangeRole()
+{
+    List<Player> players = PhotonNetwork.PlayerList.ToList();
+    Player newMaster = null;
+
+    bool hasEmployee = players.Any(player => {
+        int id = player.ActorNumber;
+        return GameMgr.Instance.player_List.Any(obj => {
+            PhotonView photon_Player = obj.GetComponent<PhotonView>();
+            Players player_Obj = obj.GetComponent<Players>();
+            return photon_Player.OwnerActorNr == id && player_Obj.GetRole() == Role.Employee;
+        });
+    });
+
+    if (hasEmployee)
+    {
+        // 역할이 Employee인 플레이어 중에서 가장 빠른 ActorNumber를 가진 플레이어를 새 마스터 클라이언트로 설정합니다.
+        newMaster = players.OrderBy(p => p.ActorNumber).FirstOrDefault(player => {
+            return GameMgr.Instance.player_List.Any(obj => {
                 PhotonView photon_Player = obj.GetComponent<PhotonView>();
+                Players player_Obj = obj.GetComponent<Players>();
+                return photon_Player.OwnerActorNr == player.ActorNumber && player_Obj.GetRole() == Role.Employee;
+            });
+        });
+    }
+    else
+    {
+        // 모든 플레이어 중에서 가장 빠른 ActorNumber를 가진 플레이어를 새 마스터 클라이언트로 설정합니다.
+        newMaster = players.OrderBy(p => p.ActorNumber).FirstOrDefault();
+    }
 
-                if (player != null && photon_Player.OwnerActorNr == id && player_Obj.GetRole() == Role.Employee)
-                {
-                    hasEmployee = true;
-                    break;
-                }
-            }
-        }
-
-        // 특정 조건을 만족하는 플레이어를 찾아 마스터 클라이언트로 설정
-        Player newMaster = null;
-
-        if (hasEmployee)
+    if (newMaster != null)
+    {
+        PhotonNetwork.SetMasterClient(newMaster);
+        Debug.Log("새로운 마스터 클라이언트 설정: " + newMaster.NickName);
+        if (PhotonNetwork.IsMasterClient)
         {
-            int num = int.MaxValue;
-            foreach (Player player in players)
-            {
-                foreach (GameObject obj in GameMgr.Instance.player_List)
-                {
-                    Players player_Obj = obj.GetComponent<Players>();
-                    PhotonView photon_Player = obj.GetComponent<PhotonView>();
-
-                    if (player_Obj.GetRole() == Role.Employee && photon_Player.OwnerActorNr < num)
-                    {
-                        newMaster = player;
-                        num = photon_Player.OwnerActorNr;
-                    }
-                }
-            }
+            ShowClientPopup();
         }
-        else
-        {
-            // 모든 플레이어 중에서 가장 먼저 들어온 사람에게 권한을 부여
-            newMaster = players.OrderBy(p => p.ActorNumber).FirstOrDefault();
-        }
-
-
-        if (newMaster != null) 
-        {
-            PhotonNetwork.SetMasterClient(newMaster);
-            Debug.Log("마스터 설정");
-            if (PhotonNetwork.IsMasterClient)
-            {
-                ShowClientPopup();
-            }
-        }
-        else
-        {
-            Debug.Log("플레이어가 없습니다.");
-            return;
-        }
-
-    }*/
+    }
+    else
+    {
+        Debug.Log("플레이어가 없습니다.");
+    }
+}
 
 
     public void ShowClientPopup()

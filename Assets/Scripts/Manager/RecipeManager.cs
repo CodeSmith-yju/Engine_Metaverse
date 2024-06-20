@@ -20,7 +20,7 @@ public class RecipeManager : MonoBehaviour
         recipe["아메리카노"] = new List<string> { "에스프레소", "온수" };
         recipe["아이스 카페라떼"] = new List<string> { "얼음", "우유", "에스프레소" };
         recipe["아이스 카페모카"] = new List<string> { "초콜릿", "우유", "에스프레소", "믹서기", "얼음" };
-        //recipe["초코라떼"] = new List<string> { "초콜릿", "우유", "믹서기", "얼음" };
+        recipe["초코라떼"] = new List<string> { "초콜릿", "우유", "믹서기", "얼음" };
         recipe["딸기라떼"] = new List<string> { "딸기", "우유", "믹서기", "얼음" };
         //recipe["요거트 스무디"] = new List<string> { "요거트 파우더", "우유", "얼음", "믹서기" };
         recipe["딸기 요거트 스무디"] = new List<string> { "요거트 파우더", "우유", "딸기", "얼음", "믹서기" };

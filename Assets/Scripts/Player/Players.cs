@@ -36,7 +36,7 @@ public class Players : MonoBehaviour
 
     private void Update()
     {
-        if (GameMgr.Instance.ui.setting_UI.activeSelf || GameMgr.Instance.ui.job_Opening_UI.activeSelf || GameMgr.Instance.ui.pos_Menu_UI.activeSelf)
+        if (GameMgr.Instance.ui.setting_UI.activeSelf || GameMgr.Instance.ui.job_Opening_UI.activeSelf || GameMgr.Instance.ui.pos_Menu_UI.activeSelf || GameMgr.Instance.ui.alert_Popup.activeSelf || GameMgr.Instance.ui.check_Popup.activeSelf)
         {
             ui_Opened = true;
         }
@@ -69,12 +69,12 @@ public class Players : MonoBehaviour
         if (cup)
         {
             bool isdone = recipe.Cook(KioskSystem.single.order_List[order_Index], cur_IngrList);
-            cur_IngrList.Clear();
-
+            
             if (isdone)
             {
                 done = true;
                 cur_Ordered_Menu = KioskSystem.single.order_List[order_Index];
+                cur_IngrList.Clear();
             }
             else
             {
