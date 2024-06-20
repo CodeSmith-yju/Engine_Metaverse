@@ -97,7 +97,8 @@ public class Interactive : MonoBehaviour
                 }
                 break;
             case "POS":
-                GameMgr.Instance.ui.pos_Menu_UI.SetActive(true);
+                //GameMgr.Instance.ui.pos_Menu_UI.SetActive(true);
+                KioskSystem.single.sellerImg.gameObject.SetActive(true);
                 break;
             case "Grinder":
                 if (player.GetRole() == Role.Manager || player.GetRole() == Role.Employee)

@@ -25,7 +25,6 @@ public class KioskSystem : MonoBehaviour
     [SerializeField] private TextMeshProUGUI textNumberKiosk;
 
     [Header("SellerDisplay Object")]
-    public TextMeshProUGUI textNumberellerDisPlay;
     public Image sellerImg;
     [SerializeField] private List<Slot> poolSlot = new List<Slot>(); // 수정된 부분
     [SerializeField] private List<SelectedMenu> listSelectedMenus = new List<SelectedMenu>(); // 수정된 부분
@@ -47,8 +46,6 @@ public class KioskSystem : MonoBehaviour
     public Image management_Display;
 
     [Header("ConsumerDisplay Object")]
-    public TextMeshProUGUI textNumberConsumerDisPlay;
-
     public int kioIndex = 0;
     public bool buyCheck = false;
 
@@ -72,13 +69,10 @@ public class KioskSystem : MonoBehaviour
     public TextMeshProUGUI textdescName;
     public TextMeshProUGUI textdescIndex;
 
-    public Slot selectedSlot = null;// 얘를 통해서 이제 상단의 목록을통해 클릭해서 상세(Desc)를 보는중인 오브젝트의 상호작용여부가 어떻게될지 결정, 해당버튼컴포넌트들은 slot.desc로 가야할 것.
+    [HideInInspector] public Slot selectedSlot = null;// 얘를 통해서 이제 상단의 목록을통해 클릭해서 상세(Desc)를 보는중인 오브젝트의 상호작용여부가 어떻게될지 결정, 해당버튼컴포넌트들은 slot.desc로 가야할 것.
 
     //player move
     public bool kiosck;
-
-    public List<Button> managementBtnList;
-
     [Header("#Menu Rank")]
     public GameObject obj_managerOrderView;//화면에 표시될 UI
 
@@ -101,6 +95,7 @@ public class KioskSystem : MonoBehaviour
         kioskBuyPanel.gameObject.SetActive(false);
         tiketIssuance.gameObject.SetActive(false);
         sellerImg.gameObject.SetActive(false);
+        Desc.SetActive(false);
         imgOrder.gameObject.SetActive(false);
         management_Display.gameObject.SetActive(false);
     }
@@ -278,6 +273,7 @@ public class KioskSystem : MonoBehaviour
     public void KioskUsing()
     {
         kiosck = true;
+        Debug.Log("KioUsing");
         //btnQuiteKiosk.gameObject.SetActive(true);
         if (buyCheck == false)
         {
