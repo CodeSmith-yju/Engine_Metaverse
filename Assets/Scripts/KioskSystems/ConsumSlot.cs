@@ -8,6 +8,10 @@ public class ConsumSlot : MonoBehaviour
     public TextMeshProUGUI selectedText;
     public void Init(SelectedMenu _selectMenu)
     {
+        if (_selectMenu == null)
+        {
+            Debug.Log("is Null");
+        }
         this.selectedMenu = _selectMenu;
         selectedText.text = selectedMenu.GetIndex().ToString();
 

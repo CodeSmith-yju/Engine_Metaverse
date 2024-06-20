@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -32,19 +33,14 @@ public class KioskSystem : MonoBehaviour
     public GameObject slotPrefab; // 새로운 슬롯을 생성할 때 사용할 프리팹
 
     //06-19 Add
-    public List<ConsumSlot> commitOrderList = new();
+    public List<ConsumSlot> commitOrderList = new();//주문완료된 메뉴 정보를 가지고있다가 해당 정보를 통해 오브젝트를 제거하는데 사용함
     public List<ConsumSlot> waitOrderList = new();
-/*
-    [SerializeField] private List<SelectedMenu> listOrderMenu = new();
-    [SerializeField] private List<SelectedMenu> watiOrderMenu = new();
-*/
-    //public TextMeshProUGUI txtNowCommitOrder;
-    public ConsumSlot objNowActiveConsumerOrder;
-    public GameObject conSumePrefab;
+
+    public ConsumSlot objNowActiveConsumerOrder;//최초 주문 완료 시, 좌측상단의 노란색 큰 글씨를 얘가 들고있음
+    public GameObject conSumePrefab;// 생성/파괴에 사용될 메뉴정보를 담은 오브젝트
 
     [SerializeField] private Transform tr_commitTxt;
     [SerializeField] private Transform tr_waitTxt;
-    //public bool cancelOrder = false;
 
     //06-11 PosMachin Img Add
     [Header("Pos Machine")]
@@ -57,8 +53,10 @@ public class KioskSystem : MonoBehaviour
     public bool buyCheck = false;
 
     public Button btnBuyOK;
-
     public TextMeshProUGUI textBuyDesc;
+
+    //06-20 Add
+    public Button btn_CallConsumer;
 
     [Header("Order")]
     public Image imgOrder;
@@ -97,7 +95,7 @@ public class KioskSystem : MonoBehaviour
         kioskBuyPanel.gameObject.SetActive(false);
         tiketIssuance.gameObject.SetActive(false);
         sellerImg.gameObject.SetActive(false);
-
+        imgOrder.gameObject.SetActive(false);
         management_Display.gameObject.SetActive(false);
     }
 
@@ -382,6 +380,13 @@ public class KioskSystem : MonoBehaviour
                 } 
             }
         }*/
+        //06-20 Add
+        if (_slot.selectedMenu.oneTimeCall)
+            btn_CallConsumer.interactable = true;
+        else
+            btn_CallConsumer.interactable= false;
+
+
         Debug.Log("Run PassData MenuName: "+_slot.textName);
         selectedSlot = _slot;//선택중인 슬롯..얘를통해 상호작용해서 고객호출, 주문완료, 주문취소 가 실행될 것. 
 
@@ -397,53 +402,39 @@ public class KioskSystem : MonoBehaviour
         if (false)//cancelOrder
         {
         }
-        
+
+        RemoveCommitOrder(selectedSlot.selectedMenu);//06-20 Add
         RemoveSlot(selectedSlot.selectedMenu);//그래서 어디로 빼냄? 
+
         Debug.Log("OnClick Slot Index: " + selectedSlot.selectedMenu.GetIndex());
         selectedSlot.gameObject.SetActive(false);
         Desc.SetActive(false);
     }
     public void OnClickCallConsumer()
     {
+        StartCoroutine("CallOderFade");//코루틴때문에 여기 안 넣으면 연속클릭되버림
+
         Debug.Log("Call Consumer");
-/*
-        foreach (ConsumSlot c_Slot in commitOrderList)
-        {
-            if (c_Slot.selectedMenu.GetIndex() == selectedSlot.selectedMenu.GetIndex())
-            {
-                if (string.IsNullOrEmpty(txtNowCommitOrder.text))
-                {
-                    AddCommitOrder(txtNowCommitOrder);
-                }
-            }
-        }
-*/
-        for (int i = 0; i < waitOrderList.Count; i++)
-        {
-
-        }
         //imgOrder활성 TextOrder에 내 index 표시됨, 활성이미지는 코루틴으로 넣어주면될거같은데 사운드 활성화하고
-        if (commitOrderList.Count == 0 )//&& string.IsNullOrEmpty(txtNowCommitOrder.text))
+        if (commitOrderList.Count == 0 && string.IsNullOrEmpty(objNowActiveConsumerOrder.selectedText.text))//&& string.IsNullOrEmpty(txtNowCommitOrder.text))
         {
-            Debug.Log("Call Consumer is true");
-            //txtNowCommitOrder.text = selectedSlot.textIndex.text;
-
-            for (int i = 0; i < waitOrderList.Count; i++)
-            {
-                if (waitOrderList[i].selectedMenu == selectedSlot.selectedMenu)
-                {
-                    waitOrderList[i].GetOutWaitSlot();
-                    return;
-                }
-            }
+            SetActiveConsumerData();
         }
-        else
+        else if (!string.IsNullOrEmpty(objNowActiveConsumerOrder.selectedText.text))
         {
+            AddCommitOrder(objNowActiveConsumerOrder.selectedMenu);//좌측 상단의데이터 하단으로 Pass
+            SetActiveConsumerData();
             Debug.Log("Call Consumer is false");
         }
     }
-    public void MoreClickCallConsumer()
+    private void SetActiveConsumerData()// 중복되는 코드 메서드로 따로 뺌 06-20
     {
+        objNowActiveConsumerOrder.selectedMenu = selectedSlot.selectedMenu;
+        objNowActiveConsumerOrder.selectedText.text = objNowActiveConsumerOrder.selectedMenu.GetIndex().ToString();
+        
+        selectedSlot.selectedMenu.oneTimeCall = false;
+        btn_CallConsumer.interactable = false;
+
         for (int i = 0; i < waitOrderList.Count; i++)
         {
             if (waitOrderList[i].selectedMenu == selectedSlot.selectedMenu)
@@ -453,7 +444,6 @@ public class KioskSystem : MonoBehaviour
             }
         }
     }
-
     public void OpenReceiptMenu()
     {
         //management_Display.gameObject.SetActive(false);
@@ -475,26 +465,97 @@ public class KioskSystem : MonoBehaviour
         waitOrderList.Add(consumSlot);
         consumSlot.Init(_selectedMenu);
     }
-
-    public void RemoveWatiOrder()
-    {
-
-    }
-
     public void AddCommitOrder(SelectedMenu _selectedMenu)
     {
-        ConsumSlot consumSlot = new();
         GameObject go = Instantiate(conSumePrefab, tr_commitTxt);//실제 생성된 오브젝트를 지정된 위치에 대입
 
-        consumSlot = go.GetComponent<ConsumSlot>();
-        commitOrderList.Add(consumSlot);
+        ConsumSlot consumSlot = go.GetComponent<ConsumSlot>();
         consumSlot.Init(_selectedMenu);
+        commitOrderList.Add(consumSlot);
+    }
+    public void RemoveCommitOrder(SelectedMenu _selectedMenu)
+    {
+        foreach (ConsumSlot c_Slot in waitOrderList)
+        {
+            if (c_Slot.selectedMenu == _selectedMenu)
+            {
+                c_Slot.GetOutWaitSlot();
+                return;
+            }
+        }
+
+        if (objNowActiveConsumerOrder.selectedMenu == selectedSlot.selectedMenu)
+        {
+            if (commitOrderList.Count > 0)
+            {
+                Debug.Log("commitList is Not null");
+                Debug.Log("Cnt CommitList: " + commitOrderList.Count);
+                objNowActiveConsumerOrder.selectedMenu = commitOrderList[(commitOrderList.Count - 1)].selectedMenu;
+                objNowActiveConsumerOrder.selectedText.text = objNowActiveConsumerOrder.selectedMenu.GetIndex().ToString();
+
+                commitOrderList[commitOrderList.Count - 1].GetOutWaitSlot();
+                commitOrderList.Remove(commitOrderList[commitOrderList.Count - 1]);
+                return;
+            }
+            else
+            {
+                Debug.Log("Active Text is true");
+                objNowActiveConsumerOrder.selectedMenu = null;
+                objNowActiveConsumerOrder.selectedText.text = null;
+                return;
+            }
+        }
+
+        foreach (ConsumSlot c_Slot in commitOrderList)
+        {
+            if (_selectedMenu == c_Slot.selectedMenu)
+            {
+                Debug.Log("after Active Text is true");
+                commitOrderList.Remove(c_Slot);
+                c_Slot.GetOutWaitSlot();
+                return;
+            }
+        }
     }
 
 
-    public void CallOrderMenu()
-    { 
-        
+    private IEnumerator CallOderFade()
+    {
+        foreach (var _slot in poolSlot)
+        {
+            _slot.GetComponent<Button>().interactable = false;
+        }
+        btn_CallConsumer.interactable = false;
+
+        Color color = imgOrder.color;
+        imgOrder.gameObject.SetActive(true);
+        color.a = 1f;
+        imgOrder.color = color;
+
+        textOrder.text = selectedSlot.selectedMenu.GetIndex().ToString();
+
+        yield return new WaitForSeconds(2f);
+
+        float fadeDuration = 0.5f;
+        float endDuration = 0f;
+
+        while (endDuration < fadeDuration)
+        {
+            endDuration += Time.deltaTime;
+            color.a = Mathf.Lerp(1f, 0f, endDuration / fadeDuration);
+            imgOrder.color = color;
+            yield return null;
+        }
+
+        // alpha 값이 0이 되면 이미지 비활성화
+        color.a = 0f;
+        imgOrder.color = color;
+        imgOrder.gameObject.SetActive(false);
+
+        foreach (var _slot in poolSlot)
+        {
+            _slot.GetComponent<Button>().interactable = true;
+        }
     }
 
 }

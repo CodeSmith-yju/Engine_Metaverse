@@ -11,11 +11,15 @@ public class SelectedMenu
     protected Sprite spMenuIcon;
 
     public int intSlotIndex = 1000;
+
+    //06-20 Add ConsumerText
+    public bool oneTimeCall = false;
     public SelectedMenu(string _menuName, int _menuIndex, Sprite _menuSp)
     {
         this.strMenuName = _menuName;
         this.intMenuIndex = _menuIndex;
         this.spMenuIcon = _menuSp;
+        this.oneTimeCall = true;
     }
 
     public string GetName() { return strMenuName; }
