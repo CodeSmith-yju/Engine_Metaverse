@@ -25,6 +25,7 @@ public class Slot : MonoBehaviour
 
     public void OnClick()
     {
+        Debug.Log("주문확인의 미니아이콘 클릭");
         KioskSystem.single.PassMenuData(this);
     }
 

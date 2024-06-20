@@ -69,7 +69,7 @@ public class KioskSystem : MonoBehaviour
     public TextMeshProUGUI textdescName;
     public TextMeshProUGUI textdescIndex;
 
-    [HideInInspector] public Slot selectedSlot = null;// 얘를 통해서 이제 상단의 목록을통해 클릭해서 상세(Desc)를 보는중인 오브젝트의 상호작용여부가 어떻게될지 결정, 해당버튼컴포넌트들은 slot.desc로 가야할 것.
+    public Slot selectedSlot = null;// 얘를 통해서 이제 상단의 목록을통해 클릭해서 상세(Desc)를 보는중인 오브젝트의 상호작용여부가 어떻게될지 결정, 해당버튼컴포넌트들은 slot.desc로 가야할 것.
 
     //player move
     public bool kiosck;
