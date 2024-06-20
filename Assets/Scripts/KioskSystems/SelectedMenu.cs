@@ -14,6 +14,8 @@ public class SelectedMenu
 
     //06-20 Add ConsumerText
     public bool oneTimeCall = false;
+
+    public string buyUserName;
     public SelectedMenu(string _menuName, int _menuIndex, Sprite _menuSp)
     {
         this.strMenuName = _menuName;
@@ -25,4 +27,13 @@ public class SelectedMenu
     public string GetName() { return strMenuName; }
     public int GetIndex() { return intMenuIndex; }
     public Sprite GetIcon() { return spMenuIcon; }
+
+    public string GetUserName()
+    {
+        return buyUserName;
+    }
+    public void SetUserName(string _name)
+    {
+        this.buyUserName = _name;
+    }
 }

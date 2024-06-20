@@ -79,6 +79,12 @@ public class KioskSystem : MonoBehaviour
 
     public List<Button> managementBtnList;
 
+    [Header("#Menu Rank")]
+    public GameObject obj_managerOrderView;//화면에 표시될 UI
+
+    public Dictionary <string, SelectedMenu> dict_managerOrderView = new();// 점장 바뀌면 초기화되는 데이터, 얘를바탕으로 list에 Prefab 삽입하고 갱신할 것.
+    public List<SelectedMenu> list_ManagerOrderView = new();// 실제 화면 키면 보일거
+    public GameObject obj_ManagerOrderView;
 
     private void Awake()
     {
@@ -321,6 +327,7 @@ public class KioskSystem : MonoBehaviour
 
     public void RemoveSlot(SelectedMenu _nowMenu)
     {
+
         // 해당하는 메뉴의 슬롯을 찾습니다.
         Slot slotToRemove = poolSlot.Find(slot => slot.selectedMenu == _nowMenu);
         //비활성화 찾아서 제거하는코드 필요 
@@ -558,4 +565,14 @@ public class KioskSystem : MonoBehaviour
         }
     }
 
+
+    //manager Order View
+    public void AddmanagerOrderView( )
+    {
+        /*GameObject go = Instantiate(conSumePrefab, tr_commitTxt);//실제 생성된 오브젝트를 지정된 위치에 대입
+
+        ConsumSlot consumSlot = go.GetComponent<ConsumSlot>();
+        consumSlot.Init(_selectedMenu);
+        commitOrderList.Add(consumSlot);*/
+    }
 }
