@@ -24,6 +24,8 @@ TagManager:
   - Water_Ice
   - Water_Hot
   - Mixer
+  - Chair
+  - Interactable
   layers:
   - Default
   - TransparentFX

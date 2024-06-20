@@ -49,6 +49,8 @@ GameObject:
   - component: {fileID: 2226510343825760283}
   - component: {fileID: 6425480665267714149}
   - component: {fileID: 8386951128825743634}
+  - component: {fileID: 1489755625560017029}
+  - component: {fileID: -5520413527470468852}
   - component: {fileID: 5762758356396794511}
   - component: {fileID: 5947191391320954004}
   m_Layer: 0
@@ -186,6 +188,9 @@ MonoBehaviour:
   - Type: 4
     SynchronizeType: 1
     Name: Sit
+  - Type: 4
+    SynchronizeType: 1
+    Name: Working
   m_SynchronizeLayers:
   - SynchronizeType: 1
     LayerIndex: 0
@@ -210,6 +215,33 @@ MonoBehaviour:
   ui_Opened: 0
   coin: 0
   role: 2
+--- !u!114 &1489755625560017029
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 248822274323737384}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4842097b4c1e73a4a8d7f615bcb8cd64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-5520413527470468852
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 248822274323737384}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7553cee2edaf6594ba18c7d8a46f064c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterController: {fileID: 9077255950790103182}
+  playerAnimator: {fileID: 6834215674391882728}
+  player: {fileID: 8386951128825743634}
 --- !u!54 &5762758356396794511
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -22,7 +22,7 @@ public class PlayerUse : MonoBehaviourPunCallbacks
 
         if (canUseObject && Input.GetKeyDown(KeyCode.F) && !isUsingObject)
         {
-            if (player.GetRole() == Role.Manager || player.GetRole() == Role.Empolyee)
+            if (player.GetRole() == Role.Manager || player.GetRole() == Role.Employee)
             {
                 StartUsingObject();
                 // 2초 후에 StopUsingObject 메서드를 호출
