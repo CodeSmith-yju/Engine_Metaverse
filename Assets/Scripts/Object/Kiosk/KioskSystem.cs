@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,7 +7,6 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
-
 public class KioskSystem : MonoBehaviour
 {
     public static KioskSystem single;
@@ -79,7 +79,6 @@ public class KioskSystem : MonoBehaviour
     public Dictionary <string, SelectedMenu> dict_managerOrderView = new();// 점장 바뀌면 초기화되는 데이터, 얘를바탕으로 list에 Prefab 삽입하고 갱신할 것.
     public List<SelectedMenu> list_ManagerOrderView = new();// 실제 화면 키면 보일거
     public GameObject obj_ManagerOrderView;
-
     private void Awake()
     {
         single = this;
@@ -305,7 +304,8 @@ public class KioskSystem : MonoBehaviour
         if (slot == null)
         {
             // 비활성화된 슬롯이 없으면 새로 생성
-            GameObject go = Instantiate(slotPrefab, poolSlot[0].transform.parent);
+            //GameObject go = Instantiate(slotPrefab, poolSlot[0].transform.parent);
+            GameObject go = PhotonNetwork.Instantiate("Slot_Order", poolSlot[0].transform.parent.position, Quaternion.identity);
             slot = go.GetComponent<Slot>();
             poolSlot.Add(slot); // 오브젝트 풀에 슬롯 추가
         }
@@ -463,8 +463,9 @@ public class KioskSystem : MonoBehaviour
     //06-19
     public void AddWaitOrder(SelectedMenu _selectedMenu)
     {
-        //ConsumSlot consumSlot = new();
-        GameObject go = Instantiate(conSumePrefab, tr_waitTxt);//실제 생성된 오브젝트를 지정된 위치에 대입
+        //GameObject go = Instantiate(conSumePrefab, tr_waitTxt);//실제 생성된 오브젝트를 지정된 위치에 대입
+        GameObject go = PhotonNetwork.Instantiate("Slot_Consum", Vector3.zero, Quaternion.identity);
+        go.transform.SetParent(tr_waitTxt, false);
 
         ConsumSlot consumSlot = go.GetComponent<ConsumSlot>();
         waitOrderList.Add(consumSlot);
@@ -472,7 +473,11 @@ public class KioskSystem : MonoBehaviour
     }
     public void AddCommitOrder(SelectedMenu _selectedMenu)
     {
-        GameObject go = Instantiate(conSumePrefab, tr_commitTxt);//실제 생성된 오브젝트를 지정된 위치에 대입
+        //GameObject go = Instantiate(conSumePrefab, tr_commitTxt);//실제 생성된 오브젝트를 지정된 위치에 대입
+        GameObject go = PhotonNetwork.Instantiate("Slot_Consum", Vector3.zero, Quaternion.identity);
+
+        // 생성된 오브젝트의 부모를 지정된 위치로 설정
+        go.transform.SetParent(tr_commitTxt, false);
 
         ConsumSlot consumSlot = go.GetComponent<ConsumSlot>();
         consumSlot.Init(_selectedMenu);
