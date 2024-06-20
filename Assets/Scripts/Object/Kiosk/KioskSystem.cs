@@ -87,6 +87,8 @@ public class KioskSystem : MonoBehaviour
 
         commitOrderList.Clear();
         waitOrderList.Clear();
+        if (waitOrderList.Count == 0)
+            btn_CallConsumer.interactable = false;
     }
     private void Start()
     {
