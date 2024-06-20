@@ -155,7 +155,7 @@ public class KioskSystem : MonoBehaviour
 
 
         KioskUpdate();
-        SellerDisplayUpdate();
+        //SellerDisplayUpdate();
         //ConsumerDisplayUpdate();이제 안 씀
 
         menuName = null;
@@ -189,7 +189,7 @@ public class KioskSystem : MonoBehaviour
         textNumberKiosk.text = kioskText;
     }
 
-    private void SellerDisplayUpdate()
+/*    private void SellerDisplayUpdate()
     {
         string displayText = "";
 
@@ -215,7 +215,7 @@ public class KioskSystem : MonoBehaviour
         //Add ConsumerSlot(ticketNumbers);
         string displayText = string.Join(", ", ticketNumbers);
         textNumberConsumerDisPlay.text = displayText;
-    }
+    }*/
 
     private void KioskStart()
     {
@@ -347,7 +347,7 @@ public class KioskSystem : MonoBehaviour
         //지운 후 정렬 필요
 
         KioskUpdate();
-        SellerDisplayUpdate();
+        //SellerDisplayUpdate();
         //ConsumerDisplayUpdate();이제 안 씀
     }
 
