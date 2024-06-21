@@ -951,6 +951,7 @@ GameObject:
   - component: {fileID: 7103998518759693171}
   - component: {fileID: 8091726204228693487}
   - component: {fileID: 3984100541678748364}
+  - component: {fileID: -1422413423859385358}
   m_Layer: 0
   m_Name: woman
   m_TagString: Player
@@ -1164,6 +1165,14 @@ CapsuleCollider:
   m_Height: 2.271254
   m_Direction: 1
   m_Center: {x: -0.0011450052, y: 1.0932271, z: -0.011059165}
+--- !u!81 &-1422413423859385358
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2577325101096883597}
+  m_Enabled: 1
 --- !u!1 &2700089535007063054
 GameObject:
   m_ObjectHideFlags: 0
