@@ -10,7 +10,6 @@ using UnityEngine.UI;
 using TMPro;
 using Photon.Pun.Demo.PunBasics;
 using System.Data;
-using UnityEditor.VersionControl;
 
 public class Photon_Manager : MonoBehaviourPunCallbacks
 {
@@ -477,7 +476,7 @@ public class Photon_Manager : MonoBehaviourPunCallbacks
     {
         Debug.Log("Photon : OnJoinedRoom");
         //if (!GameMgr.Instance.ui.coin_UI.activeSelf)
-            GameMgr.Instance.ui.coin_UI.SetActive(true);
+        //GameMgr.Instance.ui.coin_UI.SetActive(true);
         CreateCharacter(m_LocalPlayer_Data);
     }
 
