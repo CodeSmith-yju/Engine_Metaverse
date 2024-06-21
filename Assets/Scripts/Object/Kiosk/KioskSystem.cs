@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,7 +7,6 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
-
 public class KioskSystem : MonoBehaviour
 {
     public static KioskSystem single;
@@ -14,8 +14,11 @@ public class KioskSystem : MonoBehaviour
     public List<GameObject> kioskScene;
 
     public Dictionary<int, string> order_List = new Dictionary<int, string>();
-    [SerializeField] private List<int> ticketNumbers = new List<int>();
-    [SerializeField] private int ticketNum = 0;
+    //[SerializeField] private List<int> ticketNumbers = new List<int>();
+    //[SerializeField] private int ticketNum = 0;
+    public List<int> ticketNumbers = new List<int>();
+    public int ticketNum = 0;
+    
     public string menuName = "";
     public Sprite menuSp = null;
 
@@ -25,10 +28,10 @@ public class KioskSystem : MonoBehaviour
     [SerializeField] private TextMeshProUGUI textNumberKiosk;
 
     [Header("SellerDisplay Object")]
-    public TextMeshProUGUI textNumberellerDisPlay;
     public Image sellerImg;
     [SerializeField] private List<Slot> poolSlot = new List<Slot>(); // 수정된 부분
-    [SerializeField] private List<SelectedMenu> listSelectedMenus = new List<SelectedMenu>(); // 수정된 부분
+    //[SerializeField] private List<SelectedMenu> listSelectedMenus = new List<SelectedMenu>(); // 수정된 부분
+    public List<SelectedMenu> listSelectedMenus = new List<SelectedMenu>(); // 수정된 부분
 
     public GameObject slotPrefab; // 새로운 슬롯을 생성할 때 사용할 프리팹
 
@@ -47,8 +50,6 @@ public class KioskSystem : MonoBehaviour
     public Image management_Display;
 
     [Header("ConsumerDisplay Object")]
-    public TextMeshProUGUI textNumberConsumerDisPlay;
-
     public int kioIndex = 0;
     public bool buyCheck = false;
 
@@ -76,9 +77,6 @@ public class KioskSystem : MonoBehaviour
 
     //player move
     public bool kiosck;
-
-    public List<Button> managementBtnList;
-
     [Header("#Menu Rank")]
     public GameObject obj_managerOrderView;//화면에 표시될 UI
 
@@ -86,13 +84,31 @@ public class KioskSystem : MonoBehaviour
     public List<SelectedMenu> list_ManagerOrderView = new();// 실제 화면 키면 보일거
     public GameObject obj_ManagerOrderView;
 
+    public Photon_Manager p_M;
+    public Players nowPlayer;
+
+    public void SetNowPlayer(Players _ps)
+    {
+        nowPlayer = _ps;
+    }
+
     private void Awake()
     {
-        single = this;
+        if (single != null)
+        {
+            Debug.Log(" single tone is not null");
+            return;
+        }
+        else
+        {
+            single = this;
+        }
         KioskStart();
 
         commitOrderList.Clear();
         waitOrderList.Clear();
+        if (waitOrderList.Count == 0)
+            btn_CallConsumer.interactable = false;
     }
     private void Start()
     {
@@ -101,6 +117,7 @@ public class KioskSystem : MonoBehaviour
         kioskBuyPanel.gameObject.SetActive(false);
         tiketIssuance.gameObject.SetActive(false);
         sellerImg.gameObject.SetActive(false);
+        Desc.SetActive(false);
         imgOrder.gameObject.SetActive(false);
         management_Display.gameObject.SetActive(false);
     }
@@ -155,15 +172,14 @@ public class KioskSystem : MonoBehaviour
 
 
         KioskUpdate();
-        SellerDisplayUpdate();
+        //SellerDisplayUpdate();
         //ConsumerDisplayUpdate();이제 안 씀
 
         menuName = null;
         menuSp = null;
     }
 
-
-    private void KioskUpdate()
+    public void KioskUpdate()
     {
         string kioskText = "영수증 수령";
         /*if (order_List.ContainsKey(ticketNum))
@@ -189,7 +205,7 @@ public class KioskSystem : MonoBehaviour
         textNumberKiosk.text = kioskText;
     }
 
-    private void SellerDisplayUpdate()
+/*    private void SellerDisplayUpdate()
     {
         string displayText = "";
 
@@ -215,7 +231,7 @@ public class KioskSystem : MonoBehaviour
         //Add ConsumerSlot(ticketNumbers);
         string displayText = string.Join(", ", ticketNumbers);
         textNumberConsumerDisPlay.text = displayText;
-    }
+    }*/
 
     private void KioskStart()
     {
@@ -244,6 +260,7 @@ public class KioskSystem : MonoBehaviour
                     players.GetComponent<Players>().coin--;
                 } 
             }*/
+            // 포톤매니저
 
             tiketIssuance.gameObject.SetActive(buyCheck);
             //btnQuiteKiosk.gameObject .SetActive(false);
@@ -278,6 +295,7 @@ public class KioskSystem : MonoBehaviour
     public void KioskUsing()
     {
         kiosck = true;
+        Debug.Log("KioUsing");
         //btnQuiteKiosk.gameObject.SetActive(true);
         if (buyCheck == false)
         {
@@ -301,13 +319,17 @@ public class KioskSystem : MonoBehaviour
         }
     }
 
-    private void CreateOrReuseSlot(SelectedMenu _newMenu)
+    public void CreateOrReuseSlot(SelectedMenu _newMenu)
     {
         Slot slot = poolSlot.Find(s => !s.gameObject.activeSelf); // 비활성화된 슬롯 찾기
         if (slot == null)
         {
             // 비활성화된 슬롯이 없으면 새로 생성
-            GameObject go = Instantiate(slotPrefab, poolSlot[0].transform.parent);
+            //GameObject go = Instantiate(slotPrefab, poolSlot[0].transform.parent);
+            GameObject go = PhotonNetwork.Instantiate("Slot_Order", poolSlot[0].transform.parent.position, Quaternion.identity);
+            go.transform.SetParent(poolSlot[0].transform.parent, false);//Add
+            //go.GetComponent<PhotonView>();
+            go.GetComponent<PhotonTransformView>();//Add, 이거 혹시 포톤네트워크 뷰로 바꿔ㅏ야할수도?
             slot = go.GetComponent<Slot>();
             poolSlot.Add(slot); // 오브젝트 풀에 슬롯 추가
         }
@@ -347,7 +369,7 @@ public class KioskSystem : MonoBehaviour
         //지운 후 정렬 필요
 
         KioskUpdate();
-        SellerDisplayUpdate();
+        //SellerDisplayUpdate();
         //ConsumerDisplayUpdate();이제 안 씀
     }
 
@@ -413,6 +435,11 @@ public class KioskSystem : MonoBehaviour
         RemoveCommitOrder(selectedSlot.selectedMenu);//06-20 Add
         RemoveSlot(selectedSlot.selectedMenu);//그래서 어디로 빼냄? 
 
+        if (nowPlayer.nowMakeMenu == selectedSlot.selectedMenu.GetName())
+        {
+            nowPlayer.nowMakeMenu = null;
+        }
+
         Debug.Log("OnClick Slot Index: " + selectedSlot.selectedMenu.GetIndex());
         selectedSlot.gameObject.SetActive(false);
         Desc.SetActive(false);
@@ -465,17 +492,24 @@ public class KioskSystem : MonoBehaviour
     //06-19
     public void AddWaitOrder(SelectedMenu _selectedMenu)
     {
-        //ConsumSlot consumSlot = new();
-        GameObject go = Instantiate(conSumePrefab, tr_waitTxt);//실제 생성된 오브젝트를 지정된 위치에 대입
-
+        //GameObject go = Instantiate(conSumePrefab, tr_waitTxt);//실제 생성된 오브젝트를 지정된 위치에 대입
+        GameObject go = PhotonNetwork.Instantiate("Slot_Consum", Vector3.zero, Quaternion.identity);
+        go.transform.SetParent(tr_waitTxt, false);
+        go.GetComponent<PhotonView>();
+        //go.GetComponent<PhotonTransformView>();
         ConsumSlot consumSlot = go.GetComponent<ConsumSlot>();
+
         waitOrderList.Add(consumSlot);
         consumSlot.Init(_selectedMenu);
     }
     public void AddCommitOrder(SelectedMenu _selectedMenu)
     {
-        GameObject go = Instantiate(conSumePrefab, tr_commitTxt);//실제 생성된 오브젝트를 지정된 위치에 대입
+        //GameObject go = Instantiate(conSumePrefab, tr_commitTxt);//실제 생성된 오브젝트를 지정된 위치에 대입
+        GameObject go = PhotonNetwork.Instantiate("Slot_Consum", Vector3.zero, Quaternion.identity);
 
+        // 생성된 오브젝트의 부모를 지정된 위치로 설정
+        go.transform.SetParent(tr_commitTxt, false);
+        go.GetComponent<PhotonTransformView>();
         ConsumSlot consumSlot = go.GetComponent<ConsumSlot>();
         consumSlot.Init(_selectedMenu);
         commitOrderList.Add(consumSlot);

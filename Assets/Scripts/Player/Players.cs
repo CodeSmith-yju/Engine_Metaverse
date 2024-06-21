@@ -19,7 +19,7 @@ public class Players : MonoBehaviour
     private int order_Index; // 주문번호를 남아두는 변수
      
     [SerializeField] private Role role; // 권한 관련 나열형 변수
-
+    public string nowMakeMenu;
 
     private void Awake()
     {
