@@ -1116,6 +1116,7 @@ MonoBehaviour:
   gender: 0
   nickName: 
   role: 2
+  nowMakeMenu: 
 --- !u!54 &8091726204228693487
 Rigidbody:
   m_ObjectHideFlags: 0

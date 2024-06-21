@@ -25,11 +25,14 @@ public class Menu : MonoBehaviour
             case "IceCaffeMocha":
                 index = 3;
                 break;
-            case "StrawberryLatte":
+            case "IceChoco":
                 index = 4;
                 break;
-            case "Smoothie":
+            case "StrawberryLatte":
                 index = 5;
+                break;
+            case "Smoothie":
+                index = 6;
                 break;
             default:
                 Debug.Log("Name not Found Exception");

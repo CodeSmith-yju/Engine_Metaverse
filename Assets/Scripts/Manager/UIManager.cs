@@ -46,7 +46,7 @@ public class UIManager : MonoBehaviour
     public GameObject cup_List;
     public List<GameObject> cup_Icon_List;
     public GameObject coin_UI;
-    public GameObject RecipeInfo;
+    public GameObject recipeInfo;
 
     [Header("KitchenUI")]
     public GameObject water_dispenser_UI;
@@ -57,7 +57,18 @@ public class UIManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             // 다른 UI 창이 안열려 있을 때 설정창 열도록 함.
-            if (!setting_UI.activeSelf && !job_Opening_UI.activeSelf && !pos_Menu_UI_Bg.activeSelf && !alert_Popup.activeSelf && !check_Popup.activeSelf && !water_dispenser_UI.activeSelf && !refrigerator_UI.activeSelf)
+            if (!setting_UI.activeSelf 
+                && !job_Opening_UI.activeSelf 
+                && !pos_Menu_UI_Bg.activeSelf 
+                && !alert_Popup.activeSelf 
+                && !check_Popup.activeSelf 
+                && !water_dispenser_UI.activeSelf 
+                && !refrigerator_UI.activeSelf 
+                && !accept_Popup.activeSelf 
+                && !nonAccept_Popup.activeSelf 
+                && !fire_Popup.activeSelf
+                && !master_Popup.activeSelf
+                && !resume_Info.activeSelf)
             {
                 setting_UI.SetActive(true);
             }
@@ -156,17 +167,28 @@ public class UIManager : MonoBehaviour
             {
                 nonAccept_Popup.SetActive(false);
             }
+
+            if(resume_Info.activeSelf)
+            {
+                resume_Info.SetActive(false);
+            }
+
+            if (recipeInfo.activeSelf)
+            {
+                recipeInfo.SetActive(false);
+            }
+
         }
 
         if (Input.GetKeyDown(KeyCode.Tab))
         {
-            if (RecipeInfo.activeSelf)
+            if (recipeInfo.activeSelf)
             {
-                RecipeInfo.SetActive(false);
+                recipeInfo.SetActive(false);
             }
             else
             {
-                RecipeInfo.SetActive(true);
+                recipeInfo.SetActive(true);
             }
         }
     }
@@ -230,7 +252,12 @@ public class UIManager : MonoBehaviour
                     OnAlertPopup("더 이상 컵에 재료를 \n넣을 수 없습니다.");
                     return;
                 }
-                Instantiate(icon_List, GameMgr.Instance.ui.cup_List.transform);
+                GameObject icon = Instantiate(icon_List, GameMgr.Instance.ui.cup_List.transform);
+
+                if (tag == "Mixer")
+                {
+                    icon.GetComponent<Mixer_Icon>().PrefabsMove();
+                }
             }
         }
     }

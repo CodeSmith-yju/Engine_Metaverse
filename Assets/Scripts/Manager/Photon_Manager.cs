@@ -54,7 +54,7 @@ public class Photon_Manager : MonoBehaviourPunCallbacks
             if (player_View != null && player_View.IsMine) 
             {
                 data.RPC("GetPlayers", RpcTarget.AllBuffered, player_View.ViewID);
-                resumeViewInit.player.resume_Done = true;
+                photonView.RPC("ResumeDoneCheck", RpcTarget.AllBuffered, player_View.ViewID, true);
             }
         }
 
@@ -81,6 +81,7 @@ public class Photon_Manager : MonoBehaviourPunCallbacks
             {
                 resumeViewInit.player = players.GetComponent<Players>();
                 photonView.RPC("ChangePlayerRole", RpcTarget.AllBuffered, player_View.ViewID, "Employee");
+                photonView.RPC("ResumeDoneCheck", RpcTarget.AllBuffered, player_View.ViewID, true);
                 photonView.RPC("AlertPopup", player_View.Owner, "채용 되었습니다.");
             }
         }
@@ -120,8 +121,8 @@ public class Photon_Manager : MonoBehaviourPunCallbacks
                             // Destroy the resume list item
                             photonView.RPC("DestroyResumeList", RpcTarget.AllBuffered, resumePhotonView.ViewID);
 
+                            photonView.RPC("ResumeDoneCheck", RpcTarget.AllBuffered, playerPhotonView.ViewID, false);
                             // Set player's resume_Done to false
-                            player.resume_Done = false;
 
                             // Alert the player about the rejection
                             photonView.RPC("AlertPopup", playerPhotonView.Owner, "이력서를 거부 당하셨습니다.");
@@ -154,7 +155,7 @@ public class Photon_Manager : MonoBehaviourPunCallbacks
                         {
                             photonView.RPC("ChangePlayerRole", RpcTarget.AllBuffered, player_View.ViewID, "Customer");
                             // Set player's resume_Done to false
-                            player.resume_Done = false;
+                            photonView.RPC("ResumeDoneCheck", RpcTarget.AllBuffered, player_View.ViewID, false);
                             // Destroy the resume list item
                             photonView.RPC("DestroyResumeList", RpcTarget.AllBuffered, crewPhotonView.ViewID);
                             // Alert the player about the rejection
@@ -167,6 +168,8 @@ public class Photon_Manager : MonoBehaviourPunCallbacks
         GameMgr.Instance.ui.fire_Popup.SetActive(false);
         GameMgr.Instance.ui.resume_Info.SetActive(false);
     }
+
+   
 
     public void MasterAssignment()
     {
@@ -186,20 +189,90 @@ public class Photon_Manager : MonoBehaviourPunCallbacks
 
                         if (crewPhotonView != null)
                         {
+                            // 현재 마스터 클라이언트의 PhotonView ID를 가져오기
+                            PhotonView currentMasterView = GetMasterClientPhotonView();
+                            if (currentMasterView != null)
+                            {
+                                photonView.RPC("ChangePlayerRole", RpcTarget.AllBuffered, currentMasterView.ViewID, "Customer");
+                                photonView.RPC("AlertPopup", currentMasterView.Owner, "점장을 양도 하셨습니다.");
+                            }
+
+                            // 새로운 마스터 클라이언트 설정 및 역할 변경
+                            foreach (Player photonPlayer in PhotonNetwork.PlayerList)
+                            {
+                                if (photonPlayer.ActorNumber == player_View.OwnerActorNr)
+                                {
+                                    PhotonNetwork.SetMasterClient(photonPlayer);
+                                    break;
+                                }
+                            }
+
+                            // 새롭게 설정된 마스터 클라이언트의 역할을 Manager로 변경
                             photonView.RPC("ChangePlayerRole", RpcTarget.AllBuffered, player_View.ViewID, "Manager");
-                            // Set player's resume_Done to false
-                            player.resume_Done = false;
-                            // Destroy the resume list item
+
+                            // 이력서 처리가 완료되었음을 설정
+                            photonView.RPC("ResumeDoneCheck", RpcTarget.AllBuffered, player_View.ViewID, false);
+
+                            // 이력서 목록 항목 삭제
                             photonView.RPC("DestroyResumeList", RpcTarget.AllBuffered, crewPhotonView.ViewID);
-                            // Alert the player about the rejection
-                            photonView.RPC("AlertPopup", player.GetComponent<PhotonView>().Owner, "점장을 양도 받으셨습니다.");
+
+                            // 플레이어에게 점장 양도 알림
+                            photonView.RPC("AlertPopup", player_View.Owner, "점장을 양도 받으셨습니다.");
                         }
                     }
                 }
             }
-        }
         GameMgr.Instance.ui.master_Popup.SetActive(false);
         GameMgr.Instance.ui.resume_Info.SetActive(false);
+    }
+
+            /*        foreach (Transform crew_List in GameMgr.Instance.ui.pos_Crew_List_Pos.transform)
+                    {
+                        ResumeViewInit crewViewInit = crew_List.gameObject.GetComponent<ResumeViewInit>();
+                        if (crewViewInit != null)
+                        {
+                            foreach (GameObject players in GameMgr.Instance.player_List)
+                            {
+                                Players player = players.GetComponent<Players>();
+                                PhotonView resume_Player_View = crewViewInit.player.GetComponent<PhotonView>();
+                                PhotonView player_View = player.GetComponent<PhotonView>();
+                                if (player != null && resume_Player_View.ViewID == player_View.ViewID)
+                                {
+                                    PhotonView crewPhotonView = crew_List.GetComponent<PhotonView>();
+
+                                    if (crewPhotonView != null)
+                                    {
+                                        if (PhotonNetwork.IsMasterClient)
+                                        {
+                                            photonView.RPC("ChangePlayerRole", RpcTarget.AllBuffered, player_View.ViewID, "Customer");
+                                        }
+                                        photonView.RPC("ChangePlayerRole", RpcTarget.AllBuffered, player_View.ViewID, "Manager");
+                                        photonView.RPC("ResumeDoneCheck", RpcTarget.AllBuffered, player_View.ViewID, false);
+                                        // Set player's resume_Done to false
+                                        // Destroy the resume list item
+                                        photonView.RPC("DestroyResumeList", RpcTarget.AllBuffered, crewPhotonView.ViewID);
+                                        // Alert the player about the rejection
+                                        photonView.RPC("AlertPopup", player.GetComponent<PhotonView>().Owner, "점장을 양도 받으셨습니다.");
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    GameMgr.Instance.ui.master_Popup.SetActive(false);
+                    GameMgr.Instance.ui.resume_Info.SetActive(false);*/
+        }
+
+    private PhotonView GetMasterClientPhotonView()
+    {
+        foreach (GameObject playerObj in GameMgr.Instance.player_List)
+        {
+            PhotonView view = playerObj.GetComponent<PhotonView>();
+            if (view != null && view.OwnerActorNr == PhotonNetwork.MasterClient.ActorNumber)
+            {
+                return view;
+            }
+        }
+        return null;
     }
 
 
@@ -264,6 +337,16 @@ public class Photon_Manager : MonoBehaviourPunCallbacks
             }
         }
     }
+
+    [PunRPC]
+    private void ResumeDoneCheck(int id, bool check)
+    {
+        PhotonView playerView = PhotonView.Find(id);
+        Players player = playerView.GetComponent<Players>();
+
+        player.resume_Done = check;
+    }
+
 
     [PunRPC]
     private void AlertPopup(string text)
