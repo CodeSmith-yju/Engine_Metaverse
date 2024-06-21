@@ -45,10 +45,6 @@ public class KioskSystem : MonoBehaviour
     [SerializeField] private Transform tr_commitTxt;
     [SerializeField] private Transform tr_waitTxt;
 
-    //06-11 PosMachin Img Add
-    [Header("Pos Machine")]
-    public Image management_Display;
-
     [Header("ConsumerDisplay Object")]
     public int kioIndex = 0;
     public bool buyCheck = false;
@@ -119,7 +115,6 @@ public class KioskSystem : MonoBehaviour
         sellerImg.gameObject.SetActive(false);
         Desc.SetActive(false);
         imgOrder.gameObject.SetActive(false);
-        management_Display.gameObject.SetActive(false);
     }
 
     public void KioskSceneChange()
@@ -486,7 +481,6 @@ public class KioskSystem : MonoBehaviour
 
     public void OffManagemetMenu()
     {
-        management_Display.gameObject.SetActive(false);
         kiosck = false;
     }
     //06-19

@@ -46,6 +46,7 @@ public class UIManager : MonoBehaviour
     public GameObject cup_List;
     public List<GameObject> cup_Icon_List;
     public GameObject coin_UI;
+    public GameObject RecipeInfo;
 
     [Header("KitchenUI")]
     public GameObject water_dispenser_UI;
@@ -155,7 +156,18 @@ public class UIManager : MonoBehaviour
             {
                 nonAccept_Popup.SetActive(false);
             }
+        }
 
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            if (RecipeInfo.activeSelf)
+            {
+                RecipeInfo.SetActive(false);
+            }
+            else
+            {
+                RecipeInfo.SetActive(true);
+            }
         }
     }
 
