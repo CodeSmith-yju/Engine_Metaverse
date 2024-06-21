@@ -214,6 +214,7 @@ MonoBehaviour:
   coffee: 0
   ui_Opened: 0
   coin: 0
+  nowMakeMenu: 
   role: 2
 --- !u!114 &-2193662628931528490
 MonoBehaviour:

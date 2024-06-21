@@ -178,12 +178,6 @@ public class KioskSystem : MonoBehaviour
         menuName = null;
         menuSp = null;
     }
-    public void ReTakeTicket()
-    {
-        Debug.Log("Run ReTakeTickket");
-        p_M.TakeTicket();
-    }
-
 
     public void KioskUpdate()
     {
@@ -257,7 +251,7 @@ public class KioskSystem : MonoBehaviour
         {
 
             Debug.Log("BuyChek OK");
-            ReTakeTicket();
+            TakeTicket();
             
             /*foreach (GameObject players in GameMgr.Instance.player_List)
             {
@@ -441,6 +435,11 @@ public class KioskSystem : MonoBehaviour
         RemoveCommitOrder(selectedSlot.selectedMenu);//06-20 Add
         RemoveSlot(selectedSlot.selectedMenu);//그래서 어디로 빼냄? 
 
+        if (nowPlayer.nowMakeMenu == selectedSlot.selectedMenu.GetName())
+        {
+            nowPlayer.nowMakeMenu = null;
+        }
+
         Debug.Log("OnClick Slot Index: " + selectedSlot.selectedMenu.GetIndex());
         selectedSlot.gameObject.SetActive(false);
         Desc.SetActive(false);
@@ -491,7 +490,7 @@ public class KioskSystem : MonoBehaviour
         kiosck = false;
     }
     //06-19
-    /*public void AddWaitOrder(SelectedMenu _selectedMenu)
+    public void AddWaitOrder(SelectedMenu _selectedMenu)
     {
         //GameObject go = Instantiate(conSumePrefab, tr_waitTxt);//실제 생성된 오브젝트를 지정된 위치에 대입
         GameObject go = PhotonNetwork.Instantiate("Slot_Consum", Vector3.zero, Quaternion.identity);
@@ -502,10 +501,6 @@ public class KioskSystem : MonoBehaviour
 
         waitOrderList.Add(consumSlot);
         consumSlot.Init(_selectedMenu);
-    }*/
-    public void AddWaitOrder(SelectedMenu _selectedMenu)
-    {
-        p_M.SetCon_Wait(_selectedMenu);
     }
     public void AddCommitOrder(SelectedMenu _selectedMenu)
     {
