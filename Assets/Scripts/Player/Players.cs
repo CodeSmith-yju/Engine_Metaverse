@@ -16,6 +16,7 @@ public class Players : MonoBehaviour
 
     private int order_Index;
 
+    public string nowMakeMenu;
     [SerializeField] private Role role;
 
 
@@ -68,13 +69,13 @@ public class Players : MonoBehaviour
     {
         if (cup)
         {
-            bool isdone = recipe.Cook(KioskSystem.single.order_List[order_Index], cur_IngrList);
+            bool isdone = recipe.Cook(nowMakeMenu, cur_IngrList);
             cur_IngrList.Clear();
 
             if (isdone)
             {
                 done = true;
-                cur_Ordered_Menu = KioskSystem.single.order_List[order_Index];
+                cur_Ordered_Menu = nowMakeMenu;
             }
             else
             {

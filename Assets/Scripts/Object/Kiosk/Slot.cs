@@ -27,6 +27,8 @@ public class Slot : MonoBehaviour
     {
         Debug.Log("주문확인의 미니아이콘 클릭");
         KioskSystem.single.PassMenuData(this);
+
+        KioskSystem.single.nowPlayer.nowMakeMenu  = this.selectedMenu.GetName();
     }
 
 }

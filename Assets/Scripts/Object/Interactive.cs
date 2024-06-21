@@ -212,6 +212,7 @@ public class Interactive : MonoBehaviour
                     if (player.done)
                     {
                         Debug.Log("음료 제작 완료 : " + player.cur_Ordered_Menu);
+                        player.nowMakeMenu = null;
                         GameMgr.Instance.ui.DeleteCupIcon();
                         player.Done();
                         
