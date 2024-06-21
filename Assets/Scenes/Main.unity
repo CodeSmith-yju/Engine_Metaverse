@@ -7779,7 +7779,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3100955726456517818, guid: 007bcc55b9b5e314eb9af6a32a76d221, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3100955726456517818, guid: 007bcc55b9b5e314eb9af6a32a76d221, type: 3}
       propertyPath: m_AnchorMin.x
@@ -7787,15 +7787,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3100955726456517818, guid: 007bcc55b9b5e314eb9af6a32a76d221, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3100955726456517818, guid: 007bcc55b9b5e314eb9af6a32a76d221, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 160
       objectReference: {fileID: 0}
     - target: {fileID: 3100955726456517818, guid: 007bcc55b9b5e314eb9af6a32a76d221, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 160
       objectReference: {fileID: 0}
     - target: {fileID: 3100955726456517818, guid: 007bcc55b9b5e314eb9af6a32a76d221, type: 3}
       propertyPath: m_LocalPosition.x
@@ -7827,11 +7827,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3100955726456517818, guid: 007bcc55b9b5e314eb9af6a32a76d221, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 80
       objectReference: {fileID: 0}
     - target: {fileID: 3100955726456517818, guid: 007bcc55b9b5e314eb9af6a32a76d221, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -100
       objectReference: {fileID: 0}
     - target: {fileID: 3100955726456517818, guid: 007bcc55b9b5e314eb9af6a32a76d221, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -40350,6 +40350,7 @@ GameObject:
   - component: {fileID: 1956679644017718710}
   - component: {fileID: 593218541074163831}
   - component: {fileID: 4204733846406948994}
+  - component: {fileID: 4662198704222607675}
   m_Layer: 5
   m_Name: OrderPrefabTxt
   m_TagString: Untagged
@@ -40357,6 +40358,28 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &4662198704222607675
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4662198704222607674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 3
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &4673614591614889119 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -4549757445259455984, guid: 77340b9808332b345ad0547d62454652, type: 3}
@@ -57597,7 +57620,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 240}
+  m_SizeDelta: {x: -518, y: 240}
   m_Pivot: {x: 0, y: 1}
 --- !u!4 &7626916323380277180
 Transform:
@@ -63258,6 +63281,7 @@ GameObject:
   - component: {fileID: 7618081707949926455}
   - component: {fileID: 8527483295997751168}
   - component: {fileID: 4037233871800844065}
+  - component: {fileID: 8722874205372097689}
   m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
@@ -63265,6 +63289,28 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &8722874205372097689
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8722874205372097688}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 4
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!114 &8725184543842298560
 MonoBehaviour:
   m_ObjectHideFlags: 0

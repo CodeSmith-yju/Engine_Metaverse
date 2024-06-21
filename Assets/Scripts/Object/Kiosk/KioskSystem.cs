@@ -306,6 +306,8 @@ public class KioskSystem : MonoBehaviour
             // 비활성화된 슬롯이 없으면 새로 생성
             //GameObject go = Instantiate(slotPrefab, poolSlot[0].transform.parent);
             GameObject go = PhotonNetwork.Instantiate("Slot_Order", poolSlot[0].transform.parent.position, Quaternion.identity);
+            go.transform.SetParent(poolSlot[0].transform.parent, false);//Add
+            go.GetComponent<PhotonView>();//Add, 이거 혹시 포톤네트워크 뷰로 바꿔ㅏ야할수도?
             slot = go.GetComponent<Slot>();
             poolSlot.Add(slot); // 오브젝트 풀에 슬롯 추가
         }
@@ -466,8 +468,10 @@ public class KioskSystem : MonoBehaviour
         //GameObject go = Instantiate(conSumePrefab, tr_waitTxt);//실제 생성된 오브젝트를 지정된 위치에 대입
         GameObject go = PhotonNetwork.Instantiate("Slot_Consum", Vector3.zero, Quaternion.identity);
         go.transform.SetParent(tr_waitTxt, false);
+        go.GetComponent<PhotonView>();
 
         ConsumSlot consumSlot = go.GetComponent<ConsumSlot>();
+
         waitOrderList.Add(consumSlot);
         consumSlot.Init(_selectedMenu);
     }
