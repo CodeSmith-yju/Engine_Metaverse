@@ -48,11 +48,13 @@ MonoBehaviour:
   list_Photon_Prefabs:
   - {fileID: 248822274323737384, guid: 1ba9c524d7ac73244ae28448fb3169e2, type: 3}
   - {fileID: 2577325101096883597, guid: 252cee688be91c142b19dc20bee568d9, type: 3}
+  - {fileID: 481413921356534533, guid: 143ec3d3dbf4431419bd458069beb618, type: 3}
   tf_Respawn_Point: {fileID: 0}
   m_LocalPlayer_Data:
-    gender: 1
-    name: asdasf
+    gender: 0
+    name: 
   obj_LocalPlayer: {fileID: 0}
+  name_Input: {fileID: 0}
 --- !u!114 &5265738691767082317
 MonoBehaviour:
   m_ObjectHideFlags: 0
