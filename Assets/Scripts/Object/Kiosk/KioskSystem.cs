@@ -17,7 +17,7 @@ public class KioskSystem : MonoBehaviour
     //[SerializeField] private List<int> ticketNumbers = new List<int>();
     //[SerializeField] private int ticketNum = 0;
     public List<int> ticketNumbers = new List<int>();
-    public int ticketNum = 0;
+    public static int ticketNum = 0;
     
     public string menuName = "";
     public Sprite menuSp = null;
@@ -165,6 +165,7 @@ public class KioskSystem : MonoBehaviour
     }
     public void ReTakeTicket()
     {
+        Debug.Log("Run ReTakeTickket");
         p_M.TakeTicket();
     }
 
@@ -241,7 +242,7 @@ public class KioskSystem : MonoBehaviour
         {
 
             Debug.Log("BuyChek OK");
-            ReTakeTicket();// TakeTicket();
+            ReTakeTicket();
             
             /*foreach (GameObject players in GameMgr.Instance.player_List)
             {

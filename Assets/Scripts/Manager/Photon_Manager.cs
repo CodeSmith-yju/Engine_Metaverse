@@ -120,9 +120,16 @@ public class Photon_Manager : MonoBehaviourPunCallbacks
     [PunRPC]
     public void SetCon_Wait(SelectedMenu _selectedMenu)
     {
-        GameObject go = PhotonNetwork.Instantiate("Slot_Consum", Vector3.zero, Quaternion.identity);
-        go.transform.SetParent(tr_con_wait, false);
-        //go.GetComponent<PhotonView>();
+        GameObject go = PhotonNetwork.Instantiate("Slot_Consum", Vector3.one, Quaternion.identity);
+        go.transform.parent = tr_con_wait;
+
+        Vector3 newPosition = go.transform.localPosition;
+        newPosition.z = 0;
+        go.transform.position = newPosition;
+        go.transform.localScale = Vector3.one;
+
+        go.GetComponent<PhotonView>();
+
         ConsumSlot consumSlot = go.GetComponent<ConsumSlot>();
 
         KioskSystem.single.waitOrderList.Add(consumSlot);
@@ -140,17 +147,17 @@ public class Photon_Manager : MonoBehaviourPunCallbacks
 
     public void TakeTicket()
     {
-        if (KioskSystem.single.ticketNum >= 999)
+        if (KioskSystem.ticketNum >= 999)
         {
             KioskSystem.single.ticketNumbers.Clear();
-            KioskSystem.single.ticketNum = 0;
+            KioskSystem.ticketNum = 0;
         }
 
-        KioskSystem.single.ticketNumbers.Add(++KioskSystem.single.ticketNum);
-        KioskSystem.single.order_List.Add(KioskSystem.single.ticketNum, KioskSystem.single.menuName);
-        SelectedMenu newMenu = new SelectedMenu(KioskSystem.single.menuName, KioskSystem.single.ticketNum, KioskSystem.single.menuSp);
+        KioskSystem.single.ticketNumbers.Add(++KioskSystem.ticketNum);
+        KioskSystem.single.order_List.Add(KioskSystem.ticketNum, KioskSystem.single.menuName);
+        SelectedMenu newMenu = new SelectedMenu(KioskSystem.single.menuName, KioskSystem.ticketNum, KioskSystem.single.menuSp);
         KioskSystem.single.listSelectedMenus.Add(newMenu);
-        newMenu.intSlotIndex = KioskSystem.single.ticketNum;
+        newMenu.intSlotIndex = KioskSystem.ticketNum;
         KioskSystem.single.CreateOrReuseSlot(newMenu);
 
         //06-19 ConsumDisplay
