@@ -180,6 +180,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9070597669931846017, guid: 47624941498b3744ab9282b87d050197, type: 3}
+      propertyPath: tr_con_wait
+      value: 
+      objectReference: {fileID: 3132817734349989778}
+    - target: {fileID: 9070597669931846017, guid: 47624941498b3744ab9282b87d050197, type: 3}
       propertyPath: tf_Respawn_Point
       value: 
       objectReference: {fileID: 1292761022}

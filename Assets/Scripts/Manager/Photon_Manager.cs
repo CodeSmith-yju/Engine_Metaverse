@@ -13,6 +13,7 @@ public class Photon_Manager : MonoBehaviourPunCallbacks
     public UserData m_LocalPlayer_Data;
     public GameObject obj_LocalPlayer;
 
+    public Transform tr_con_wait;
 
     private void Start()
     {
@@ -119,6 +120,7 @@ public class Photon_Manager : MonoBehaviourPunCallbacks
     public void SetCon_Wait(SelectedMenu _selectedMenu)
     {
         GameObject go = PhotonNetwork.Instantiate("Slot_Consum", Vector3.zero, Quaternion.identity);
+        go.transform.SetParent(tr_con_wait, false);
         //go.GetComponent<PhotonView>();
         ConsumSlot consumSlot = go.GetComponent<ConsumSlot>();
 
