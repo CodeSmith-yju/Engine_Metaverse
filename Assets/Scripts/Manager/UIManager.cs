@@ -230,12 +230,7 @@ public class UIManager : MonoBehaviour
                     OnAlertPopup("더 이상 컵에 재료를 \n넣을 수 없습니다.");
                     return;
                 }
-                GameObject icon = Instantiate(icon_List, GameMgr.Instance.ui.cup_List.transform);
-
-                if (tag == "Mixer")
-                {
-                    icon.GetComponent<Mixer_Icon>().PrefabsMove();
-                }
+                Instantiate(icon_List, GameMgr.Instance.ui.cup_List.transform);
             }
         }
     }

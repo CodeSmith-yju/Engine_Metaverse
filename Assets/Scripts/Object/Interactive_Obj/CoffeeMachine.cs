@@ -72,7 +72,7 @@ public class CoffeeMachine : MonoBehaviour
 
     public IEnumerator CoffeeRoutine(CoffeeMachine coffee)
     {
-        float time = 15f;
+        float time = 3f;
 
         yield return StartCoroutine(Espresso(coffee, time));
     }

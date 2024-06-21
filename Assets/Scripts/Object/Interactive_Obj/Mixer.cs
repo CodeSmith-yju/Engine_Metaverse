@@ -70,7 +70,7 @@ public class Mixer : MonoBehaviour
 
     public IEnumerator MixerRoutine(Mixer mixer)
     {
-        float time = 15f;
+        float time = 3f;
 
         yield return StartCoroutine(Mix(mixer, time));
       
