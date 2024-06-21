@@ -54,7 +54,7 @@ public class Interactive : MonoBehaviour
     }
 
     private void OnTriggerStay(Collider other)
-    {
+    {   
         if (other.CompareTag("Player") && other.GetComponent<PhotonView>().IsMine)
         {
             isCheck = true;
@@ -99,7 +99,8 @@ public class Interactive : MonoBehaviour
                 break;
             case "POS":
                 //GameMgr.Instance.ui.pos_Menu_UI.SetActive(true);
-                KioskSystem.single.sellerImg.gameObject.SetActive(true);
+                //KioskSystem.single.sellerImg.gameObject.SetActive(true);
+                KioskSystem.single.management_Display.gameObject.SetActive(true);
                 break;
             case "Grinder":
                 if (player.GetRole() == Role.Manager || player.GetRole() == Role.Employee)
