@@ -14,8 +14,11 @@ public class KioskSystem : MonoBehaviour
     public List<GameObject> kioskScene;
 
     public Dictionary<int, string> order_List = new Dictionary<int, string>();
-    [SerializeField] private List<int> ticketNumbers = new List<int>();
-    [SerializeField] private int ticketNum = 0;
+    //[SerializeField] private List<int> ticketNumbers = new List<int>();
+    //[SerializeField] private int ticketNum = 0;
+    public List<int> ticketNumbers = new List<int>();
+    public int ticketNum = 0;
+    
     public string menuName = "";
     public Sprite menuSp = null;
 
@@ -27,7 +30,8 @@ public class KioskSystem : MonoBehaviour
     [Header("SellerDisplay Object")]
     public Image sellerImg;
     [SerializeField] private List<Slot> poolSlot = new List<Slot>(); // 수정된 부분
-    [SerializeField] private List<SelectedMenu> listSelectedMenus = new List<SelectedMenu>(); // 수정된 부분
+    //[SerializeField] private List<SelectedMenu> listSelectedMenus = new List<SelectedMenu>(); // 수정된 부분
+    public List<SelectedMenu> listSelectedMenus = new List<SelectedMenu>(); // 수정된 부분
 
     public GameObject slotPrefab; // 새로운 슬롯을 생성할 때 사용할 프리팹
 
@@ -159,9 +163,13 @@ public class KioskSystem : MonoBehaviour
         menuName = null;
         menuSp = null;
     }
+    public void ReTakeTicket()
+    {
+        p_M.TakeTicket();
+    }
 
 
-    private void KioskUpdate()
+    public void KioskUpdate()
     {
         string kioskText = "영수증 수령";
         /*if (order_List.ContainsKey(ticketNum))
@@ -233,7 +241,7 @@ public class KioskSystem : MonoBehaviour
         {
 
             Debug.Log("BuyChek OK");
-            TakeTicket();
+            ReTakeTicket();// TakeTicket();
             
             /*foreach (GameObject players in GameMgr.Instance.player_List)
             {
@@ -300,7 +308,7 @@ public class KioskSystem : MonoBehaviour
         }
     }
 
-    private void CreateOrReuseSlot(SelectedMenu _newMenu)
+    public void CreateOrReuseSlot(SelectedMenu _newMenu)
     {
         Slot slot = poolSlot.Find(s => !s.gameObject.activeSelf); // 비활성화된 슬롯 찾기
         if (slot == null)

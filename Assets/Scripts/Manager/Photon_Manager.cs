@@ -5,6 +5,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 using System;
+using UnityEditor;
 
 public class Photon_Manager : MonoBehaviourPunCallbacks
 {
@@ -137,7 +138,37 @@ public class Photon_Manager : MonoBehaviourPunCallbacks
         }
     }
 
+    public void TakeTicket()
+    {
+        if (KioskSystem.single.ticketNum >= 999)
+        {
+            KioskSystem.single.ticketNumbers.Clear();
+            KioskSystem.single.ticketNum = 0;
+        }
 
+        KioskSystem.single.ticketNumbers.Add(++KioskSystem.single.ticketNum);
+        KioskSystem.single.order_List.Add(KioskSystem.single.ticketNum, KioskSystem.single.menuName);
+        SelectedMenu newMenu = new SelectedMenu(KioskSystem.single.menuName, KioskSystem.single.ticketNum, KioskSystem.single.menuSp);
+        KioskSystem.single.listSelectedMenus.Add(newMenu);
+        newMenu.intSlotIndex = KioskSystem.single.ticketNum;
+        KioskSystem.single.CreateOrReuseSlot(newMenu);
+
+        //06-19 ConsumDisplay
+        KioskSystem.single.AddWaitOrder(newMenu);
+
+        // 슬롯을 추가한 후에 정렬합니다.
+        KioskSystem.single.SortSlots();
+        //재사용된 후 정렬 필요
+
+
+
+        KioskSystem.single.KioskUpdate();
+        //SellerDisplayUpdate();
+        //ConsumerDisplayUpdate();이제 안 씀
+
+        KioskSystem.single.menuName = null;
+        KioskSystem.single.menuSp = null;
+    }
     /*// 이름 설정하는거, 동기화 할때마다 일일히 다른 메서드로 만들어야되는지 모르겠음.
     public void SetPlayerName(string name)
     {
