@@ -49,8 +49,6 @@ GameObject:
   - component: {fileID: 2226510343825760283}
   - component: {fileID: 6425480665267714149}
   - component: {fileID: 8386951128825743634}
-  - component: {fileID: -2193662628931528490}
-  - component: {fileID: -905120891416855911}
   - component: {fileID: 5762758356396794511}
   - component: {fileID: 5947191391320954004}
   m_Layer: 0
@@ -120,7 +118,7 @@ MonoBehaviour:
   obj_Body: {fileID: 2374430763718696840}
   obj_Cam_First: {fileID: 3738339002912586576}
   obj_Cam_Quarter: {fileID: 8337538511887817034}
-  player_Name: {fileID: 0}
+  player_Name: {fileID: 5884033036188102424}
 --- !u!114 &1584127459163991175
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -214,34 +212,9 @@ MonoBehaviour:
   coffee: 0
   ui_Opened: 0
   coin: 0
+  gender: 0
+  nickName: 
   role: 2
---- !u!114 &-2193662628931528490
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 248822274323737384}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4842097b4c1e73a4a8d7f615bcb8cd64, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &-905120891416855911
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 248822274323737384}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7553cee2edaf6594ba18c7d8a46f064c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  characterController: {fileID: 0}
-  playerAnimator: {fileID: 0}
-  player: {fileID: 0}
 --- !u!54 &5762758356396794511
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2399,7 +2372,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c334194fa5cf8214fb409cf47a44800d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Cam: {fileID: 0}
+  Cam: {fileID: 8337538511887817034}
   distance: 3
 --- !u!1 &5730910128914421058
 GameObject:

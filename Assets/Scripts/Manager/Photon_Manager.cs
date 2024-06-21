@@ -5,6 +5,12 @@ using Photon.Pun;
 using Photon.Realtime;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 using System;
+using System.Linq;
+using UnityEngine.UI;
+using TMPro;
+using Photon.Pun.Demo.PunBasics;
+using System.Data;
+using UnityEditor.VersionControl;
 
 public class Photon_Manager : MonoBehaviourPunCallbacks
 {
@@ -12,9 +18,193 @@ public class Photon_Manager : MonoBehaviourPunCallbacks
     public Transform tf_Respawn_Point;
     public UserData m_LocalPlayer_Data;
     public GameObject obj_LocalPlayer;
+    public TMP_InputField name_Input;
 
 
     private void Start()
+    {
+/*        //여기서 포톤에서 생성하는 오브젝트를 등록
+        DefaultPool pool = PhotonNetwork.PrefabPool as DefaultPool;
+        pool.ResourceCache.Clear();
+        if (pool != null && list_Photon_Prefabs != null)
+        {
+            foreach (GameObject prefab in list_Photon_Prefabs)
+            {
+                pool.ResourceCache.Add(prefab.name, prefab);
+            }
+        }
+        InitPhotonServer();*/
+    }
+
+    public void ResumeSubmit()
+    {
+        GameObject resume = PhotonNetwork.Instantiate(GameMgr.Instance.ui.resume_List_Prefabs.name, GameMgr.Instance.ui.resume_List_Pos.transform.position, Quaternion.identity);
+        ResumeView resume_desc = GameMgr.Instance.ui.resume_Write_UI.GetComponent<ResumeView>();
+        PhotonView data = resume.GetComponent<PhotonView>();
+        data.RPC("Init", RpcTarget.AllBuffered, resume_desc.nickName.text, resume_desc.gender.text, resume_desc.desc.text, false);
+        ResumeViewInit resumeViewInit = resume.GetComponent<ResumeViewInit>();
+
+        Transform parentTransform = GameMgr.Instance.ui.resume_List_Pos.transform;
+        data.RPC("SetParentAndTransform", RpcTarget.AllBuffered, parentTransform.GetComponent<PhotonView>().ViewID);
+
+
+        foreach (GameObject players in GameMgr.Instance.player_List)
+        {
+            PhotonView player_View = players.GetComponent<PhotonView>();
+
+            if (player_View != null && player_View.IsMine) 
+            {
+                data.RPC("GetPlayers", RpcTarget.AllBuffered, player_View.ViewID);
+                resumeViewInit.player.resume_Done = true;
+            }
+        }
+
+        GameMgr.Instance.ui.resume_UI.SetActive(false);
+        GameMgr.Instance.ui.OnAlertPopup("이력서가 제출 되었습니다.");
+    }
+
+    public void AcceptResume()
+    {
+        GameObject resume = PhotonNetwork.Instantiate(GameMgr.Instance.ui.resume_List_Prefabs.name, GameMgr.Instance.ui.pos_Crew_List_Pos.transform.position, Quaternion.identity);
+        ResumeView resume_desc = GameMgr.Instance.ui.resume_Info.GetComponent<ResumeView>();
+        PhotonView data = resume.GetComponent<PhotonView>();
+        data.RPC("Init", RpcTarget.AllBuffered, resume_desc.nickName.text, resume_desc.gender.text, resume_desc.desc.text, true);
+        ResumeViewInit resumeViewInit = resume.GetComponent<ResumeViewInit>();
+        resumeViewInit.player = resume_desc.player;
+
+
+
+        foreach (GameObject players in GameMgr.Instance.player_List)
+        {
+            PhotonView player_View = players.GetComponent<PhotonView>();
+
+            if (resumeViewInit.player.gameObject.GetComponent<PhotonView>().ViewID == player_View.ViewID)
+            {
+                resumeViewInit.player = players.GetComponent<Players>();
+                photonView.RPC("ChangePlayerRole", RpcTarget.AllBuffered, player_View.ViewID, "Employee");
+                photonView.RPC("AlertPopup", player_View.Owner, "채용 되었습니다.");
+            }
+        }
+
+        foreach (Transform resume_List in GameMgr.Instance.ui.resume_List_Pos)
+        {
+            if (resume_List.GetComponent<ResumeViewInit>().player == resumeViewInit.player)
+            {
+                photonView.RPC("DestroyResumeList", RpcTarget.AllBuffered, resume_List.GetComponent<PhotonView>().ViewID);
+            }
+        }
+
+        GameMgr.Instance.ui.resume_Info.SetActive(false);
+        GameMgr.Instance.ui.accept_Popup.SetActive(false); 
+
+        Transform parentTransform = GameMgr.Instance.ui.pos_Crew_List_Pos.transform;
+        data.RPC("SetParentAndTransform", RpcTarget.AllBuffered, parentTransform.GetComponent<PhotonView>().ViewID);
+    }
+
+    public void NonAcceptResume()
+    {
+        foreach (Transform resume_List in GameMgr.Instance.ui.resume_List_Pos.transform)
+        {
+            ResumeViewInit resumeViewInit = resume_List.gameObject.GetComponent<ResumeViewInit>();
+            if (resumeViewInit != null)
+            {
+                foreach (GameObject players in GameMgr.Instance.player_List)
+                {
+                    Players player = players.GetComponent<Players>();
+                    if (player != null && resumeViewInit.player == player)
+                    {
+                        PhotonView resumePhotonView = resume_List.GetComponent<PhotonView>();
+                        PhotonView playerPhotonView = players.GetComponent<PhotonView>();
+
+                        if (resumePhotonView != null && playerPhotonView != null)
+                        {
+                            // Destroy the resume list item
+                            photonView.RPC("DestroyResumeList", RpcTarget.AllBuffered, resumePhotonView.ViewID);
+
+                            // Set player's resume_Done to false
+                            player.resume_Done = false;
+
+                            // Alert the player about the rejection
+                            photonView.RPC("AlertPopup", playerPhotonView.Owner, "이력서를 거부 당하셨습니다.");
+                        }
+                    }
+                }
+            }
+        }
+        GameMgr.Instance.ui.nonAccept_Popup.SetActive(false);
+        GameMgr.Instance.ui.resume_Info.SetActive(false);
+    }
+
+    public void FireEmployee()
+    {
+        foreach (Transform crew_List in GameMgr.Instance.ui.pos_Crew_List_Pos.transform)
+        {
+            ResumeViewInit crewViewInit = crew_List.gameObject.GetComponent<ResumeViewInit>();
+            if (crewViewInit != null)
+            {
+                foreach (GameObject players in GameMgr.Instance.player_List)
+                {
+                    Players player = players.GetComponent<Players>();
+                    PhotonView resume_Player_View = crewViewInit.player.GetComponent<PhotonView>();
+                    PhotonView player_View = player.GetComponent<PhotonView>();
+                    if (player != null && resume_Player_View.ViewID == player_View.ViewID)
+                    {
+                        PhotonView crewPhotonView = crew_List.GetComponent<PhotonView>();
+
+                        if (crewPhotonView != null)
+                        {
+                            photonView.RPC("ChangePlayerRole", RpcTarget.AllBuffered, player_View.ViewID, "Customer");
+                            // Set player's resume_Done to false
+                            player.resume_Done = false;
+                            // Destroy the resume list item
+                            photonView.RPC("DestroyResumeList", RpcTarget.AllBuffered, crewPhotonView.ViewID);
+                            // Alert the player about the rejection
+                            photonView.RPC("AlertPopup", player.GetComponent<PhotonView>().Owner, "해고 당하셨습니다.");
+                        }
+                    }
+                }
+            }
+        }
+        GameMgr.Instance.ui.fire_Popup.SetActive(false);
+        GameMgr.Instance.ui.resume_Info.SetActive(false);
+    }
+
+    public void MasterAssignment()
+    {
+        foreach (Transform crew_List in GameMgr.Instance.ui.pos_Crew_List_Pos.transform)
+        {
+            ResumeViewInit crewViewInit = crew_List.gameObject.GetComponent<ResumeViewInit>();
+            if (crewViewInit != null)
+            {
+                foreach (GameObject players in GameMgr.Instance.player_List)
+                {
+                    Players player = players.GetComponent<Players>();
+                    PhotonView resume_Player_View = crewViewInit.player.GetComponent<PhotonView>();
+                    PhotonView player_View = player.GetComponent<PhotonView>();
+                    if (player != null && resume_Player_View.ViewID == player_View.ViewID)
+                    {
+                        PhotonView crewPhotonView = crew_List.GetComponent<PhotonView>();
+
+                        if (crewPhotonView != null)
+                        {
+                            photonView.RPC("ChangePlayerRole", RpcTarget.AllBuffered, player_View.ViewID, "Manager");
+                            // Set player's resume_Done to false
+                            player.resume_Done = false;
+                            // Destroy the resume list item
+                            photonView.RPC("DestroyResumeList", RpcTarget.AllBuffered, crewPhotonView.ViewID);
+                            // Alert the player about the rejection
+                            photonView.RPC("AlertPopup", player.GetComponent<PhotonView>().Owner, "점장을 양도 받으셨습니다.");
+                        }
+                    }
+                }
+            }
+        }
+        GameMgr.Instance.ui.master_Popup.SetActive(false);
+        GameMgr.Instance.ui.resume_Info.SetActive(false);
+    }
+
+
+    public void StartBnt()
     {
         //여기서 포톤에서 생성하는 오브젝트를 등록
         DefaultPool pool = PhotonNetwork.PrefabPool as DefaultPool;
@@ -26,21 +216,76 @@ public class Photon_Manager : MonoBehaviourPunCallbacks
                 pool.ResourceCache.Add(prefab.name, prefab);
             }
         }
+        
+        foreach (Transform ui in GameMgr.Instance.ui.pos_Menu_UI_Bg.transform)
+        {
+            if (ui.gameObject.activeSelf)
+                ui.gameObject.SetActive(false);
+
+            GameMgr.Instance.ui.pos_Menu_UI_Bg.SetActive(false);
+        }
+        GameMgr.Instance.ui.resume_Info.SetActive(false);
+
+        GameMgr.Instance.ui.ui_Connect.SetActive(false);
+
         InitPhotonServer();
     }
 
-    public void StartBnt()
+    [PunRPC]
+    public void ChangePlayerRole(int playerViewID, string role)
     {
-        DefaultPool pool = PhotonNetwork.PrefabPool as DefaultPool;
-        pool.ResourceCache.Clear();
-        if (pool != null && list_Photon_Prefabs != null)
+        // 이력서를 제출한 플레이어의 PhotonView ID를 사용하여 플레이어 찾기
+        PhotonView playerView = PhotonView.Find(playerViewID);
+        if (playerView != null)
         {
-            foreach (GameObject prefab in list_Photon_Prefabs)
+            Players player = playerView.GetComponent<Players>();
+            if (player != null)
             {
-                pool.ResourceCache.Add(prefab.name, prefab);
+                switch (role)
+                {
+                    case "Customer":
+                        player.SetRole(Role.Customer);
+                        break;
+                    case "Employee":
+                        player.SetRole(Role.Employee);
+                        break;
+                    case "Manager":
+                        foreach (Player player_List in PhotonNetwork.PlayerList)
+                        {
+                            if (playerView.OwnerActorNr == player_List.ActorNumber)
+                            {
+                                PhotonNetwork.SetMasterClient(player_List);
+                                break;
+                            }
+                        }
+                        player.SetRole(Role.Manager);
+                        break;
+                }
+                // 플레이어 역할 설정
             }
         }
-        InitPhotonServer();
+    }
+
+    [PunRPC]
+    private void AlertPopup(string text)
+    {
+        Debug.Log("AlertPopup called with message: " + text);
+        GameMgr.Instance.ui.OnAlertPopup(text);
+    }
+
+    [PunRPC]
+    private void DestroyResumeList(int id)
+    {
+        Debug.Log("DestroyResumeList called with viewID: " + id);
+        PhotonView view = PhotonView.Find(id);
+        if (view != null)
+        {
+            Destroy(view.gameObject);
+        }
+        else
+        {
+            Debug.LogWarning("DestroyResumeList: ViewID not found, viewID: " + id);
+        }
     }
 
     public void Quit()
@@ -70,15 +315,18 @@ public class Photon_Manager : MonoBehaviourPunCallbacks
 
     private void CreateCharacter(UserData m_data)
     {
+        m_data.name = name_Input.text;
         if (m_data.gender == 0)
         {
             Debug.Log("남자 캐릭터 생성");
             obj_LocalPlayer = PhotonNetwork.Instantiate(list_Photon_Prefabs[0].name, tf_Respawn_Point.position, Quaternion.identity);
-            
+            obj_LocalPlayer.GetComponent<Players>().gender = m_data.gender;
+
         }
         else if (m_data.gender == 1)
         {
             obj_LocalPlayer = PhotonNetwork.Instantiate(list_Photon_Prefabs[1].name, tf_Respawn_Point.position, Quaternion.identity);
+            obj_LocalPlayer.GetComponent<Players>().gender = m_data.gender;
             Debug.Log("여자 캐릭터 생성");
         }
 
@@ -87,20 +335,20 @@ public class Photon_Manager : MonoBehaviourPunCallbacks
 
         if (PhotonNetwork.IsMasterClient)
         {
-            Debug.Log("서버장이므로 점장 역할을 부여합니다.");
+            GameMgr.Instance.ui.OnAlertPopup("서버장이므로 점장 역할을 \n부여합니다.");
             obj_LocalPlayer.GetComponent<Players>().SetRole(Role.Manager);
         }
         else
         {
-            Debug.Log("서버장이 아니므로 고객 역할을 부여합니다.");
+            GameMgr.Instance.ui.OnAlertPopup("서버장이 아니므로 고객 역할을 \n부여합니다.");
             obj_LocalPlayer.GetComponent<Players>().SetRole(Role.Customer);
         }
-        photonView.RPC("SetPlayerSetting", RpcTarget.AllBuffered, m_data.name, obj_LocalPlayer.GetComponent<PhotonView>().ViewID);
+        photonView.RPC("SetPlayerSetting", RpcTarget.AllBuffered, m_data.name, obj_LocalPlayer.GetComponent<PhotonView>().ViewID, m_data.gender);
     }
 
 
     [PunRPC]
-    public void SetPlayerSetting(string name, int player_Id)
+    public void SetPlayerSetting(string name, int player_Id, int gender)
     {
         // 모든 PhotonView를 찾아서
         PhotonView[] views = FindObjectsOfType<PhotonView>();
@@ -110,14 +358,16 @@ public class Photon_Manager : MonoBehaviourPunCallbacks
             if (view.Owner != null && view.ViewID == player_Id)
             {
                 // 해당 오브젝트의 이름을 설정
-                SetPlayer(name, view.gameObject);
+                SetPlayer(name, view.gameObject, gender);
                 break; // 찾았으니 더 이상 반복할 필요 없음
             }
         }
     }
 
-    private void SetPlayer(string name, GameObject player)
+    private void SetPlayer(string name, GameObject player, int gender)
     {
+        player.GetComponent<Players>().nickName = name;
+        player.GetComponent<Players>().gender = gender;
         player.GetComponent<Character_Controller>().player_Name.text = name;
         if (!GameMgr.Instance.player_List.Contains(player))
         {
@@ -172,6 +422,11 @@ public class Photon_Manager : MonoBehaviourPunCallbacks
         }
         return null;
     }*/
+
+    public void SelectGender(int gender) 
+    {
+        m_LocalPlayer_Data.gender = gender;
+    }
 
 
     public void Respawn()
@@ -233,7 +488,10 @@ public class Photon_Manager : MonoBehaviourPunCallbacks
 
     public override void OnLeftRoom()
     {
-        Debug.Log("Photon : OnLeftRoom");
+        if (PhotonNetwork.IsMasterClient)
+        {
+            RPCChangeRole();
+        }
     }
 
     ///////////////////룸 관련 콜백 끝
@@ -246,12 +504,14 @@ public class Photon_Manager : MonoBehaviourPunCallbacks
 
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
+        Debug.Log("Player left room: " + otherPlayer.NickName);
         PhotonView[] views = FindObjectsOfType<PhotonView>();
 
         foreach (PhotonView view in views)
         {
             if (view.OwnerActorNr == otherPlayer.ActorNumber)
             {
+                Debug.Log("Destroying player object with ViewID: " + view.ViewID);
                 photonView.RPC("DestroyPlayer", RpcTarget.AllBuffered, view.ViewID);
             }
         }
@@ -261,84 +521,72 @@ public class Photon_Manager : MonoBehaviourPunCallbacks
     private void DestroyPlayer(int viewID)
     {
         PhotonView view = PhotonView.Find(viewID);
+        
         if (view != null)
         {
             GameObject player = view.gameObject;
             if (GameMgr.Instance.player_List.Contains(player))
             {
                 GameMgr.Instance.player_List.Remove(player);
+                Destroy(player);
             }
         }
     }
     ///////////////////플레이어 관련 콜백 끝
     ///
-/*
-    public void ChangeRole()
+
+    public void RPCChangeRole()
     {
-        List<Player> players = PhotonNetwork.PlayerList.ToList();
-        bool hasEmployee = false;
+        photonView.RPC("ChangeRole", RpcTarget.AllBuffered);
+    }
 
-        foreach (Player player in players) 
-        {
-            int id = player.ActorNumber;
 
-            foreach (GameObject obj in  GameMgr.Instance.player_List)
-            {
-                Players player_Obj = obj.GetComponent<Players>();
+    [PunRPC]
+    public void ChangeRole()
+{
+    List<Player> players = PhotonNetwork.PlayerList.ToList();
+    Player newMaster = null;
+
+    bool hasEmployee = players.Any(player => {
+        int id = player.ActorNumber;
+        return GameMgr.Instance.player_List.Any(obj => {
+            PhotonView photon_Player = obj.GetComponent<PhotonView>();
+            Players player_Obj = obj.GetComponent<Players>();
+            return photon_Player.OwnerActorNr == id && player_Obj.GetRole() == Role.Employee;
+        });
+    });
+
+    if (hasEmployee)
+    {
+        // 역할이 Employee인 플레이어 중에서 가장 빠른 ActorNumber를 가진 플레이어를 새 마스터 클라이언트로 설정합니다.
+        newMaster = players.OrderBy(p => p.ActorNumber).FirstOrDefault(player => {
+            return GameMgr.Instance.player_List.Any(obj => {
                 PhotonView photon_Player = obj.GetComponent<PhotonView>();
+                Players player_Obj = obj.GetComponent<Players>();
+                return photon_Player.OwnerActorNr == player.ActorNumber && player_Obj.GetRole() == Role.Employee;
+            });
+        });
+    }
+    else
+    {
+        // 모든 플레이어 중에서 가장 빠른 ActorNumber를 가진 플레이어를 새 마스터 클라이언트로 설정합니다.
+        newMaster = players.OrderBy(p => p.ActorNumber).FirstOrDefault();
+    }
 
-                if (player != null && photon_Player.OwnerActorNr == id && player_Obj.GetRole() == Role.Employee)
-                {
-                    hasEmployee = true;
-                    break;
-                }
-            }
-        }
-
-        // 특정 조건을 만족하는 플레이어를 찾아 마스터 클라이언트로 설정
-        Player newMaster = null;
-
-        if (hasEmployee)
+    if (newMaster != null)
+    {
+        PhotonNetwork.SetMasterClient(newMaster);
+        Debug.Log("새로운 마스터 클라이언트 설정: " + newMaster.NickName);
+        if (PhotonNetwork.IsMasterClient)
         {
-            int num = int.MaxValue;
-            foreach (Player player in players)
-            {
-                foreach (GameObject obj in GameMgr.Instance.player_List)
-                {
-                    Players player_Obj = obj.GetComponent<Players>();
-                    PhotonView photon_Player = obj.GetComponent<PhotonView>();
-
-                    if (player_Obj.GetRole() == Role.Employee && photon_Player.OwnerActorNr < num)
-                    {
-                        newMaster = player;
-                        num = photon_Player.OwnerActorNr;
-                    }
-                }
-            }
+            ShowClientPopup();
         }
-        else
-        {
-            // 모든 플레이어 중에서 가장 먼저 들어온 사람에게 권한을 부여
-            newMaster = players.OrderBy(p => p.ActorNumber).FirstOrDefault();
-        }
-
-
-        if (newMaster != null) 
-        {
-            PhotonNetwork.SetMasterClient(newMaster);
-            Debug.Log("마스터 설정");
-            if (PhotonNetwork.IsMasterClient)
-            {
-                ShowClientPopup();
-            }
-        }
-        else
-        {
-            Debug.Log("플레이어가 없습니다.");
-            return;
-        }
-
-    }*/
+    }
+    else
+    {
+        Debug.Log("플레이어가 없습니다.");
+    }
+}
 
 
     public void ShowClientPopup()

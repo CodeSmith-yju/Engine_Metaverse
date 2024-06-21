@@ -12,15 +12,18 @@ public class WaterDispenser : MonoBehaviour
         this.player = player;
     }
 
-   /*public void InCupWater(bool temp)
+   public void InCupWater(bool temp)
     {
+        string tag = "";
         if (temp) 
         {
-            player.cur_IngrList.Add("¿Â¼ö");
+            tag = "Water_Hot";
+            GameMgr.Instance.ui.CheckPopup(tag, player);
         }
         else
         {
-            player.cur_IngrList.Add("³Ã¼ö");
+            tag = "Water_Ice";
+            GameMgr.Instance.ui.CheckPopup(tag, player);
         }
-    }*/
+    }
 }

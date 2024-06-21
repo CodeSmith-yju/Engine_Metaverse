@@ -8,15 +8,17 @@ public class Players : MonoBehaviour
     public string cur_Ordered_Menu = "";
     public bool cup = false; // 컵 오브젝트를 상호작용 하면 true가 되도록 정해놓은 변수
     public bool done = false; // 제작 완료 
-    public bool resume_Done = false;
-    public bool coffee = false;
+    public bool resume_Done = false; // 이력서 제출하면 체크하는 변수
+    public bool coffee = false; // 커피가루를 가지고 있는지 없는지
     private RecipeManager recipe;
-    public bool ui_Opened = false;
-    public int coin;
+    public bool ui_Opened = false; // ui를 열고 있으면 움직이지 않도록 함
+    public int coin; // 구매할 코인
+    public int gender;   // 0 : 남자, 1: 여자
+    public string nickName = ""; // 캐릭터 생성 시 닉네임을 받아옴
 
-    private int order_Index;
-
-    [SerializeField] private Role role;
+    private int order_Index; // 주문번호를 남아두는 변수
+     
+    [SerializeField] private Role role; // 권한 관련 나열형 변수
 
 
     private void Awake()
@@ -36,7 +38,17 @@ public class Players : MonoBehaviour
 
     private void Update()
     {
-        if (GameMgr.Instance.ui.setting_UI.activeSelf || GameMgr.Instance.ui.job_Opening_UI.activeSelf || GameMgr.Instance.ui.pos_Menu_UI.activeSelf)
+        if (GameMgr.Instance.ui.setting_UI.activeSelf 
+            || GameMgr.Instance.ui.job_Opening_UI.activeSelf 
+            || GameMgr.Instance.ui.pos_Menu_UI_Bg.activeSelf 
+            || GameMgr.Instance.ui.alert_Popup.activeSelf 
+            || GameMgr.Instance.ui.check_Popup.activeSelf
+            || GameMgr.Instance.ui.master_Popup.activeSelf
+            || GameMgr.Instance.ui.fire_Popup.activeSelf
+            || GameMgr.Instance.ui.nonAccept_Popup.activeSelf
+            || GameMgr.Instance.ui.accept_Popup.activeSelf
+            || GameMgr.Instance.ui.water_dispenser_UI.activeSelf
+            || GameMgr.Instance.ui.refrigerator_UI.activeSelf)
         {
             ui_Opened = true;
         }
@@ -69,12 +81,12 @@ public class Players : MonoBehaviour
         if (cup)
         {
             bool isdone = recipe.Cook(KioskSystem.single.order_List[order_Index], cur_IngrList);
-            cur_IngrList.Clear();
-
+            
             if (isdone)
             {
                 done = true;
                 cur_Ordered_Menu = KioskSystem.single.order_List[order_Index];
+                cur_IngrList.Clear();
             }
             else
             {

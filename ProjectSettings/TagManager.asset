@@ -24,6 +24,7 @@ TagManager:
   - Water_Ice
   - Water_Hot
   - Mixer
+  - Resume
   layers:
   - Default
   - TransparentFX

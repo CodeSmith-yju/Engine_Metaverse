@@ -41,6 +41,15 @@ MonoBehaviour:
   - RespawnSpaceship
   - DestroyPlayer
   - SetPlayerSetting
+  - ChangeRole
+  - Init
+  - SetParentAndTransform
+  - ChangePlayerRole
+  - ShowRoleChangePopup
+  - GetPlayer
+  - GetPlayers
+  - DestroyResumeList
+  - AlertPopup
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0

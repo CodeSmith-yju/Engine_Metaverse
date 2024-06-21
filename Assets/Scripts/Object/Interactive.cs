@@ -97,8 +97,15 @@ public class Interactive : MonoBehaviour
                 }
                 break;
             case "POS":
-                //GameMgr.Instance.ui.pos_Menu_UI.SetActive(true);
-                KioskSystem.single.sellerImg.gameObject.SetActive(true);
+                if (player.GetRole() == Role.Manager || player.GetRole() == Role.Employee)
+                {
+                    GameMgr.Instance.ui.pos_Menu_UI_Bg.SetActive(true);
+                    GameMgr.Instance.ui.pos_Menu_UI.SetActive(true);
+                }
+                else
+                {
+                    GameMgr.Instance.ui.OnAlertPopup("권한이 없습니다.");
+                }
                 break;
             case "Grinder":
                 if (player.GetRole() == Role.Manager || player.GetRole() == Role.Employee)
@@ -131,14 +138,19 @@ public class Interactive : MonoBehaviour
                         return;
                     }
 
-                    if (coffeemachine.coffee_Done && !player.cup) 
+                    if (coffeemachine.coffee_Done && !player.cup && !coffeemachine.coffee_Ing) 
                     {
                         player.cup = true;
                         coffeemachine.bg.SetActive(false);
+                        coffeemachine.coffee_Done = false;
                         Debug.Log("에스프레소 내린 커피 컵 들기");
 
+                        if (player.cur_IngrList.Count >= 5)
+                        {
+                            GameMgr.Instance.ui.OnAlertPopup("컵에 더 이상 재료를 \n넣을 수 없습니다.");
+                            return;
+                        }
                         player.cur_IngrList.Add("에스프레소");
-
                         GameMgr.Instance.ui.CupIcon(obj_Tag);
                         GameMgr.Instance.ui.OnAlertPopup("에스프레소 내린 컵을 들었습니다.");
 
@@ -243,7 +255,7 @@ public class Interactive : MonoBehaviour
                     water.Init(player);
                     if (player.cup)
                     {
-                        //GameMgr.Instance.ui.water_dispenser_UI.SetActive(true);
+                        GameMgr.Instance.ui.water_dispenser_UI.SetActive(true);
                         Debug.Log("정수기 UI 열기");
                     }
                     else
@@ -261,23 +273,78 @@ public class Interactive : MonoBehaviour
             case "Mixer":
                 if (player.GetRole() == Role.Manager || player.GetRole() == Role.Employee)
                 {
+                    Mixer mixer = my.GetComponent<Mixer>();
                     Debug.Log("믹서기 진입 테스트");
-                    if (player.cur_IngrList.Count != 0 && player.cup)
+
+                    if (mixer.mix_Done && player.cup && !mixer.mix_Ing)
+                    {
+                        mixer.mix_Done = false;
+                        mixer.bg.SetActive(false);
+                        if (player.cur_IngrList.Count >= 5)
+                        {
+                            GameMgr.Instance.ui.OnAlertPopup("컵에 더 이상 재료를 \n넣을 수 없습니다.");
+                            return;
+                        }
+                        GameMgr.Instance.ui.CupIcon(obj_Tag);
+                        player.cur_IngrList.Add("믹서기");
+                        return;
+                    }
+                    else if (mixer.mix_Ing)
+                    {
+                        GameMgr.Instance.ui.OnAlertPopup("재료를 가는 중입니다.");
+                        return;
+                    }
+
+                    if (player.cur_IngrList.Count != 0 && player.cup && !mixer.mix_Done)
                     {
                         GameMgr.Instance.ui.CheckPopup(obj_Tag, player);
                     }
                     else if (player.cur_IngrList.Count == 0 && player.cup)
                     {
                         GameMgr.Instance.ui.OnAlertPopup("믹서기에 갈 재료가 컵에 \n들어 있지 않습니다.");
+                        return;
                     }
-                    else
+                    else if (!player.cup)
                     {
                         GameMgr.Instance.ui.OnAlertPopup("컵을 들고 있지 않습니다.");
+                        return;
                     }
+
+                    
+
+
                 }
                 else
                 {
                     GameMgr.Instance.ui.OnAlertPopup("권한이 없습니다.");
+                    return;
+                }
+                break;
+            case "Refrigerator":
+                if (player.GetRole() == Role.Manager || player.GetRole() == Role.Employee)
+                {
+                    Refrigerator refrigerator = my.GetComponent<Refrigerator>();
+                    refrigerator.Init(player);
+
+                    GameMgr.Instance.ui.refrigerator_UI.SetActive(true);
+                    Debug.Log("냉장고 UI 열기");
+                }
+                else
+                {
+                    GameMgr.Instance.ui.OnAlertPopup("권한이 없습니다.");
+                    return;
+                }
+                break;
+            case "Resume":
+
+                if (player.GetRole() == Role.Customer)
+                {
+                    GameMgr.Instance.ui.job_Opening_UI.SetActive(true);
+                    GameMgr.Instance.ui.job_Opening_UI.GetComponent<PlayerCheckInit>().Init(player);
+                }
+                else
+                {
+                    GameMgr.Instance.ui.OnAlertPopup("이미 직원이거나 점장입니다.");
                     return;
                 }
                 break;
@@ -302,17 +369,7 @@ public class Interactive : MonoBehaviour
                 KioskSystem.single.textannounce.text = "커피가루";
                 break;
             case "Espresso":
-                CoffeeMachine coffeemachine = my.GetComponent<CoffeeMachine>();
-
-                if(!coffeemachine.coffee_Check)
-                {
-                    KioskSystem.single.textannounce.text = "커피가루 넣기";
-                }
-                else
-                {
-                    KioskSystem.single.textannounce.text = "커피 내리기";
-                }
-
+                KioskSystem.single.textannounce.text = "커피 내리기";
                 break;
             case "Mixer":
                 KioskSystem.single.textannounce.text = "믹서기";
