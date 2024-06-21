@@ -80,12 +80,12 @@ public class Players : MonoBehaviour
     {
         if (cup)
         {
-            bool isdone = recipe.Cook(KioskSystem.single.order_List[order_Index], cur_IngrList);
+            bool isdone = recipe.Cook(nowMakeMenu, cur_IngrList);
             
             if (isdone)
             {
                 done = true;
-                cur_Ordered_Menu = KioskSystem.single.order_List[order_Index];
+                cur_Ordered_Menu = nowMakeMenu;
                 cur_IngrList.Clear();
             }
             else

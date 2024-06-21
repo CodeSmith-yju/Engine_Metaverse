@@ -31,6 +31,7 @@ public class Interactive : MonoBehaviour
                 if (player.GetComponent<PhotonView>().IsMine) 
                 {
                     InteractWithPlayer(player, parent_Tag);
+                    KioskSystem.single.SetNowPlayer(this.player);
                 }
                 
             }
@@ -67,6 +68,7 @@ public class Interactive : MonoBehaviour
             KioskSystem.single.announce.SetActive(false);
             KioskSystem.single.textannounce.gameObject.SetActive(false);
             player = null;
+            KioskSystem.single.SetNowPlayer(this.player);
             my.GetComponent<Interactive>().enabled = false;
         }
     }
@@ -99,6 +101,7 @@ public class Interactive : MonoBehaviour
             case "POS":
                 if (player.GetRole() == Role.Manager || player.GetRole() == Role.Employee)
                 {
+                    //KioskSystem.single.
                     GameMgr.Instance.ui.pos_Menu_UI_Bg.SetActive(true);
                     GameMgr.Instance.ui.pos_Menu_UI.SetActive(true);
                 }
@@ -213,6 +216,7 @@ public class Interactive : MonoBehaviour
                     if (player.done)
                     {
                         Debug.Log("음료 제작 완료 : " + player.cur_Ordered_Menu);
+                        player.nowMakeMenu = null;
                         GameMgr.Instance.ui.DeleteCupIcon();
                         player.Done();
                         
