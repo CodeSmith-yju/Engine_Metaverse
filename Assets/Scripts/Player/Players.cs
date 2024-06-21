@@ -46,6 +46,7 @@ public class Players : MonoBehaviour
             || GameMgr.Instance.ui.master_Popup.activeSelf
             || GameMgr.Instance.ui.fire_Popup.activeSelf
             || GameMgr.Instance.ui.nonAccept_Popup.activeSelf
+            || GameMgr.Instance.ui.accept_Popup.activeSelf
             || GameMgr.Instance.ui.water_dispenser_UI.activeSelf
             || GameMgr.Instance.ui.refrigerator_UI.activeSelf)
         {

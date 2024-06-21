@@ -82,6 +82,7 @@ public class Photon_Manager : MonoBehaviourPunCallbacks
             {
                 resumeViewInit.player = players.GetComponent<Players>();
                 photonView.RPC("ChangePlayerRole", RpcTarget.AllBuffered, player_View.ViewID, "Employee");
+                photonView.RPC("AlertPopup", player_View.Owner, "채용 되었습니다.");
             }
         }
 
@@ -94,6 +95,7 @@ public class Photon_Manager : MonoBehaviourPunCallbacks
         }
 
         GameMgr.Instance.ui.resume_Info.SetActive(false);
+        GameMgr.Instance.ui.accept_Popup.SetActive(false); 
 
         Transform parentTransform = GameMgr.Instance.ui.pos_Crew_List_Pos.transform;
         data.RPC("SetParentAndTransform", RpcTarget.AllBuffered, parentTransform.GetComponent<PhotonView>().ViewID);
@@ -260,8 +262,6 @@ public class Photon_Manager : MonoBehaviourPunCallbacks
                         break;
                 }
                 // 플레이어 역할 설정
-                
-                photonView.RPC("ShowRoleChangePopup", playerView.Owner, player.GetRole().ToString());
             }
         }
     }
@@ -271,21 +271,6 @@ public class Photon_Manager : MonoBehaviourPunCallbacks
     {
         Debug.Log("AlertPopup called with message: " + text);
         GameMgr.Instance.ui.OnAlertPopup(text);
-    }
-
-    [PunRPC]
-    private void ShowRoleChangePopup(string role)
-    {
-        // 역할이 변경되었음을 알리는 팝업 메시지 표시
-        if (GameMgr.Instance.ui.alert_Popup.activeSelf)
-        {
-            GameObject temp_Obj = Instantiate(GameMgr.Instance.ui.alert_Popup, GameMgr.Instance.ui.ui_Main.transform);
-            temp_Obj.GetComponent<AlertInit>().TextInit("권한이 변경 되었습니다. (\" + role + \")");
-        }
-        else
-        {
-            GameMgr.Instance.ui.OnAlertPopup("권한이 변경 되었습니다. (" + role + ")");
-        }
     }
 
     [PunRPC]

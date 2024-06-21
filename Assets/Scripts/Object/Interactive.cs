@@ -336,9 +336,17 @@ public class Interactive : MonoBehaviour
                 }
                 break;
             case "Resume":
-                GameMgr.Instance.ui.job_Opening_UI.SetActive(true);
 
-                GameMgr.Instance.ui.job_Opening_UI.GetComponent<PlayerCheckInit>().Init(player);
+                if (player.GetRole() == Role.Customer)
+                {
+                    GameMgr.Instance.ui.job_Opening_UI.SetActive(true);
+                    GameMgr.Instance.ui.job_Opening_UI.GetComponent<PlayerCheckInit>().Init(player);
+                }
+                else
+                {
+                    GameMgr.Instance.ui.OnAlertPopup("이미 직원이거나 점장입니다.");
+                    return;
+                }
                 break;
             default:
                 return;

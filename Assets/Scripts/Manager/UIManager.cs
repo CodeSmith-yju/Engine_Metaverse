@@ -17,6 +17,7 @@ public class UIManager : MonoBehaviour
     public GameObject fire_Popup; 
     public GameObject master_Popup;
     public GameObject nonAccept_Popup;
+    public GameObject accept_Popup;
 
     [Header("Setting")]
     public GameObject setting_UI;
