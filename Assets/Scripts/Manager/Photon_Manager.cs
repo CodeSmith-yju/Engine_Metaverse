@@ -297,7 +297,7 @@ public class Photon_Manager : MonoBehaviourPunCallbacks
             GameMgr.Instance.ui.pos_Menu_UI_Bg.SetActive(false);
         }
         GameMgr.Instance.ui.resume_Info.SetActive(false);
-
+        GameMgr.Instance.ui.crew_Info.SetActive(false);
         GameMgr.Instance.ui.ui_Connect.SetActive(false);
 
         InitPhotonServer();

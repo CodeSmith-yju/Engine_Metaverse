@@ -15,28 +15,12 @@ public class ResumeView : MonoBehaviour
     public Button no_Btn;
     public Button fire_Btn;
     public Button master_Btn;
-    public bool isEmployee;
-
 
     public void Init(string name, string gender, string desc)
     {
         nickName.text = name;
         this.gender.text = gender;
         this.desc.text = desc;
-        if (!isEmployee) 
-        {
-            yes_Btn.gameObject.SetActive(true);
-            no_Btn.gameObject.SetActive(true);
-            fire_Btn.gameObject.SetActive(false);
-            master_Btn.gameObject.SetActive(false);
-        }
-        else
-        {
-            yes_Btn.gameObject.SetActive(false);
-            no_Btn.gameObject.SetActive(false);
-            fire_Btn.gameObject.SetActive(true);
-            master_Btn.gameObject.SetActive(true);
-        }
     }
 
     [PunRPC]

@@ -22,7 +22,16 @@ public class ResumeViewInit : MonoBehaviour
         this.gender = gender;
         this.desc = desc;
         this.isEmployee = isEmployee;
-        view_Btn.onClick.AddListener(() => ViewResume());
+
+        if (!isEmployee)
+        {
+            view_Btn.onClick.AddListener(() => ViewResume());
+        }
+        else
+        {
+            view_Btn.onClick.AddListener(() => ViewCrew());
+        }
+        
     }
 
     [PunRPC]
@@ -58,7 +67,18 @@ public class ResumeViewInit : MonoBehaviour
         int id = player.gameObject.GetComponent<PhotonView>().ViewID;
 
         resume.GetComponent<PhotonView>().RPC("GetPlayer", RpcTarget.AllBuffered, id);
-        resume.isEmployee = isEmployee;
+        resume.gameObject.SetActive(true);
+    }
+
+    void ViewCrew()
+    {
+        ResumeView resume = GameMgr.Instance.ui.crew_Info.GetComponent<ResumeView>();
+
+        resume.Init(nickName.text, gender, desc);
+
+        int id = player.gameObject.GetComponent<PhotonView>().ViewID;
+
+        resume.GetComponent<PhotonView>().RPC("GetPlayer", RpcTarget.AllBuffered, id);
         resume.gameObject.SetActive(true);
     }
 

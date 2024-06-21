@@ -155,7 +155,7 @@ public class Interactive : MonoBehaviour
                         }
                         player.cur_IngrList.Add("에스프레소");
                         GameMgr.Instance.ui.CupIcon(obj_Tag);
-                        GameMgr.Instance.ui.OnAlertPopup("에스프레소 내린 컵을 들었습니다.");
+                        GameMgr.Instance.ui.OnAlertPopup("에스프레소 내린 컵을 \n들었습니다.");
 
                         return;
                     }
@@ -207,7 +207,7 @@ public class Interactive : MonoBehaviour
                     GameMgr.Instance.ui.OnAlertPopup("권한이 없습니다.");
                     return;
                 }
-                break;
+                break; 
             case "Done":
                 if (player.GetRole() == Role.Manager || player.GetRole() == Role.Employee)
                 {
@@ -215,7 +215,7 @@ public class Interactive : MonoBehaviour
 
                     if (player.done)
                     {
-                        Debug.Log("음료 제작 완료 : " + player.cur_Ordered_Menu);
+                        GameMgr.Instance.ui.OnAlertPopup("음료 제작 완료\n" +  player.cur_Ordered_Menu);
                         player.nowMakeMenu = null;
                         GameMgr.Instance.ui.DeleteCupIcon();
                         player.Done();
@@ -223,7 +223,7 @@ public class Interactive : MonoBehaviour
                     }
                     else
                     {
-                        Debug.Log("완성된 음료를 만들지 않았습니다.");
+                        GameMgr.Instance.ui.OnAlertPopup("완성된 음료를 만들지 \n않았습니다.");
                         return;
                     }
                 }
@@ -313,10 +313,6 @@ public class Interactive : MonoBehaviour
                         GameMgr.Instance.ui.OnAlertPopup("컵을 들고 있지 않습니다.");
                         return;
                     }
-
-                    
-
-
                 }
                 else
                 {

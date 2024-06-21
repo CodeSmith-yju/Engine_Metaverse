@@ -40,6 +40,7 @@ public class UIManager : MonoBehaviour
     public GameObject pos_Menu_Sales_UI;
     public GameObject pos_Menu_Crew_UI;
     public Transform pos_Crew_List_Pos;
+    public GameObject crew_Info;
 
     [Header("ScreenUI")]
     public GameObject cup_List_BG;

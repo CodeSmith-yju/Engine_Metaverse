@@ -17,7 +17,7 @@ public class RecipeManager : MonoBehaviour
         recipe = new Dictionary<string, List<string>>();
 
         recipe["아이스 아메리카노"] = new List<string> { "얼음", "냉수", "에스프레소" };
-        recipe["아메리카노"] = new List<string> { "에스프레소", "온수" };
+        recipe["아메리카노"] = new List<string> { "온수", "에스프레소" };
         recipe["아이스 카페라떼"] = new List<string> { "얼음", "우유", "에스프레소" };
         recipe["아이스 카페모카"] = new List<string> { "초콜릿", "우유", "에스프레소", "믹서기", "얼음" };
         recipe["초코라떼"] = new List<string> { "초콜릿", "우유", "믹서기", "얼음" };
