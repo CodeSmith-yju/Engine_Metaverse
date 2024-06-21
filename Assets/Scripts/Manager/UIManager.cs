@@ -1,3 +1,5 @@
+using Photon.Pun;
+using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,12 +8,15 @@ using UnityEngine.UI;
 public class UIManager : MonoBehaviour
 {
     public GameObject ui_Main;
-
+    public GameObject ui_Connect;
 
     // 전체적인 UI 관리를 여기서 하면 좋을듯? 이미지나 텍스트 등 키오스크 UI도 여기로 옮기면 좋을듯 (GameMgr에서 끌어다 쓰면 됨, 버튼에 온클릭 이벤트 추가할 땐 UIManager 오브젝트 사용)
     [Header("Popup")]
     public GameObject alert_Popup;
     public GameObject check_Popup;
+    public GameObject fire_Popup; 
+    public GameObject master_Popup;
+    public GameObject nonAccept_Popup;
 
     [Header("Setting")]
     public GameObject setting_UI;
@@ -22,13 +27,18 @@ public class UIManager : MonoBehaviour
     public GameObject job_Opening_UI;
     public GameObject resume_UI;
     public GameObject resume_Info;
+    public Transform resume_List_Pos;
+    public GameObject resume_List_Prefabs;
+    public GameObject resume_Write_UI;
 
     [Header("POS")]
+    public GameObject pos_Menu_UI_Bg;
     public GameObject pos_Menu_UI;
     public GameObject pos_Menu_Order_UI;
     public GameObject pos_Menu_Resume_UI;
     public GameObject pos_Menu_Sales_UI;
     public GameObject pos_Menu_Crew_UI;
+    public Transform pos_Crew_List_Pos;
 
     [Header("ScreenUI")]
     public GameObject cup_List_BG;
@@ -45,11 +55,11 @@ public class UIManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             // 다른 UI 창이 안열려 있을 때 설정창 열도록 함.
-            if (!setting_UI.activeSelf && !job_Opening_UI.activeSelf && !pos_Menu_UI.activeSelf && !alert_Popup.activeSelf && !check_Popup.activeSelf && !water_dispenser_UI.activeSelf && !refrigerator_UI.activeSelf)
+            if (!setting_UI.activeSelf && !job_Opening_UI.activeSelf && !pos_Menu_UI_Bg.activeSelf && !alert_Popup.activeSelf && !check_Popup.activeSelf && !water_dispenser_UI.activeSelf && !refrigerator_UI.activeSelf)
             {
                 setting_UI.SetActive(true);
             }
-            else if (setting_UI.activeSelf && !job_Opening_UI.activeSelf && !pos_Menu_UI.activeSelf)
+            else if (setting_UI.activeSelf && !job_Opening_UI.activeSelf && !pos_Menu_UI_Bg.activeSelf)
             {
                 // ESC를 누르면 셋팅 창의 자식으로 있는 컨텐츠 팝업이나 키셋팅 안내 팝업이 열려있으면 이거 부터 먼저 닫도록 함.
                 if (content_Info_UI.activeSelf)
@@ -80,7 +90,7 @@ public class UIManager : MonoBehaviour
             }
 
             // 포스메뉴 UI가 열려 있을 때 ESC키 누르면 닫도록 함.
-            if (pos_Menu_UI.activeSelf)
+            if (pos_Menu_UI_Bg.activeSelf)
             {
                 /*if (pos_Menu_Order_UI.activeSelf)
                 {
@@ -102,7 +112,7 @@ public class UIManager : MonoBehaviour
                 {
                     pos_Menu_UI.SetActive(false);
                 }*/
-                pos_Menu_UI.SetActive(false);
+                pos_Menu_UI_Bg.SetActive(false);
             }
 
             // 알림창 팝업이 켜져있을때 닫도록함.
@@ -157,10 +167,15 @@ public class UIManager : MonoBehaviour
     // 컵에 들어 있는 재료 아이콘 생성
     public void CupIcon(string tag)
     {
-        foreach (GameObject icon_List in GameMgr.Instance.ui.cup_Icon_List)
+        foreach (GameObject icon_List in cup_Icon_List)
         {
             if (icon_List.tag == tag)
             {
+                if (cup_List.transform.childCount > 5)
+                {
+                    OnAlertPopup("더 이상 컵에 재료를 \n넣을 수 없습니다.");
+                    return;
+                }
                 GameObject icon = Instantiate(icon_List, GameMgr.Instance.ui.cup_List.transform);
 
                 if (tag == "Mixer")
@@ -229,6 +244,58 @@ public class UIManager : MonoBehaviour
 
         check_Popup.GetComponent<CheckPopupInit>().Init(alert, tag, player);
     }
+
+    public void ResumeSubmitPopup(GameObject popup)
+    {
+
+        foreach (GameObject player in GameMgr.Instance.player_List)
+        {
+            PhotonView player_view = player.GetComponent<PhotonView>();
+
+            if (player_view != null && player_view.IsMine)
+            {
+                Players player_Obj = player.GetComponent<Players>();
+                if (player_Obj.resume_Done)
+                {
+                    Debug.Log("Resume already submitted.");
+                    OnAlertPopup("이미 이력서를 제출했습니다.");
+                    return;
+                }
+                else
+                {
+                    popup.SetActive(true);
+                }
+            }
+
+        }
+    }
+
+    public void ResumeWirting()
+    {
+        ResumeView resume = resume_Write_UI.GetComponent<ResumeView>();
+
+        foreach (GameObject player in GameMgr.Instance.player_List)
+        {
+            PhotonView player_view = player.GetComponent<PhotonView>();
+
+            if (player_view != null && player_view.IsMine)
+            {
+                Players player_Obj = player.GetComponent<Players>();
+                if (player_Obj.resume_Done)
+                {
+                    Debug.Log("Resume already submitted.");
+                    return;
+                }
+                else
+                {
+                    resume.NameGenderInit(player_Obj.nickName, player_Obj.gender);
+                }
+            }
+
+        }
+    }
+
+    
 
 
 }

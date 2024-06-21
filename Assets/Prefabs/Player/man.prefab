@@ -118,7 +118,7 @@ MonoBehaviour:
   obj_Body: {fileID: 2374430763718696840}
   obj_Cam_First: {fileID: 3738339002912586576}
   obj_Cam_Quarter: {fileID: 8337538511887817034}
-  player_Name: {fileID: 0}
+  player_Name: {fileID: 5884033036188102424}
 --- !u!114 &1584127459163991175
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -212,6 +212,8 @@ MonoBehaviour:
   coffee: 0
   ui_Opened: 0
   coin: 0
+  gender: 0
+  nickName: 
   role: 2
 --- !u!54 &5762758356396794511
 Rigidbody:
@@ -2370,7 +2372,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c334194fa5cf8214fb409cf47a44800d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Cam: {fileID: 0}
+  Cam: {fileID: 8337538511887817034}
   distance: 3
 --- !u!1 &5730910128914421058
 GameObject:

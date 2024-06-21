@@ -27,10 +27,15 @@ public class CheckPopupInit : MonoBehaviour
                 Mixer mixer = FindObjectOfType<Mixer>();
 
                 StartCoroutine(mixer.MixerRoutine(mixer));
-                /*player.cur_IngrList.Add("믹서기");
-                GameMgr.Instance.ui.CupIcon(tag);*/
                 break;
             case "Ice":
+                if (player.cur_IngrList.Count >= 5)
+                {
+                    GameMgr.Instance.ui.OnAlertPopup("컵에 더 이상 재료를 \n넣을 수 없습니다.");
+                    if (GameMgr.Instance.ui.check_Popup.activeSelf)
+                        GameMgr.Instance.ui.check_Popup.SetActive(false);
+                    return;
+                }
                 player.cur_IngrList.Add("얼음");
                 GameMgr.Instance.ui.CupIcon(tag);
                 break;
@@ -57,26 +62,68 @@ public class CheckPopupInit : MonoBehaviour
                 GameMgr.Instance.ui.DeleteCupIcon();
                 break;
             case "Water_Ice":
+                if (player.cur_IngrList.Count >= 5)
+                {
+                    GameMgr.Instance.ui.OnAlertPopup("컵에 더 이상 재료를 \n넣을 수 없습니다.");
+                    if (GameMgr.Instance.ui.check_Popup.activeSelf)
+                        GameMgr.Instance.ui.check_Popup.SetActive(false);
+                    return;
+                }
                 player.cur_IngrList.Add("냉수");
                 GameMgr.Instance.ui.CupIcon(tag);
                 break;
             case "Water_Hot":
+                if (player.cur_IngrList.Count >= 5)
+                {
+                    GameMgr.Instance.ui.OnAlertPopup("컵에 더 이상 재료를 \n넣을 수 없습니다.");
+                    if (GameMgr.Instance.ui.check_Popup.activeSelf)
+                        GameMgr.Instance.ui.check_Popup.SetActive(false);
+                    return;
+                }
                 player.cur_IngrList.Add("온수");
                 GameMgr.Instance.ui.CupIcon(tag);
                 break;
             case "Strawberry":
+                if (player.cur_IngrList.Count >= 5)
+                {
+                    GameMgr.Instance.ui.OnAlertPopup("컵에 더 이상 재료를 \n넣을 수 없습니다.");
+                    if (GameMgr.Instance.ui.check_Popup.activeSelf)
+                        GameMgr.Instance.ui.check_Popup.SetActive(false);
+                    return;
+                }
                 player.cur_IngrList.Add("딸기");
                 GameMgr.Instance.ui.CupIcon(tag);
                 break;
             case "Milk":
+                if (player.cur_IngrList.Count >= 5)
+                {
+                    GameMgr.Instance.ui.OnAlertPopup("컵에 더 이상 재료를 \n넣을 수 없습니다.");
+                    if (GameMgr.Instance.ui.check_Popup.activeSelf)
+                        GameMgr.Instance.ui.check_Popup.SetActive(false);
+                    return;
+                }
                 player.cur_IngrList.Add("우유");
                 GameMgr.Instance.ui.CupIcon(tag);
                 break;
             case "Chocolate":
+                if (player.cur_IngrList.Count >= 5)
+                {
+                    GameMgr.Instance.ui.OnAlertPopup("컵에 더 이상 재료를 \n넣을 수 없습니다.");
+                    if (GameMgr.Instance.ui.check_Popup.activeSelf)
+                        GameMgr.Instance.ui.check_Popup.SetActive(false);
+                    return;
+                }
                 player.cur_IngrList.Add("초콜릿");
                 GameMgr.Instance.ui.CupIcon(tag);
                 break;
             case "Yogurt":
+                if (player.cur_IngrList.Count >= 5)
+                {
+                    GameMgr.Instance.ui.OnAlertPopup("컵에 더 이상 재료를 \n넣을 수 없습니다.");
+                    if (GameMgr.Instance.ui.check_Popup.activeSelf)
+                        GameMgr.Instance.ui.check_Popup.SetActive(false);
+                    return;
+                }
                 player.cur_IngrList.Add("요거트 파우더");
                 GameMgr.Instance.ui.CupIcon(tag);
                 break;

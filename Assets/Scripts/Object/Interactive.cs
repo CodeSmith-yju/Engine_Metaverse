@@ -97,6 +97,7 @@ public class Interactive : MonoBehaviour
                 }
                 break;
             case "POS":
+                GameMgr.Instance.ui.pos_Menu_UI_Bg.SetActive(true);
                 GameMgr.Instance.ui.pos_Menu_UI.SetActive(true);
                 break;
             case "Grinder":
@@ -137,8 +138,12 @@ public class Interactive : MonoBehaviour
                         coffeemachine.coffee_Done = false;
                         Debug.Log("에스프레소 내린 커피 컵 들기");
 
+                        if (player.cur_IngrList.Count >= 5)
+                        {
+                            GameMgr.Instance.ui.OnAlertPopup("컵에 더 이상 재료를 \n넣을 수 없습니다.");
+                            return;
+                        }
                         player.cur_IngrList.Add("에스프레소");
-
                         GameMgr.Instance.ui.CupIcon(obj_Tag);
                         GameMgr.Instance.ui.OnAlertPopup("에스프레소 내린 컵을 들었습니다.");
 
@@ -263,7 +268,27 @@ public class Interactive : MonoBehaviour
                 {
                     Mixer mixer = my.GetComponent<Mixer>();
                     Debug.Log("믹서기 진입 테스트");
-                    if (player.cur_IngrList.Count != 0 && player.cup)
+
+                    if (mixer.mix_Done && player.cup && !mixer.mix_Ing)
+                    {
+                        mixer.mix_Done = false;
+                        mixer.bg.SetActive(false);
+                        if (player.cur_IngrList.Count >= 5)
+                        {
+                            GameMgr.Instance.ui.OnAlertPopup("컵에 더 이상 재료를 \n넣을 수 없습니다.");
+                            return;
+                        }
+                        GameMgr.Instance.ui.CupIcon(obj_Tag);
+                        player.cur_IngrList.Add("믹서기");
+                        return;
+                    }
+                    else if (mixer.mix_Ing)
+                    {
+                        GameMgr.Instance.ui.OnAlertPopup("재료를 가는 중입니다.");
+                        return;
+                    }
+
+                    if (player.cur_IngrList.Count != 0 && player.cup && !mixer.mix_Done)
                     {
                         GameMgr.Instance.ui.CheckPopup(obj_Tag, player);
                     }
@@ -272,22 +297,13 @@ public class Interactive : MonoBehaviour
                         GameMgr.Instance.ui.OnAlertPopup("믹서기에 갈 재료가 컵에 \n들어 있지 않습니다.");
                         return;
                     }
-                    else
+                    else if (!player.cup)
                     {
                         GameMgr.Instance.ui.OnAlertPopup("컵을 들고 있지 않습니다.");
                         return;
                     }
 
-                    if (mixer.mix_Done && player.cup && !mixer.mix_Ing)
-                    {
-                        GameMgr.Instance.ui.CupIcon(obj_Tag);
-                        return;
-                    }
-                    else if (mixer.mix_Ing)
-                    {
-                        GameMgr.Instance.ui.OnAlertPopup("재료를 가는 중입니다.");
-                        return;
-                    }
+                    
 
 
                 }
@@ -311,6 +327,11 @@ public class Interactive : MonoBehaviour
                     GameMgr.Instance.ui.OnAlertPopup("권한이 없습니다.");
                     return;
                 }
+                break;
+            case "Resume":
+                GameMgr.Instance.ui.job_Opening_UI.SetActive(true);
+
+                GameMgr.Instance.ui.job_Opening_UI.GetComponent<PlayerCheckInit>().Init(player);
                 break;
             default:
                 return;
