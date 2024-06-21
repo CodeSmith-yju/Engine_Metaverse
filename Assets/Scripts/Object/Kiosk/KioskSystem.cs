@@ -17,7 +17,7 @@ public class KioskSystem : MonoBehaviour
     //[SerializeField] private List<int> ticketNumbers = new List<int>();
     //[SerializeField] private int ticketNum = 0;
     public List<int> ticketNumbers = new List<int>();
-    public static int ticketNum = 0;
+    public int ticketNum = 0;
     
     public string menuName = "";
     public Sprite menuSp = null;
@@ -85,9 +85,24 @@ public class KioskSystem : MonoBehaviour
     public GameObject obj_ManagerOrderView;
 
     public Photon_Manager p_M;
+    public Players nowPlayer;
+
+    public void SetNowPlayer(Players _ps)
+    {
+        nowPlayer = _ps;
+    }
+
     private void Awake()
     {
-        single = this;
+        if (single != null)
+        {
+            Debug.Log(" single tone is not null");
+            return;
+        }
+        else
+        {
+            single = this;
+        }
         KioskStart();
 
         commitOrderList.Clear();
@@ -251,6 +266,7 @@ public class KioskSystem : MonoBehaviour
                     players.GetComponent<Players>().coin--;
                 } 
             }*/
+            // Æ÷Åæ¸Å´ÏÀú
 
             tiketIssuance.gameObject.SetActive(buyCheck);
             //btnQuiteKiosk.gameObject .SetActive(false);

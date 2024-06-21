@@ -31,6 +31,7 @@ public class Interactive : MonoBehaviour
                 if (player.GetComponent<PhotonView>().IsMine) 
                 {
                     InteractWithPlayer(player, parent_Tag);
+                    KioskSystem.single.SetNowPlayer(this.player);
                 }
                 
             }
