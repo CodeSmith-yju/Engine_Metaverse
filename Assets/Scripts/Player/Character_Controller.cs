@@ -46,10 +46,19 @@ public class Character_Controller : MonoBehaviour
     // Update is called once per frame
     private void LateUpdate()
     {
+        float pos_x;
+        float pos_z;
         if (GetComponent<PhotonView>().IsMine && !GetComponent<Players>().ui_Opened)
         {
-            float pos_x = Input.GetAxis("Horizontal");
-            float pos_z = Input.GetAxis("Vertical");
+            if (KioskSystem.single.kiosck)
+            {
+                return;
+            }
+            else
+            {
+                pos_x = Input.GetAxis("Horizontal");
+                pos_z = Input.GetAxis("Vertical");
+            }
 
             //´Þ¸®±â ON&OFF
             /*if (Input.GetKey(KeyCode.LeftShift))
