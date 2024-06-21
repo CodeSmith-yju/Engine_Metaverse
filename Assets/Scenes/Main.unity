@@ -8776,7 +8776,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2014331295}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: OnPopup
+        m_MethodName: POSOnPopup
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 8996924733103267421}
@@ -37784,8 +37784,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 6866195230697062168}
   - {fileID: 3011229625870232617}
+  - {fileID: 6866195230697062168}
   - {fileID: 7663920264599769599}
   - {fileID: 2764939455326432625}
   - {fileID: 171253492166188138}
@@ -46814,7 +46814,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2014331295}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: OnPopup
+        m_MethodName: POSOnPopup
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 2752277833625295933}

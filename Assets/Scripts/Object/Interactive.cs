@@ -97,8 +97,15 @@ public class Interactive : MonoBehaviour
                 }
                 break;
             case "POS":
-                GameMgr.Instance.ui.pos_Menu_UI_Bg.SetActive(true);
-                GameMgr.Instance.ui.pos_Menu_UI.SetActive(true);
+                if (player.GetRole() == Role.Manager || player.GetRole() == Role.Employee)
+                {
+                    GameMgr.Instance.ui.pos_Menu_UI_Bg.SetActive(true);
+                    GameMgr.Instance.ui.pos_Menu_UI.SetActive(true);
+                }
+                else
+                {
+                    GameMgr.Instance.ui.OnAlertPopup("권한이 없습니다.");
+                }
                 break;
             case "Grinder":
                 if (player.GetRole() == Role.Manager || player.GetRole() == Role.Employee)

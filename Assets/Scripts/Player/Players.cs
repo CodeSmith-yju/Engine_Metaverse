@@ -38,7 +38,16 @@ public class Players : MonoBehaviour
 
     private void Update()
     {
-        if (GameMgr.Instance.ui.setting_UI.activeSelf || GameMgr.Instance.ui.job_Opening_UI.activeSelf || GameMgr.Instance.ui.pos_Menu_UI_Bg.activeSelf || GameMgr.Instance.ui.alert_Popup.activeSelf || GameMgr.Instance.ui.check_Popup.activeSelf)
+        if (GameMgr.Instance.ui.setting_UI.activeSelf 
+            || GameMgr.Instance.ui.job_Opening_UI.activeSelf 
+            || GameMgr.Instance.ui.pos_Menu_UI_Bg.activeSelf 
+            || GameMgr.Instance.ui.alert_Popup.activeSelf 
+            || GameMgr.Instance.ui.check_Popup.activeSelf
+            || GameMgr.Instance.ui.master_Popup.activeSelf
+            || GameMgr.Instance.ui.fire_Popup.activeSelf
+            || GameMgr.Instance.ui.nonAccept_Popup.activeSelf
+            || GameMgr.Instance.ui.water_dispenser_UI.activeSelf
+            || GameMgr.Instance.ui.refrigerator_UI.activeSelf)
         {
             ui_Opened = true;
         }
