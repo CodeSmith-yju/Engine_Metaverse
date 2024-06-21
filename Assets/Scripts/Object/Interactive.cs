@@ -67,7 +67,11 @@ public class Interactive : MonoBehaviour
         {
             KioskSystem.single.announce.SetActive(false);
             KioskSystem.single.textannounce.gameObject.SetActive(false);
+            KioskSystem.single.management_Display.gameObject.SetActive(false);
+            KioskSystem.single.sellerImg.gameObject.SetActive(false);
+            KioskSystem.single.OnQuiteKiosk();
             player = null;
+            KioskSystem.single.SetNowPlayer(null);
             my.GetComponent<Interactive>().enabled = false;
         }
     }
@@ -100,6 +104,11 @@ public class Interactive : MonoBehaviour
             case "POS":
                 //GameMgr.Instance.ui.pos_Menu_UI.SetActive(true);
                 //KioskSystem.single.sellerImg.gameObject.SetActive(true);
+                if (player.GetRole() == Role.Customer)
+                {
+                    Debug.Log("손님은 포스기에 접근할 수 없음.");
+                    return;
+                }
                 KioskSystem.single.management_Display.gameObject.SetActive(true);
                 break;
             case "Grinder":
