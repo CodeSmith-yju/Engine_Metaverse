@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6736886609207442425}
   - component: {fileID: 5280830654341326411}
   - component: {fileID: 3667324052962631301}
+  - component: {fileID: -3641121536882776255}
   m_Layer: 5
   m_Name: Slot_Consum
   m_TagString: Untagged
@@ -109,10 +110,27 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: -3641121536882776255}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &-3641121536882776255
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4127919379630220356}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 1
 --- !u!1 &7747835490608812846
 GameObject:
   m_ObjectHideFlags: 0

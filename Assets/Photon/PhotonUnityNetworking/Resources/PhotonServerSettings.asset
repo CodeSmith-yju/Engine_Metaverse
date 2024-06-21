@@ -42,6 +42,7 @@ MonoBehaviour:
   - DestroyPlayer
   - SetPlayerSetting
   - RealTiemFixKioskUI
+  - SetCon_Wait
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0

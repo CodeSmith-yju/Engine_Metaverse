@@ -79,6 +79,8 @@ public class KioskSystem : MonoBehaviour
     public Dictionary <string, SelectedMenu> dict_managerOrderView = new();// 점장 바뀌면 초기화되는 데이터, 얘를바탕으로 list에 Prefab 삽입하고 갱신할 것.
     public List<SelectedMenu> list_ManagerOrderView = new();// 실제 화면 키면 보일거
     public GameObject obj_ManagerOrderView;
+
+    public Photon_Manager p_M;
     private void Awake()
     {
         single = this;
@@ -307,7 +309,8 @@ public class KioskSystem : MonoBehaviour
             //GameObject go = Instantiate(slotPrefab, poolSlot[0].transform.parent);
             GameObject go = PhotonNetwork.Instantiate("Slot_Order", poolSlot[0].transform.parent.position, Quaternion.identity);
             go.transform.SetParent(poolSlot[0].transform.parent, false);//Add
-            go.GetComponent<PhotonView>();//Add, 이거 혹시 포톤네트워크 뷰로 바꿔ㅏ야할수도?
+            //go.GetComponent<PhotonView>();
+            go.GetComponent<PhotonTransformView>();//Add, 이거 혹시 포톤네트워크 뷰로 바꿔ㅏ야할수도?
             slot = go.GetComponent<Slot>();
             poolSlot.Add(slot); // 오브젝트 풀에 슬롯 추가
         }
@@ -463,17 +466,21 @@ public class KioskSystem : MonoBehaviour
         kiosck = false;
     }
     //06-19
-    public void AddWaitOrder(SelectedMenu _selectedMenu)
+    /*public void AddWaitOrder(SelectedMenu _selectedMenu)
     {
         //GameObject go = Instantiate(conSumePrefab, tr_waitTxt);//실제 생성된 오브젝트를 지정된 위치에 대입
         GameObject go = PhotonNetwork.Instantiate("Slot_Consum", Vector3.zero, Quaternion.identity);
         go.transform.SetParent(tr_waitTxt, false);
         go.GetComponent<PhotonView>();
-
+        //go.GetComponent<PhotonTransformView>();
         ConsumSlot consumSlot = go.GetComponent<ConsumSlot>();
 
         waitOrderList.Add(consumSlot);
         consumSlot.Init(_selectedMenu);
+    }*/
+    public void AddWaitOrder(SelectedMenu _selectedMenu)
+    {
+        p_M.SetCon_Wait(_selectedMenu);
     }
     public void AddCommitOrder(SelectedMenu _selectedMenu)
     {
@@ -482,7 +489,7 @@ public class KioskSystem : MonoBehaviour
 
         // 생성된 오브젝트의 부모를 지정된 위치로 설정
         go.transform.SetParent(tr_commitTxt, false);
-
+        go.GetComponent<PhotonTransformView>();
         ConsumSlot consumSlot = go.GetComponent<ConsumSlot>();
         consumSlot.Init(_selectedMenu);
         commitOrderList.Add(consumSlot);

@@ -115,6 +115,16 @@ public class Photon_Manager : MonoBehaviourPunCallbacks
             }
         }
     }
+    [PunRPC]
+    public void SetCon_Wait(SelectedMenu _selectedMenu)
+    {
+        GameObject go = PhotonNetwork.Instantiate("Slot_Consum", Vector3.zero, Quaternion.identity);
+        //go.GetComponent<PhotonView>();
+        ConsumSlot consumSlot = go.GetComponent<ConsumSlot>();
+
+        KioskSystem.single.waitOrderList.Add(consumSlot);
+        consumSlot.Init(_selectedMenu);
+    }
 
     private void SetPlayer(string name, GameObject player)
     {
