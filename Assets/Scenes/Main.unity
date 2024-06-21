@@ -193,7 +193,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9070597669931846017, guid: 47624941498b3744ab9282b87d050197, type: 3}
       propertyPath: list_Photon_Prefabs.Array.size
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 9070597669931846017, guid: 47624941498b3744ab9282b87d050197, type: 3}
       propertyPath: list_Photon_Prefabs.Array.data[2]
@@ -203,6 +203,10 @@ PrefabInstance:
       propertyPath: list_Photon_Prefabs.Array.data[3]
       value: 
       objectReference: {fileID: 8635336559741190742, guid: 007bcc55b9b5e314eb9af6a32a76d221, type: 3}
+    - target: {fileID: 9070597669931846017, guid: 47624941498b3744ab9282b87d050197, type: 3}
+      propertyPath: list_Photon_Prefabs.Array.data[4]
+      value: 
+      objectReference: {fileID: 1850798138366616005, guid: 4a81e7f4aba1ba44a9d6ebfe28357388, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

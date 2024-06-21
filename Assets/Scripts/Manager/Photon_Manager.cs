@@ -16,6 +16,13 @@ public class Photon_Manager : MonoBehaviourPunCallbacks
 
     public Transform tr_con_wait;
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            PhotonNetwork.Instantiate(list_Photon_Prefabs[4].name, tf_Respawn_Point.position, Quaternion.identity);
+        }
+    }
     private void Start()
     {
         //여기서 포톤에서 생성하는 오브젝트를 등록
