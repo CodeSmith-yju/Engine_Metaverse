@@ -17,29 +17,6 @@ public class Photon_Manager : MonoBehaviourPunCallbacks
 
     public Transform tr_con_wait;
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            PhotonNetwork.Instantiate(list_Photon_Prefabs[4].name, tf_Respawn_Point.position, Quaternion.identity);
-        }
-    }
-
-    public void FakeScreen()
-    {
-        PhotonView[] views = FindObjectsOfType<PhotonView>();
-        foreach (PhotonView view in views)
-        {
-            // view의 Owner의 ActorNumber가 player_Id와 일치하면
-            if (view.Owner != null && view.ViewID == KioskSystem.single.nowPlayer.GetComponent<PhotonView>().ViewID)
-            {
-                Debug.Log("isMine");
-                // 해당 오브젝트의 이름을 설정
-
-                break; // 찾았으니 더 이상 반복할 필요 없음
-            }
-        }
-    }
     private void Start()
     {
         //여기서 포톤에서 생성하는 오브젝트를 등록
@@ -169,6 +146,7 @@ public class Photon_Manager : MonoBehaviourPunCallbacks
         }
     }
 
+    [PunRPC]
     public void TakeTicket()
     {
         if (KioskSystem.single.ticketNum >= 999)
