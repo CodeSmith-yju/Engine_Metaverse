@@ -254,11 +254,6 @@ public class UIManager : MonoBehaviour
                     return;
                 }
                 GameObject icon = Instantiate(icon_List, GameMgr.Instance.ui.cup_List.transform);
-
-                if (tag == "Mixer")
-                {
-                    icon.GetComponent<Mixer_Icon>().PrefabsMove();
-                }
             }
         }
     }

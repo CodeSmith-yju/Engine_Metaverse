@@ -289,8 +289,9 @@ public class Interactive : MonoBehaviour
                             GameMgr.Instance.ui.OnAlertPopup("컵에 더 이상 재료를 \n넣을 수 없습니다.");
                             return;
                         }
-                        GameMgr.Instance.ui.CupIcon(obj_Tag);
                         player.cur_IngrList.Add("믹서기");
+                        GameMgr.Instance.ui.CupIcon(obj_Tag);
+                        Debug.Log("믹서기 테스트");
                         return;
                     }
                     else if (mixer.mix_Ing)
